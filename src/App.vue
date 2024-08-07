@@ -4,4 +4,17 @@
   <router-view />
 </template>
 
-<style scoped></style>
+<style>
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+</style>

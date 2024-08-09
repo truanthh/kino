@@ -3,28 +3,29 @@ import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 
+const authStore = useAuthStore();
+
 const movies = ref([]);
 
-async function getMovies() {
+async function getAllMovies() {
   try {
-    const response = await axios.get(
-      "https://kino-fd2df-default-rtdb.europe-west1.firebasedatabase.app/",
+    let response = await axios.get(
+      `http://${DB_SERVER_ADDRESS}/films`,
     );
     movies.value = response.data;
   } catch (error) {
   } finally {
-    console.log(response.data);
   }
 }
 
 onMounted(async () => {
-  await getAllCars();
+  await getAllMovies();
 });
 </script>
 
 <template>
-  <div>
-    {{ movies }}
+  <div v-for="movie in movies">
+    {{ movie.title }}
   </div>
 </template>
 

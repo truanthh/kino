@@ -21,7 +21,7 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       let signString = type === "signIn" ? "signInWithPassword" : "signUp";
       let response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:${type}?key=${API_KEY}`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:${signString}?key=${API_KEY}`,
         {
           ...payload,
           returnSecureToken: true,
@@ -34,7 +34,14 @@ export const useAuthStore = defineStore("auth", () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn,
       };
-      console.log(response.data);
+      localStorage.setItem(
+        "userTokens",
+        JSON.stringify({
+          token: userInfo.value.token,
+          refreshToken: userInfo.value.refreshToken,
+          expiresIn: userInfo.value.expiresIn,
+        }),
+      );
       responseData.value = response.data;
     } catch (err) {
       switch (err.response.data.error.message) {
@@ -43,17 +50,28 @@ export const useAuthStore = defineStore("auth", () => {
             "The email address is already in use by another account.";
           break;
         case "OPERATION_NOT_ALLOWED":
-          error.value = "Password sign-in is disabled for this project";
+          error.value = "Operation not allowed!";
           break;
         case "TOO_MANY_ATTEMPTS_TRY_LATER":
           error.value =
             "We have blocked all requests from this device due to unusual activity. Try again later";
+          break;
+        case "EMAIL_NOT_FOUND":
+          error.value = "Email not found";
+          break;
+        case "INVALID_PASSWORD":
+          error.value = "The password is invalid or the user has no password.";
+          break;
+        case "USER_DISABLED":
+          error.value = "The user has been disabled by administrator";
           break;
 
         default:
           error.value = "Error!";
           break;
       }
+      throw error.value;
+    } finally {
     }
   };
   return {

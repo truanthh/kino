@@ -1,7 +1,26 @@
-<script setup></script>
+<script setup>
+import { useAuthStore } from "./stores/auth";
+
+const authStore = useAuthStore();
+
+const checkUser = () => {
+  const tokens = JSON.parse(localStorage.getItem("userTokens"));
+  if (tokens) {
+    authStore.userInfo.token = tokens.token;
+    authStore.userInfo.refreshToken = tokens.refreshToken;
+    authStore.userInfo.expiresIn = tokens.expiresIn;
+  }
+};
+
+checkUser();
+</script>
 
 <template>
-  <router-view />
+  <navbar />
+
+  <main>
+    <router-view />
+  </main>
 </template>
 
 <style>
@@ -23,6 +42,11 @@ html,
 body {
   height: 100%;
   margin: 0;
+  box-sizing: border-box;
+}
+main {
+  /* flex: 1; */
+  height: calc(100% - 3rem);
 }
 
 #app {

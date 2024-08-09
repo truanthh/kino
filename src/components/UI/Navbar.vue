@@ -1,8 +1,22 @@
 <script setup>
 import { onMounted, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { Icon } from "@iconify/vue";
+import SearchInput from "./SearchInput.vue";
+
+const authStore = useAuthStore();
 
 defineOptions({
   name: "Navbar",
+});
+
+const debug = () => {
+  console.log(authStore.userInfo);
+};
+
+const props = defineProps({
+  logout: Function,
+  required: true,
 });
 </script>
 
@@ -14,34 +28,27 @@ defineOptions({
       <router-link to="/movies"> Movies </router-link>
     </div>
     <div class="navbar__content">
-      <input type="text" class="searchbar" placeholder="Поиск фильмов..." />
+      <!-- <Icon icon="ph:magnifying-glass" style="color: black" /> -->
+      <!-- <input type="text" class="searchbar" placeholder="Поиск фильмов..." /> -->
+      <SearchInput />
     </div>
     <div class="navbar__content">
-      <router-link to="/signin"> <b>Войти</b> </router-link>
+      <router-link to="/signin" v-if="!authStore.isAuth">
+        <b>Войти</b>
+      </router-link>
+      <router-link to="/signin" v-if="authStore.isAuth" @click.prevent="logout">
+        <b>Выйти</b>
+      </router-link>
       &nbsp; &nbsp; &nbsp;
-      <router-link to="/signup">Регистрация</router-link>
+      <router-link to="/signup" v-if="!authStore.isAuth"
+        >Регистрация</router-link
+      >
+      <!-- <span @click="debug"> &nbsp; debug </span> -->
     </div>
   </div>
 </template>
 
 <style scoped>
-.navbar__content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.searchbar {
-  height: 2.5rem;
-  width: 20rem;
-  border: 2px solid #d1d1d1;
-  padding: 4px 8px 4px 8px;
-  border-radius: 4px;
-  background-color: #f1f3f4;
-}
-.searchbar:focus {
-  outline: none;
-  background-color: white;
-}
 .navbar {
   z-index: 2000;
   display: grid;
@@ -50,12 +57,15 @@ defineOptions({
   top: 0;
   height: 3rem;
   width: 100%;
-  /* justify-items: center; */
   box-sizing: border-box;
-  background-color: #f7f7f7;
-  border-bottom: solid 2px gray;
+  background-color: white;
+  box-shadow:
+    1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 2px 6px 2px rgba(60, 64, 67, 0.15);
 }
-
-.login {
+.navbar__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

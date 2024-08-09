@@ -1,5 +1,6 @@
 <script setup>
 import { useAuthStore } from "./stores/auth";
+import router from "./router";
 
 const authStore = useAuthStore();
 
@@ -8,15 +9,19 @@ const checkUser = () => {
   if (tokens) {
     authStore.userInfo.token = tokens.token;
     authStore.userInfo.refreshToken = tokens.refreshToken;
-    authStore.userInfo.expiresIn = tokens.expiresIn;
   }
+};
+
+const logout = () => {
+  authStore.logout();
+  localStorage.removeItem("userTokens");
 };
 
 checkUser();
 </script>
 
 <template>
-  <navbar />
+  <navbar v-bind:logout="logout" />
 
   <main>
     <router-view />

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../stores/auth";
-import axios from "axios";
+import axiosApiInstance from "@/api";
 
 const authStore = useAuthStore();
 
@@ -9,7 +9,7 @@ const movies = ref([]);
 
 async function getAllMovies() {
   try {
-    let response = await axios.get(
+    let response = await axiosApiInstance.get(
       `http://${DB_SERVER_ADDRESS}/films`,
     );
     movies.value = response.data;

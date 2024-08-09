@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import axios from "axios";
+import { ref, computed } from "vue";
+import axiosApiInstance from "@/api";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -13,14 +13,20 @@ export const useAuthStore = defineStore("auth", () => {
     expiresIn: "",
   });
 
+  const isAuth = computed(() => {
+    if (Object.values(userInfo.value).every((value) => value === "")) {
+      return false;
+    }
+    return true;
+  });
+
   const responseData = ref();
   const error = ref("");
-  const isAuth = ref();
 
   const auth = async (payload, type) => {
     try {
       let signString = type === "signIn" ? "signInWithPassword" : "signUp";
-      let response = await axios.post(
+      let response = await axiosApiInstance.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:${signString}?key=${API_KEY}`,
         {
           ...payload,
@@ -32,14 +38,12 @@ export const useAuthStore = defineStore("auth", () => {
         email: response.data.email,
         userId: response.data.localId,
         refreshToken: response.data.refreshToken,
-        expiresIn: response.data.expiresIn,
       };
       localStorage.setItem(
         "userTokens",
         JSON.stringify({
           token: userInfo.value.token,
           refreshToken: userInfo.value.refreshToken,
-          expiresIn: userInfo.value.expiresIn,
         }),
       );
       responseData.value = response.data;
@@ -74,11 +78,23 @@ export const useAuthStore = defineStore("auth", () => {
     } finally {
     }
   };
+
+  const logout = () => {
+    userInfo.value = {
+      token: "",
+      email: "",
+      userId: "",
+      refreshToken: "",
+      expiresIn: "",
+    };
+  };
+
   return {
+    isAuth,
     auth,
     userInfo,
     error,
     responseData,
-    isAuth,
+    logout,
   };
 });

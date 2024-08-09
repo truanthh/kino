@@ -52,6 +52,7 @@ body {
 main {
   /* flex: 1; */
   height: calc(100% - 3rem);
+  overflow-y: auto;
 }
 
 #app {

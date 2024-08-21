@@ -11,7 +11,9 @@ defineOptions({
 });
 
 const debug = () => {
-  console.log(authStore.userInfo);
+  // console.log(JSON.parse(localStorage.getItem("userTokens")));
+  // console.log(auth);
+  authStore.getUserData();
 };
 
 const props = defineProps({
@@ -43,7 +45,7 @@ const props = defineProps({
       <router-link to="/signup" v-if="!authStore.isAuth"
         >Регистрация</router-link
       >
-      <!-- <span @click="debug"> &nbsp; debug </span> -->
+      <span @click="debug"> &nbsp; debug </span>
     </div>
   </div>
 </template>

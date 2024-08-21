@@ -79,6 +79,18 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
+  const getUserData = async () => {
+    try {
+      let response = await axiosApiInstance.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
+        { idToken: userInfo.value.token },
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const logout = () => {
     userInfo.value = {
       token: "",
@@ -96,5 +108,6 @@ export const useAuthStore = defineStore("auth", () => {
     error,
     responseData,
     logout,
+    getUserData,
   };
 });

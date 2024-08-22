@@ -10,11 +10,7 @@ defineOptions({
   name: "Navbar",
 });
 
-const debug = () => {
-  // console.log(JSON.parse(localStorage.getItem("userTokens")));
-  // console.log(auth);
-  authStore.getUserData();
-};
+const debug = () => {};
 
 const props = defineProps({
   logout: Function,
@@ -38,6 +34,9 @@ const props = defineProps({
       <router-link to="/signin" v-if="!authStore.isAuth">
         <b>Войти</b>
       </router-link>
+      <div v-if="authStore.userInfo.email" class="userinfo">
+        <b>{{ authStore.userInfo.email }} </b>
+      </div>
       <router-link to="/signin" v-if="authStore.isAuth" @click.prevent="logout">
         <b>Выйти</b>
       </router-link>
@@ -45,7 +44,7 @@ const props = defineProps({
       <router-link to="/signup" v-if="!authStore.isAuth"
         >Регистрация</router-link
       >
-      <span @click="debug"> &nbsp; debug </span>
+      <!-- <span @click="debug" class="debug"> &nbsp; debug </span> -->
     </div>
   </div>
 </template>
@@ -73,5 +72,11 @@ const props = defineProps({
   align-items: center;
   overflow: auto;
   /* background-color: orange; */
+}
+.debug {
+  cursor: pointer;
+}
+.userinfo {
+  margin-right: 40px;
 }
 </style>

@@ -5,10 +5,17 @@ import { createPinia } from "pinia";
 import { initializeApp } from "firebase/app";
 import "./api";
 import components from "./components/UI";
+import { getAuth } from "firebase/auth";
 
 
 
-initializeApp(firebaseConfig);
+const fb = initializeApp(firebaseConfig);
+
+// console.log(fb);
+
+// const auth = getAuth(fb);
+
+// console.log(auth);
 
 const app = createApp(App);
 const pinia = createPinia();

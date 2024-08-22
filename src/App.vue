@@ -12,12 +12,16 @@ const checkUser = () => {
   }
 };
 
+checkUser();
+
 const logout = () => {
   authStore.logout();
   localStorage.removeItem("userTokens");
 };
 
-checkUser();
+if (!authStore.userInfo.email) {
+  authStore.getUserProfileData();
+}
 </script>
 
 <template>

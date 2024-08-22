@@ -34,7 +34,7 @@ axiosApiInstance.interceptors.response.use(
               .refreshToken,
           },
         );
-        console.log(newTokens.data);
+        // console.log(newTokens.data);
         authStore.userInfo.token = newTokens.data.access_token;
         authStore.userInfo.refreshToken = newTokens.data.refresh_token;
         localStorage.setItem(

@@ -2,7 +2,7 @@
 
 <template>
   <div class="home">
-    <h1>THIS IS HOMEPAGE</h1>
+    <h1>HOMEPAGE</h1>
   </div>
 </template>
 

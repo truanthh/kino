@@ -7,17 +7,14 @@ const API_KEY = import.meta.env.VITE_API_KEY;
 export const useAuthStore = defineStore("auth", () => {
   const userInfo = ref({
     token: "",
-    email: "",
     userId: "",
     refreshToken: "",
     expiresIn: "",
+    userProfileData: {},
   });
 
   const isAuth = computed(() => {
-    if (Object.values(userInfo.value).every((value) => value === "")) {
-      return false;
-    }
-    return true;
+    return userInfo.value.token !== "";
   });
 
   const responseData = ref();
@@ -76,6 +73,7 @@ export const useAuthStore = defineStore("auth", () => {
       }
       throw error.value;
     } finally {
+      getUserProfileData();
     }
   };
 
@@ -85,7 +83,7 @@ export const useAuthStore = defineStore("auth", () => {
         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
         { idToken: userInfo.value.token },
       );
-      userInfo.value.email = response.data.users[0].email;
+      userInfo.value.userProfileData = response.data.users[0];
       console.log(response.data.users);
       console.log("successfully got user data!");
     } catch (error) {
@@ -93,15 +91,15 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  const updateUserProfile = async () => {
+  const updateUserProfile = async (payload) => {
     try {
+      // const { idToken, displayName, photoUrl } = payload;
       let response = await axiosApiInstance.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
-        { idToken: userInfo.value.token },
+        `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}`,
+        { idToken: userInfo.value.token, ...payload },
       );
-      userInfo.value.email = response.data.users[0].email;
-      console.log(response.data.users);
-      console.log("successfully got user data!");
+      console.log(response.data);
+      console.log("successfully updated user profile!");
     } catch (error) {
       console.log(error);
     }
@@ -114,6 +112,7 @@ export const useAuthStore = defineStore("auth", () => {
       userId: "",
       refreshToken: "",
       expiresIn: "",
+      userProfileData: {},
     };
   };
 
@@ -125,5 +124,6 @@ export const useAuthStore = defineStore("auth", () => {
     responseData,
     logout,
     getUserProfileData,
+    updateUserProfile,
   };
 });

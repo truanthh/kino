@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, ref } from "vue";
+// import { storeToRefs } from "pinia";
+import { onMounted, ref, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { Icon } from "@iconify/vue";
 import SearchInput from "./SearchInput.vue";
@@ -10,11 +11,15 @@ defineOptions({
   name: "Navbar",
 });
 
-const debug = () => {};
+const debug = () => {
+  console.log(userInfo);
+};
 
 const props = defineProps({
-  logout: Function,
-  required: true,
+  logout: {
+    type: Function,
+    required: true,
+  },
 });
 </script>
 
@@ -31,11 +36,19 @@ const props = defineProps({
       <SearchInput />
     </div>
     <div class="navbar__content">
+      <span>{{ authStore.isAuth }}</span>
       <router-link to="/signin" v-if="!authStore.isAuth">
         <b>Войти</b>
       </router-link>
-      <div v-if="authStore.userInfo.email" class="userinfo">
-        <b>{{ authStore.userInfo.email }} </b>
+      <router-link
+        to="/settings/userprofile"
+        v-if="authStore.isAuth"
+        class="userinfo"
+      >
+        <b> Мой профиль </b>
+      </router-link>
+      <div v-if="authStore.isAuth" class="userinfo">
+        <b>{{ authStore.userInfo.userProfileData.email }} </b>
       </div>
       <router-link to="/signin" v-if="authStore.isAuth" @click.prevent="logout">
         <b>Выйти</b>
@@ -44,12 +57,12 @@ const props = defineProps({
       <router-link to="/signup" v-if="!authStore.isAuth"
         >Регистрация</router-link
       >
-      <!-- <span @click="debug" class="debug"> &nbsp; debug </span> -->
+      <span @click="debug" class="debug"> debug </span>
     </div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .navbar {
   z-index: 2000;
   display: grid;

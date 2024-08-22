@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import Movies from "../views/Movies.vue";
+import UserProfile from "../views/UserProfile.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: "/movies",
       name: "movies",
       component: Movies,
+    },
+    {
+      path: "/settings/userprofile",
+      name: "userprofile",
+      component: UserProfile,
     },
   ],
 });

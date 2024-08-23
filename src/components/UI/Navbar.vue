@@ -1,11 +1,17 @@
 <script setup>
-// import { storeToRefs } from "pinia";
+import { storeToRefs } from "pinia";
 import { onMounted, ref, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { Icon } from "@iconify/vue";
 import SearchInput from "./SearchInput.vue";
 
 const authStore = useAuthStore();
+
+const { userInfo } = storeToRefs(authStore);
+
+// so storeToRefs is just the convenient way of doing that, ok
+// const email = computed(() => authStore.userInfo.email);
+// const token = computed(() => authStore.userInfo.token);
 
 defineOptions({
   name: "Navbar",
@@ -36,28 +42,25 @@ const props = defineProps({
       <SearchInput />
     </div>
     <div class="navbar__content">
-      <span>{{ authStore.isAuth }}</span>
-      <router-link to="/signin" v-if="!authStore.isAuth">
+      <router-link to="/signin" v-if="!userInfo.token">
         <b>Войти</b>
       </router-link>
       <router-link
         to="/settings/userprofile"
-        v-if="authStore.isAuth"
+        v-if="userInfo.token"
         class="userinfo"
       >
         <b> Мой профиль </b>
       </router-link>
-      <div v-if="authStore.isAuth" class="userinfo">
-        <b>{{ authStore.userInfo.userProfileData.email }} </b>
+      <div v-if="userInfo.token" class="userinfo">
+        <b>{{ userInfo.userProfileData.email }} </b>
       </div>
-      <router-link to="/signin" v-if="authStore.isAuth" @click.prevent="logout">
+      <router-link to="/signin" v-if="userInfo.token" @click.prevent="logout">
         <b>Выйти</b>
       </router-link>
       &nbsp; &nbsp; &nbsp;
-      <router-link to="/signup" v-if="!authStore.isAuth"
-        >Регистрация</router-link
-      >
-      <span @click="debug" class="debug"> debug </span>
+      <router-link to="/signup" v-if="!userInfo.token">Регистрация</router-link>
+      <!-- <span @click="debug" class="debug"> debug </span> -->
     </div>
   </div>
 </template>

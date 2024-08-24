@@ -7,7 +7,11 @@ const axiosApiInstance = axios.create();
 
 axiosApiInstance.interceptors.request.use((config) => {
   const url = config.url;
-  if (!url.includes("signInWithPassword") && !url.includes("signUp")) {
+  if (
+    !url.includes("signInWithPassword") &&
+    !url.includes("signUp") &&
+    !url.includes(":3000")
+  ) {
     const authStore = useAuthStore();
     let params = new URLSearchParams();
     params.append("auth", authStore.userInfo.token);

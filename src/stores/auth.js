@@ -84,8 +84,8 @@ export const useAuthStore = defineStore("auth", () => {
         { idToken: userInfo.value.token },
       );
       userInfo.value.userProfileData = response.data.users[0];
-      console.log(response.data.users);
-      console.log("successfully got user data!");
+      // console.log(response.data.users);
+      // console.log("successfully got user data!");
     } catch (error) {
       console.log(error);
     }

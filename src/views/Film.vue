@@ -34,13 +34,16 @@ onMounted(async () => {
   await getFilmById(route.params.id);
 });
 
-const submitForm = () => {
+const submitForm = async () => {
   const formData = {
+    id: route.params.id,
     title: titleField.value,
     prod_year: prodyearField.value,
     country: countryField.value,
     director: directorField.value,
   };
+
+  await updateMovieInfo(route.params.id, formData);
 };
 
 // const imagePath = ref("");
@@ -73,6 +76,18 @@ async function updatePoster(id) {
     }
   } else {
     imageUrl.value = "select file! :)";
+  }
+}
+
+async function updateMovieInfo(id, formData) {
+  try {
+    let response = await axiosApiInstance.put(
+      `http://192.168.1.119:3000/movies/${id}`,
+      formData,
+    );
+    console.log(response);
+  } catch (error) {
+    console.log(error);
   }
 }
 </script>

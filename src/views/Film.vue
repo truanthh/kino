@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import axiosApiInstance from "@/api";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
+import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 
 const route = useRoute();
 
@@ -15,7 +16,7 @@ const directorField = ref("");
 const countryField = ref("");
 
 async function getFilmById(id) {
-  console.log(`trying to get film ${id}`);
+  // console.log(`trying to get film ${id}`);
   try {
     let response = await axiosApiInstance.get(
       `http://192.168.1.119:3000/movies/${id}`,
@@ -40,13 +41,59 @@ const submitForm = () => {
     country: countryField.value,
     director: directorField.value,
   };
-  console.log(formData);
 };
+
+// const imagePath = ref("");
+const imageUrl = ref("");
+const file = ref();
+
+const onFileChange = () => {
+  file.value = event.target.files[0];
+  if (file.value) {
+    imageUrl.value = URL.createObjectURL(file.value);
+    // imagePath.value = file.value.name;
+  }
+};
+
+async function updatePoster(id) {
+  if (file.value) {
+    const formData = new FormData();
+    formData.append("poster", file.value);
+    try {
+      let response = await axiosApiInstance.post(
+        `http://192.168.1.119:3000/movies/${id}/poster`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } },
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
+  } else {
+    imageUrl.value = "select file! :)";
+  }
+}
 </script>
 
 <template>
   <div class="wrapper">
-    <img :src="film.poster_url" class="film_poster" />
+    <div class="film_media">
+      <img
+        :src="film.poster_url"
+        class="film_media_poster"
+        v-if="film.poster_url"
+      />
+      <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
+      <div v-if="imageUrl">{{ imageUrl }}</div>
+      <input type="file" @change="onFileChange" accept="image/*" />
+      <Button
+        label="Обновить постер"
+        class="btn_edit"
+        @click="updatePoster(route.params.id)"
+      />
+    </div>
     <div class="film_about">
       <form @submit.prevent="submitForm">
         <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
@@ -78,7 +125,7 @@ const submitForm = () => {
           :placeholder="film.director"
           label="Режиссер"
         />
-        <Button label="Принять изменения" class="btn_edit" />
+        <Button label="Обновить данные" class="btn_edit" />
       </form>
     </div>
   </div>
@@ -98,9 +145,14 @@ const submitForm = () => {
   flex-direction: column;
   margin-top: 40px;
 }
-.film_poster {
-  width: 300px;
-  height: 400px;
+.film_media {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  &_poster {
+    width: 300px;
+    height: 400px;
+  }
 }
 .btn_edit {
   max-width: 200px;

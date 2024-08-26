@@ -91,10 +91,19 @@ async function updateMovieInfo(id, formData) {
     console.log(error);
   }
 }
+
+function toggleEditFilm() {
+  editFilm.value = !editFilm.value;
+}
 </script>
 
 <template>
   <div class="wrapper">
+    <Button
+      class="wrapper_editbtn"
+      label="Редактировать"
+      @click="toggleEditFilm"
+    />
     <div class="film_media">
       <img
         :src="film.poster_url"
@@ -114,7 +123,7 @@ async function updateMovieInfo(id, formData) {
     </div>
     <div class="film_info">
       <div class="film_info_title">{{ film.title }}</div>
-      <div class="film_info_about">
+      <div class="film_info_about" v-if="!editFilm">
         <div>Год производства</div>
         <div>
           {{ film.prod_year }}
@@ -128,7 +137,7 @@ async function updateMovieInfo(id, formData) {
           {{ film.director }}
         </div>
       </div>
-      <form @submit.prevent="submitForm" v-if="editFilm">
+      <form @submit.prevent="submitForm" v-if="editFilm" class="film_info_edit">
         <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
         <Input
           name="title"
@@ -170,9 +179,16 @@ async function updateMovieInfo(id, formData) {
   grid-template-columns: 0.4fr 1fr;
   width: 1000px;
   height: 700px;
-  background-color: #f2f2f2;
+  background-color: #e6f2ff;
   border-radius: 4px;
   margin: 40px auto;
+  position: relative;
+  &_editbtn {
+    position: absolute;
+    max-width: 200px;
+    top: 6px;
+    right: 6px;
+  }
 }
 .film_info {
   display: flex;
@@ -190,6 +206,9 @@ async function updateMovieInfo(id, formData) {
     font-size: 1.3rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
+  &_edit {
+    margin-top: 2rem;
+  }
 }
 .film_media {
   display: flex;
@@ -197,7 +216,7 @@ async function updateMovieInfo(id, formData) {
   gap: 40px;
   &_poster {
     width: 100%;
-    max-height: 400px;
+    height: 400px;
     border-radius: 4px;
   }
   &_edit {

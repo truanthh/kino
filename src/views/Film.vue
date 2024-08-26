@@ -101,8 +101,11 @@ function toggleEditFilm() {
   <div class="wrapper">
     <Button
       class="wrapper_editbtn"
-      label="Редактировать"
       @click="toggleEditFilm"
+      icon="icon-park-outline:edit"
+      rounded
+      outlined
+      color="gray"
     />
     <div class="film_media">
       <img

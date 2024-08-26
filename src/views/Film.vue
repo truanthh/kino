@@ -9,6 +9,7 @@ import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 const route = useRoute();
 
 const film = ref({});
+const editFilm = ref(false);
 
 const titleField = ref("");
 const prodyearField = ref("");
@@ -101,16 +102,33 @@ async function updateMovieInfo(id, formData) {
         v-if="film.poster_url"
       />
       <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
-      <div v-if="imageUrl">{{ imageUrl }}</div>
-      <input type="file" @change="onFileChange" accept="image/*" />
-      <Button
-        label="Обновить постер"
-        class="btn_edit"
-        @click="updatePoster(route.params.id)"
-      />
+      <div class="film_media_edit" v-if="editFilm">
+        <div v-if="imageUrl">{{ imageUrl }}</div>
+        <input type="file" @change="onFileChange" accept="image/*" />
+        <Button
+          label="Обновить постер"
+          class="btn_edit"
+          @click="updatePoster(route.params.id)"
+        />
+      </div>
     </div>
-    <div class="film_about">
-      <form @submit.prevent="submitForm">
+    <div class="film_info">
+      <div class="film_info_title">{{ film.title }}</div>
+      <div class="film_info_about">
+        <div>Год производства</div>
+        <div>
+          {{ film.prod_year }}
+        </div>
+        <div>Страна</div>
+        <div>
+          {{ film.country }}
+        </div>
+        <div>Режиссер</div>
+        <div>
+          {{ film.director }}
+        </div>
+      </div>
+      <form @submit.prevent="submitForm" v-if="editFilm">
         <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
         <Input
           name="title"
@@ -149,24 +167,43 @@ async function updateMovieInfo(id, formData) {
 <style lang="scss" scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.4fr 1fr;
   width: 1000px;
-  height: 800px;
-  background-color: orange;
+  height: 700px;
+  background-color: #f2f2f2;
+  border-radius: 4px;
   margin: 40px auto;
 }
-.film_about {
+.film_info {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
+  padding: 1.2rem 4rem;
+  &_title {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  &_about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1rem;
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
 }
 .film_media {
   display: flex;
   flex-direction: column;
   gap: 40px;
   &_poster {
-    width: 300px;
-    height: 400px;
+    width: 100%;
+    max-height: 400px;
+    border-radius: 4px;
+  }
+  &_edit {
+    display: inherit;
+    flex-direction: inherit;
+    gap: inherit;
   }
 }
 .btn_edit {

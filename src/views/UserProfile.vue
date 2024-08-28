@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 
@@ -9,6 +9,17 @@ const { userInfo } = storeToRefs(authStore);
 function debug() {
   console.log(userInfo.userProfileData.value);
 }
+
+const lastLoginDate = toRef(() => new Date(Number(userInfo.value.userProfileData.lastLoginAt)).toLocaleString('ru-RU', timeDateOptions));
+
+const timeDateOptions = {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit', 
+  minute: '2-digit',
+  hour12: false // Для формата 24 часа
+};
 
 const picUrl = ref('');
 
@@ -32,7 +43,7 @@ const handleSubmit = async () =>{
     <div class="item">
       <h2 class="heading-2">last login:</h2>
       <h2 class="heading-2">
-        {{ new Date(Number(userInfo.userProfileData.lastLoginAt)) }}
+        {{ lastLoginDate }}
       </h2>
     </div>
     <div class="item">

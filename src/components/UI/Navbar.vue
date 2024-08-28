@@ -31,15 +31,10 @@ const props = defineProps({
 
 <template>
   <div class="navbar">
-    <div class="navbar__content">
-      <router-link to="/home"> <b>Главная</b> </router-link>
-      <router-link to="/movies"> Movies </router-link>
-    </div>
-    <div class="navbar__content">
-      <!-- <Icon icon="ph:magnifying-glass" style="color: black" /> -->
-      <!-- <input type="text" class="searchbar" placeholder="Поиск фильмов..." /> -->
-      <SearchInput />
-    </div>
+    <router-link to="/home" class="navbar__content">
+      <b>Главная</b>
+    </router-link>
+    <router-link to="/movies" class="navbar__content"> Movies </router-link>
     <div class="navbar__content">
       <router-link to="/signin" v-if="!userInfo.token">
         <b>Войти</b>
@@ -52,7 +47,7 @@ const props = defineProps({
         <b> Мой профиль </b>
       </router-link>
       <div v-if="userInfo.token" class="userinfo">
-        <b>{{ userInfo.userProfileData.email || "" }} </b>
+        <b>{{ userInfo.userProfileData.email }} </b>
       </div>
       <router-link to="/signin" v-if="userInfo.token" @click.prevent="logout">
         <b>Выйти</b>
@@ -65,10 +60,13 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .navbar {
+  padding: 0 200px;
   z-index: 2000;
-  display: grid;
-  grid-template-columns: 1fr 0.5fr 1fr;
-  grid-template-rows: minmax(1rem, 3rem);
+  // display: grid;
+  // grid-template-columns: 1fr 0.5fr 1fr;
+  // grid-template-rows: minmax(1rem, 3rem);
+  display: flex;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   height: 3rem;
@@ -80,12 +78,10 @@ const props = defineProps({
     0 1px 6px 2px rgba(60, 64, 67, 0.15);
 }
 .navbar__content {
-  /* flex: 1; */
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: auto;
-  /* background-color: orange; */
 }
 .debug {
   cursor: pointer;

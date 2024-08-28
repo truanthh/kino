@@ -44,12 +44,10 @@ export const useAuthStore = defineStore("auth", () => {
         }),
       );
       responseData.value = response.data;
-      response = await axiosApiInstance.post(
-        `http://192.168.1.119:3000/login`,
-        {
-          idToken: userInfo.value.token,
-        },
-      );
+      await axiosApiInstance.post(`http://192.168.1.119:3000/login`, {
+        idToken: userInfo.value.token,
+      });
+      await getUserProfileData();
     } catch (err) {
       if (err) {
         switch (err.response.data.error.message) {
@@ -82,7 +80,6 @@ export const useAuthStore = defineStore("auth", () => {
       }
       throw error.value;
     } finally {
-      await getUserProfileData();
     }
   };
 

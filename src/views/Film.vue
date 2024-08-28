@@ -186,6 +186,8 @@ function toggleEditFilm() {
   border-radius: 4px;
   margin: 40px auto;
   position: relative;
+  padding: 1.2rem;
+  border: solid 1px lightgray;
   &_editbtn {
     position: absolute;
     max-width: 200px;

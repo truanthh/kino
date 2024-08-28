@@ -1,31 +1,18 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
 
 const authStore = useAuthStore();
-const userData = ref({});
-
-// userData.value = { ...authStore.userInfo.userProfileData };
-
-watch(
-  () => authStore.userInfo.userProfileData,
-  (newProfileData) => {
-    userData.value = { ...newProfileData };
-    userData.value.lastLoginAt = new Date(
-      Number(newProfileData.lastLoginAt),
-    ).toLocaleString();
-  },
-  { immediate: true, deep: true },
-);
+const { userInfo } = storeToRefs(authStore);
 
 function debug() {
-  console.log(userData.value);
+  console.log(userInfo.userProfileData.value);
 }
 
 const picUrl = ref('');
 
 const handleSubmit = async () =>{
-  // alert(`your new pic url is ${picUrl.value}!`)
   const payload = { photoUrl: picUrl.value };
 
   await authStore.updateUserProfile(payload);
@@ -40,23 +27,23 @@ const handleSubmit = async () =>{
 
     <div class="item">
       <h2 class="heading-2">email:</h2>
-      <input type="text" :placeholder="userData.email" disabled></input>
+      <input type="text" :placeholder="userInfo.userProfileData.email" disabled></input>
     </div>
     <div class="item">
       <h2 class="heading-2">last login:</h2>
       <h2 class="heading-2">
-        {{ userData.lastLoginAt }}
+        {{ new Date(Number(userInfo.userProfileData.lastLoginAt)) }}
       </h2>
     </div>
     <div class="item">
       <h2 class="heading-2">password hash:</h2>
       <h2 class="heading-2">
-        {{ userData.passwordHash }}
+        {{ userInfo.userProfileData.passwordHash }}
       </h2>
     </div>
     <div class="item">
       <h2 class="heading-2"> profile avatar:</h2>
-      <img :src="userData.photoUrl" class="avatar"></img>
+      <img :src="userInfo.userProfileData.photoUrl" class="avatar"></img>
     </div>
     <form>
       <h2 class="heading-2">Enter new profile picture url:</h2>

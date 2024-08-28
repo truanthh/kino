@@ -44,36 +44,45 @@ export const useAuthStore = defineStore("auth", () => {
         }),
       );
       responseData.value = response.data;
+      response = await axiosApiInstance.post(
+        `http://192.168.1.119:3000/login`,
+        {
+          idToken: userInfo.value.token,
+        },
+      );
     } catch (err) {
-      switch (err.response.data.error.message) {
-        case "EMAIL_EXISTS":
-          error.value =
-            "The email address is already in use by another account.";
-          break;
-        case "OPERATION_NOT_ALLOWED":
-          error.value = "Operation not allowed!";
-          break;
-        case "TOO_MANY_ATTEMPTS_TRY_LATER":
-          error.value =
-            "We have blocked all requests from this device due to unusual activity. Try again later";
-          break;
-        case "EMAIL_NOT_FOUND":
-          error.value = "Email not found";
-          break;
-        case "INVALID_PASSWORD":
-          error.value = "The password is invalid or the user has no password.";
-          break;
-        case "USER_DISABLED":
-          error.value = "The user has been disabled by administrator";
-          break;
+      if (err) {
+        switch (err.response.data.error.message) {
+          case "EMAIL_EXISTS":
+            error.value =
+              "The email address is already in use by another account.";
+            break;
+          case "OPERATION_NOT_ALLOWED":
+            error.value = "Operation not allowed!";
+            break;
+          case "TOO_MANY_ATTEMPTS_TRY_LATER":
+            error.value =
+              "We have blocked all requests from this device due to unusual activity. Try again later";
+            break;
+          case "EMAIL_NOT_FOUND":
+            error.value = "Email not found";
+            break;
+          case "INVALID_PASSWORD":
+            error.value =
+              "The password is invalid or the user has no password.";
+            break;
+          case "USER_DISABLED":
+            error.value = "The user has been disabled by administrator";
+            break;
 
-        default:
-          error.value = "Error!";
-          break;
+          default:
+            error.value = "Error!";
+            break;
+        }
       }
       throw error.value;
     } finally {
-      getUserProfileData();
+      await getUserProfileData();
     }
   };
 

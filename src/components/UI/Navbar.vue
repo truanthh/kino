@@ -33,7 +33,6 @@ const props = defineProps({
   <div class="navbar">
     <div class="navbar__content">
       <router-link to="/home"> <b>Главная</b> </router-link>
-      &nbsp; &nbsp; &nbsp;
       <router-link to="/movies"> Movies </router-link>
     </div>
     <div class="navbar__content">
@@ -53,12 +52,11 @@ const props = defineProps({
         <b> Мой профиль </b>
       </router-link>
       <div v-if="userInfo.token" class="userinfo">
-        <b>{{ userInfo.userProfileData.email }} </b>
+        <b>{{ userInfo.userProfileData.email || "" }} </b>
       </div>
       <router-link to="/signin" v-if="userInfo.token" @click.prevent="logout">
         <b>Выйти</b>
       </router-link>
-      &nbsp; &nbsp; &nbsp;
       <router-link to="/signup" v-if="!userInfo.token">Регистрация</router-link>
       <!-- <span @click="debug" class="debug"> debug </span> -->
     </div>

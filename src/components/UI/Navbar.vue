@@ -4,8 +4,11 @@ import { onMounted, ref, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import SearchInput from "./SearchInput.vue";
+import ProfileDropdown from "@/components/UI/ProfileDropdown.vue";
 
 const authStore = useAuthStore();
+
+const isShowedAvatarDropdown = ref(false);
 
 const { userInfo } = storeToRefs(authStore);
 
@@ -27,9 +30,18 @@ const props = defineProps({
     required: true,
   },
 });
+
+const clickAvatar = () => {
+  isShowedAvatarDropdown.value = !isShowedAvatarDropdown.value;
+};
 </script>
 
 <template>
+  <ProfileDropdown
+    :enabled="isShowedAvatarDropdown"
+    :logout
+    :email="userInfo.userProfileData.email"
+  />
   <div class="navbar">
     <router-link to="/home" class="navbar__content">
       <b>Главная</b>
@@ -42,30 +54,16 @@ const props = defineProps({
       <router-link to="/signin" v-if="!userInfo.token" class="navbar__content">
         <b>Войти</b>
       </router-link>
-      <router-link
-        to="/settings/userprofile"
-        v-if="userInfo.token"
-        class="userinfo"
-      >
-        <b> Мой профиль </b>
-      </router-link>
-      <div v-if="userInfo.token" class="userinfo">
-        <b>{{ userInfo.userProfileData.email }} </b>
-      </div>
-      <!-- <router-link -->
-      <!--   to="/signin" -->
-      <!--   v-if="userInfo.token" -->
-      <!--   @click.prevent="logout" -->
-      <!--   class="navbar__content" -->
-      <!-- > -->
-      <!--   <b>Выйти</b> -->
-      <!-- </router-link> -->
       <IconifyIcon
         icon="ic:sharp-bookmark"
         class="iconbookmark"
         :style="{ fontSize: '24px' }"
       />
-      <img :src="userInfo.userProfileData.photoUrl" class="avatar" />
+      <img
+        :src="userInfo.userProfileData.photoUrl"
+        class="avatar"
+        @click="clickAvatar"
+      />
       <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
         >Регистрация</router-link
       >
@@ -109,6 +107,7 @@ const props = defineProps({
   width: 48px;
   height: 48px;
   border-radius: 48px;
+  cursor: pointer;
 }
 .iconbookmark {
   margin-right: 20px;

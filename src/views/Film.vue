@@ -22,12 +22,11 @@ async function getFilmById(id) {
     let response = await axiosApiInstance.get(
       `http://192.168.1.119:3000/movies/${id}`,
     );
-    console.log(response.data);
+    // console.log(response.data);
     film.value = response.data;
   } catch (error) {
     console.log(error);
   } finally {
-    console.log(film.value);
   }
 }
 

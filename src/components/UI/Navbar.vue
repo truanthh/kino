@@ -74,18 +74,16 @@ const clickAvatar = () => {
 
 <style lang="scss" scoped>
 .navbar {
-  padding: 0 200px;
+  padding: 0 80px;
   z-index: 2000;
   display: grid;
   grid-template-columns: auto 1fr 1fr auto;
-  // grid-template-rows: minmax(1rem, 3rem);
-  // display: flex;
-  // justify-content: space-between;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 72px;
   width: 100%;
-  box-sizing: border-box;
+  // box-sizing: border-box;
   background-color: #141414;
   &__content {
     display: flex;

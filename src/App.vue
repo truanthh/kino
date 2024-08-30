@@ -38,11 +38,9 @@ if (!authStore.userInfo.email) {
 
 #app {
   height: 100%;
-  // width: 100%;
 }
 
 .userinfo {
   margin: auto 20px;
-  // background-color: orange;
 }
 </style>

@@ -47,6 +47,7 @@ const props = defineProps({
 
 .enabled {
   display: flex;
+  z-index: 2000;
   flex-direction: column;
   align-items: center;
   justify-content: center;

@@ -31,8 +31,16 @@ const props = defineProps({
   },
 });
 
-const clickAvatar = () => {
-  isShowedAvatarDropdown.value = !isShowedAvatarDropdown.value;
+// const clickAvatar = () => {
+//   isShowedAvatarDropdown.value = !isShowedAvatarDropdown.value;
+// };
+
+const showDropdown = () => {
+  isShowedAvatarDropdown.value = true;
+};
+
+const hideDropdown = () => {
+  isShowedAvatarDropdown.value = false;
 };
 </script>
 
@@ -41,6 +49,8 @@ const clickAvatar = () => {
     :enabled="isShowedAvatarDropdown"
     :logout
     :email="userInfo.userProfileData.email"
+    @mouseover="showDropdown"
+    @mouseleave="hideDropdown"
   />
   <div class="navbar">
     <router-link to="/home" class="navbar__content">
@@ -50,7 +60,11 @@ const clickAvatar = () => {
 
     <SearchInput />
 
-    <div class="navbar__content">
+    <div
+      class="navbar__content"
+      @mouseover="showDropdown"
+      @mouseleave="hideDropdown"
+    >
       <router-link to="/signin" v-if="!userInfo.token" class="navbar__content">
         <b>Войти</b>
       </router-link>
@@ -59,11 +73,7 @@ const clickAvatar = () => {
         class="iconbookmark"
         :style="{ fontSize: '24px' }"
       />
-      <img
-        :src="userInfo.userProfileData.photoUrl"
-        class="avatar"
-        @click="clickAvatar"
-      />
+      <img :src="userInfo.userProfileData.photoUrl" class="avatar" />
       <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
         >Регистрация</router-link
       >

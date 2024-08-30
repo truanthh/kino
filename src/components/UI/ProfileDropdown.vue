@@ -35,14 +35,14 @@ const props = defineProps({
 .wrapper {
   display: none;
   position: absolute;
-  margin-top: calc(72px + 2px);
-  margin-right: 2px;
+  /* margin-top: calc(72px + 2px); */
+  /* margin-right: 2px; */
   height: 600px;
   width: 400px;
   background-color: #121212;
   border-radius: 10px;
   top: 0;
-  right: 0;
+  right: 20px;
 }
 
 .enabled {

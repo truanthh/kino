@@ -125,6 +125,7 @@ function toggleEditFilm() {
     </div>
     <div class="film_info">
       <div class="film_info_title">{{ film.title }}</div>
+      <div class="film_info_minititle1">О фильме</div>
       <div class="film_info_about" v-if="!editFilm">
         <div>Год производства</div>
         <div>
@@ -178,15 +179,12 @@ function toggleEditFilm() {
 <style lang="scss" scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: 0.4fr 1fr;
-  width: 1000px;
-  height: 2000px;
-  background-color: #e6f2ff;
-  border-radius: 4px;
-  margin: auto;
+  grid-template-columns: 0.35fr 1fr;
+  width: 62%;
+  margin: 120px auto;
+  min-height: 2000px;
   position: relative;
-  padding: 1.2rem;
-  border: solid 1px lightgray;
+  // border: solid 2px gray;
   &_editbtn {
     position: absolute;
     max-width: 200px;
@@ -197,17 +195,24 @@ function toggleEditFilm() {
 .film_info {
   display: flex;
   flex-direction: column;
-  padding: 1.2rem 4rem;
+  padding: 0rem 3.2rem;
   &_title {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: bold;
+    color: black;
+  }
+  &_minititle1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+    margin-top: 6rem;
   }
   &_about {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.3fr auto;
     row-gap: 1rem;
-    margin-top: 2rem;
-    font-size: 1.3rem;
+    margin-top: 1.2rem;
+    font-size: 0.8rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   &_edit {
@@ -220,8 +225,8 @@ function toggleEditFilm() {
   gap: 40px;
   &_poster {
     width: 100%;
-    height: 400px;
-    border-radius: 4px;
+    height: 453px;
+    // border-radius: 4px;
   }
   &_edit {
     display: inherit;

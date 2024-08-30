@@ -28,24 +28,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
-body {
-  min-height: 100%;
-  margin-top: 40px;
+html {
+  overflow-y: scroll;
   margin: 0;
-  box-sizing: border-box;
-  overflow-y: auto;
+  padding: 0;
+}
+
+body {
+  margin: 72px 0px 0px 0px;
 }
 
 main {
-  // height: calc(100% - 72px);
-  margin-top: 72px;
+  padding: 0;
 }
 
 * {
   box-sizing: border-box;
-  /* margin: 0; */
-  /* padding: 0; */
 }
 
 @media (prefers-color-scheme: light) {

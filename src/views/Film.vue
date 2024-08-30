@@ -180,10 +180,10 @@ function toggleEditFilm() {
   display: grid;
   grid-template-columns: 0.4fr 1fr;
   width: 1000px;
-  height: 700px;
+  height: 2000px;
   background-color: #e6f2ff;
   border-radius: 4px;
-  margin: 40px auto;
+  margin: auto;
   position: relative;
   padding: 1.2rem;
   border: solid 1px lightgray;

@@ -31,6 +31,8 @@ async function getFilmById(id) {
 }
 
 onMounted(async () => {
+  // window.scroll(0, 0);
+
   await getFilmById(route.params.id);
 });
 
@@ -197,9 +199,10 @@ function toggleEditFilm() {
   flex-direction: column;
   padding: 0rem 3.2rem;
   &_title {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: black;
+    font-family: Tahoma;
   }
   &_minititle1 {
     font-size: 1.5rem;

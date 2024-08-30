@@ -42,6 +42,19 @@ const router = createRouter({
       component: UserProfile,
     },
   ],
+  // scrollBehavior() {
+  //   return new Promise((resolve) => {
+  //     resolve({ left: 0, top: 0 });
+  //   });
+  // },
+  scrollBehavior() {
+    return { left: 0, top: 0 };
+  },
 });
+
+// router.beforeEach((to, from, next) => {
+//   console.log(`Navigating from ${from.name} to ${to.name}`);
+//   next();
+// });
 
 export default router;

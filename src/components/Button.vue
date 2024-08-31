@@ -4,7 +4,7 @@ import { Icon } from "@iconify/vue";
 const props = defineProps({
   label: {
     type: String,
-    default: "button",
+    default: "",
   },
   labelColor: {
     type: String,
@@ -44,12 +44,20 @@ const props = defineProps({
     ]"
     :disabled="disabled"
   >
-    <span v-if="icon">
-      <Icon :icon="icon" :style="{ fontSize: '20px' }" />
-    </span>
-    <span v-else :style="[{ color: labelColor }]">
-      {{ label }}
-    </span>
+    <div class="content">
+      <span v-if="icon" class="spanIcon">
+        <Icon
+          :icon="icon"
+          :style="{
+            fontSize: '20px',
+            color: 'black',
+          }"
+        />
+      </span>
+      <span v-if="label" :style="[{ color: labelColor }]">
+        {{ label }}
+      </span>
+    </div>
   </button>
 </template>
 
@@ -64,7 +72,7 @@ const props = defineProps({
   border: none;
   cursor: pointer;
   font-size: 15px;
-  transition: 0.2s;
+  transition: 0.1s;
   &_primary {
     background: var(--primary);
     border: 1px solid var(--primary);
@@ -126,7 +134,7 @@ const props = defineProps({
     cursor: default;
   }
   &_rounded {
-    border-radius: 20px;
+    border-radius: 25px;
   }
   &_outlined {
     background: transparent;
@@ -139,11 +147,20 @@ const props = defineProps({
     padding: 0;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
   }
   &_large {
     height: 48px;
     padding: 0 30px;
   }
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spanIcon {
+  display: block;
 }
 </style>

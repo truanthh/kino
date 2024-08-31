@@ -127,6 +127,22 @@ function toggleEditFilm() {
     </div>
     <div class="film_info">
       <div class="film_info_title">{{ film.title }}</div>
+      <div class="film_info_titleOrig">The Art of Racing in the Rain 12+</div>
+      <div class="btnsContainer">
+        <Button
+          rounded
+          color="lightgray"
+          icon="tdesign:bookmark-add"
+          label="Буду смотреть"
+          class="btnsContainer_bookmark"
+        />
+        <Button
+          rounded
+          color="lightgray"
+          icon="tabler:dots"
+          class="btnsContainer_bookmarkMore"
+        />
+      </div>
       <div class="film_info_titleAbout">О фильме</div>
       <div class="film_info_about" v-if="!editFilm">
         <div>Год производства</div>
@@ -243,11 +259,15 @@ function toggleEditFilm() {
     color: black;
     font-family: Tahoma;
   }
+  &_titleOrig {
+    font-size: 18px;
+    color: #666666;
+  }
   &_titleAbout {
     font-size: 1.5rem;
     font-weight: bold;
     color: black;
-    margin-top: 6rem;
+    margin-top: 3rem;
   }
   &_about {
     display: grid;
@@ -341,6 +361,31 @@ function toggleEditFilm() {
     width: 200px;
     font-weight: bold;
     font-size: 13px;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.btnsContainer {
+  margin-top: 40px;
+  display: flex;
+  gap: 8px;
+  &_bookmark {
+    font-weight: bold;
+    height: 50px;
+    width: 200px;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  &_bookmarkMore {
+    font-weight: bold;
+    height: 50px;
+    width: 50px;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 }
 

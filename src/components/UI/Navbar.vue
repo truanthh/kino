@@ -72,8 +72,13 @@ const hideDropdown = () => {
         icon="ic:sharp-bookmark"
         class="iconbookmark"
         :style="{ fontSize: '24px' }"
+        v-if="userInfo.token"
       />
-      <img :src="userInfo.userProfileData.photoUrl" class="avatar" />
+      <img
+        v-if="userInfo.token"
+        :src="userInfo.userProfileData.photoUrl"
+        class="avatar"
+      />
       <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
         >Регистрация</router-link
       >

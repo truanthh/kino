@@ -100,14 +100,14 @@ function toggleEditFilm() {
 
 <template>
   <div class="wrapper">
-    <Button
-      class="wrapper_editbtn"
-      @click="toggleEditFilm"
-      icon="icon-park-outline:edit"
-      rounded
-      outlined
-      color="gray"
-    />
+    <!-- <Button -->
+    <!--   class="wrapper_editbtn" -->
+    <!--   @click="toggleEditFilm" -->
+    <!--   icon="icon-park-outline:edit" -->
+    <!--   rounded -->
+    <!--   outlined -->
+    <!--   color="gray" -->
+    <!-- /> -->
     <div class="film_media">
       <img
         :src="film.poster_url"
@@ -127,7 +127,7 @@ function toggleEditFilm() {
     </div>
     <div class="film_info">
       <div class="film_info_title">{{ film.title }}</div>
-      <div class="film_info_minititle1">О фильме</div>
+      <div class="film_info_titleAbout">О фильме</div>
       <div class="film_info_about" v-if="!editFilm">
         <div>Год производства</div>
         <div>
@@ -175,14 +175,52 @@ function toggleEditFilm() {
         <Button label="Обновить данные" class="btn_edit" />
       </form>
     </div>
+    <div class="film_misc">
+      <div class="film_misc_rating">
+        <div class="film_misc_rating_valueBlock">8.3</div>
+        <div class="film_misc_rating_countBlock">158 195 оценок</div>
+      </div>
+      <Button
+        color="lightgray"
+        label="Оценить фильм"
+        name="rate"
+        rounded
+        class="btn_rate"
+      />
+      <div class="film_misc_reviewCount">19 рецензий</div>
+      <div class="film_misc_actors">
+        <div class="film_misc_actorsTitle">В главных ролях</div>
+        <span class="film_misc_actors_actor">Кевин Костнер</span>
+        <span class="film_misc_actors_actor">Майло Вентимилья</span>
+        <span class="film_misc_actors_actor">Аманда Сайфред</span>
+        <span class="film_misc_actors_actor">Кэти Бейкер</span>
+        <span class="film_misc_actors_actor">Мартин Донован</span>
+        <span class="film_misc_actors_actor">Гэри Коул</span>
+        <span class="film_misc_actors_actor">МакКинли Белчер III</span>
+        <span class="film_misc_actors_actor">Джеки Миннс</span>
+        <span class="film_misc_actors_actor">Маркус Хондро</span>
+        <span class="film_misc_actors_actor">Йен Лэйк</span>
+        <span class="film_misc_actors_actorsCount">57 актеров</span>
+      </div>
+      <div class="film_misc_voiceActors">
+        <div class="film_misc_voiceActorsTitle">Роли дублировали</div>
+        <span class="film_misc_voiceActors_actor">Владимир Антоник</span>
+        <span class="film_misc_voiceActors_actor">Антон Эльдаров</span>
+        <span class="film_misc_voiceActors_actor">Евгения Ваган</span>
+        <span class="film_misc_voiceActors_actor">Елена Шульман</span>
+        <span class="film_misc_voiceActors_actor">Сергей Чихачёв</span>
+        <span class="film_misc_voiceActors_actorsCount">10 актеров</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: 0.35fr 1fr;
-  width: 62%;
+  grid-template-columns: 0.27fr 0.6fr 0.2fr;
+  width: 100%;
+  max-width: 1200px;
   margin: 120px auto;
   min-height: 2000px;
   position: relative;
@@ -194,6 +232,7 @@ function toggleEditFilm() {
     right: 6px;
   }
 }
+
 .film_info {
   display: flex;
   flex-direction: column;
@@ -204,7 +243,7 @@ function toggleEditFilm() {
     color: black;
     font-family: Tahoma;
   }
-  &_minititle1 {
+  &_titleAbout {
     font-size: 1.5rem;
     font-weight: bold;
     color: black;
@@ -212,7 +251,7 @@ function toggleEditFilm() {
   }
   &_about {
     display: grid;
-    grid-template-columns: 0.3fr auto;
+    grid-template-columns: 0.5fr 1fr;
     row-gap: 1rem;
     margin-top: 1.2rem;
     font-size: 0.8rem;
@@ -222,6 +261,60 @@ function toggleEditFilm() {
     margin-top: 2rem;
   }
 }
+
+.film_misc {
+  &_rating {
+    display: flex;
+    flex-direction: column;
+    &_valueBlock {
+      font-size: 32px;
+      font-weight: bold;
+      color: #3bb33b;
+    }
+    &_countBlock {
+      font-size: 14px;
+    }
+  }
+  &_reviewCount {
+    font-size: 13px;
+  }
+  &_actors {
+    margin-top: 100px;
+    &Title {
+      @extend .actorsTitle;
+    }
+    &_actor {
+      margin-top: 2px;
+      display: block;
+      font-size: 14px;
+    }
+    &_actorsCount {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ff5500;
+    }
+  }
+
+  &_voiceActors {
+    margin-top: 50px;
+    &Title {
+      @extend .actorsTitle;
+    }
+    &_actor {
+      margin-top: 2px;
+      display: block;
+      font-size: 14px;
+    }
+    &_actorsCount {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ff5500;
+    }
+  }
+}
+
 .film_media {
   display: flex;
   flex-direction: column;
@@ -237,7 +330,37 @@ function toggleEditFilm() {
     gap: inherit;
   }
 }
-.btn_edit {
-  max-width: 200px;
+
+.btn {
+  &_edit {
+    max-width: 200px;
+  }
+  &_rate {
+    margin-top: 10px;
+    height: 33px;
+    width: 200px;
+    font-weight: bold;
+    font-size: 13px;
+  }
+}
+
+.actorsTitle {
+  font-weight: bold;
+  font-size: 16px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    // display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: contain;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='48' height='48' fill='%23000' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M29.519 23.968 13.339 8.466 16.66 5l18 17.246 1.821 1.745-1.832 1.732-18 17.02-3.298-3.487L29.52 23.968Z'/%3E%3C/svg%3E");
+  }
 }
 </style>

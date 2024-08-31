@@ -6,6 +6,10 @@ const props = defineProps({
     type: String,
     default: "button",
   },
+  labelColor: {
+    type: String,
+    default: "black",
+  },
   color: {
     type: String,
     default: "primary",
@@ -43,7 +47,7 @@ const props = defineProps({
     <span v-if="icon">
       <Icon :icon="icon" :style="{ fontSize: '20px' }" />
     </span>
-    <span v-else>
+    <span v-else :style="[{ color: labelColor }]">
       {{ label }}
     </span>
   </button>
@@ -110,12 +114,19 @@ const props = defineProps({
       background: var(--gray-hover);
     }
   }
+  &_lightgray {
+    background: var(--lightgray);
+    // border: 1px solid var(--gray);
+    &:enabled:hover {
+      background: var(--lightgray-hover);
+    }
+  }
   &:disabled {
     opacity: 0.6;
     cursor: default;
   }
   &_rounded {
-    border-radius: 15px;
+    border-radius: 20px;
   }
   &_outlined {
     background: transparent;

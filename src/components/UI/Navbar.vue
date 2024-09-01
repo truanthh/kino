@@ -56,7 +56,7 @@ const hideDropdown = () => {
     <router-link to="/home" class="navbar__content">
       <b>Главная</b>
     </router-link>
-    <router-link to="/movies" class="navbar__content"> Top250 </router-link>
+    <router-link to="/films" class="navbar__content"> Top250 </router-link>
 
     <SearchInput />
 

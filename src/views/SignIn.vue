@@ -22,7 +22,7 @@ async function signIn() {
   await authStore.auth(payload, "signIn");
   // router.go(0);
   // window.location.reload();
-  router.push("/movies");
+  router.push("/films");
 }
 </script>
 

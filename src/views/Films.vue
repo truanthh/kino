@@ -9,7 +9,7 @@ import TableColumn from "@/components/UI/Table/TableColumn.vue";
 
 const authStore = useAuthStore();
 
-const movies = ref([]);
+const films = ref([]);
 
 const headers = ["ID", "prod_year", "title", "country", "", "poster_url"];
 const columnsTemplate = "50px 80px 340px 200px 50px 100px";
@@ -25,12 +25,10 @@ const columnsTemplate = "50px 80px 340px 200px 50px 100px";
 //   }
 // }
 
-async function getAllMovies() {
+async function getAllFilms() {
   try {
-    let response = await axiosApiInstance.get(
-      `http://192.168.1.119:3000/movies`,
-    );
-    movies.value = response.data;
+    let response = await axiosApiInstance.get(`http://localhost:3000/films`);
+    films.value = response.data;
   } catch (error) {
   } finally {
   }
@@ -41,33 +39,33 @@ function setSort() {
 }
 
 onMounted(async () => {
-  await getAllMovies();
+  await getAllFilms();
 });
 </script>
 
 <template>
   <base-table :headers :columnsTemplate @headerClick="setSort">
     <table-row
-      v-for="movie in movies"
-      :key="movie.id"
+      v-for="film in films"
+      :key="film.id"
       :columnsTemplate
-      @click="$router.push({ name: 'film', params: { id: movie.id } })"
+      @click="$router.push({ name: 'film', params: { id: film.id } })"
       class="table_row"
     >
       <table-column>
-        {{ movie.id }}
+        {{ film.id }}
       </table-column>
       <table-column>
-        {{ movie.prod_year }}
+        {{ film.prod_year }}
       </table-column>
       <table-column>
-        {{ movie.title }}
+        {{ film.title }}
       </table-column>
       <table-column>
-        {{ movie.country }}
+        {{ film.country }}
       </table-column>
       <table-column> </table-column>
-      <table-column image :srcImage="movie.poster_url" />
+      <table-column image :srcImage="film.poster_url" />
     </table-row>
   </base-table>
 </template>

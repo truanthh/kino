@@ -1,14 +1,21 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axiosApiInstance from "@/api";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 
+const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
+
 const route = useRoute();
 
 const film = ref({});
+
+// const actors = computed(() => {
+//   return film.value.actor_names || [];
+// });
+
 const editFilm = ref(false);
 
 const titleField = ref("");
@@ -20,10 +27,12 @@ async function getFilmById(id) {
   // console.log(`trying to get film ${id}`);
   try {
     let response = await axiosApiInstance.get(
-      `http://192.168.1.119:3000/movies/${id}`,
+      `http://${DB_SERVER_ADDRESS}/film/${id}`,
     );
     // console.log(response.data);
     film.value = response.data;
+    // idk if that should be here, but i need only 10 actor names on this page
+    film.value.actors = film.value.actors.slice(0, 10);
   } catch (error) {
     console.log(error);
   } finally {
@@ -45,7 +54,7 @@ const submitForm = async () => {
     director: directorField.value,
   };
 
-  await updateMovieInfo(route.params.id, formData);
+  await updateFilmInfo(route.params.id, formData);
 };
 
 // const imagePath = ref("");
@@ -66,7 +75,7 @@ async function updatePoster(id) {
     formData.append("poster", file.value);
     try {
       let response = await axiosApiInstance.post(
-        `http://192.168.1.119:3000/movies/${id}/poster`,
+        `http://${DB_SERVER_ADDRESS}/films/${id}/poster`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );
@@ -81,10 +90,10 @@ async function updatePoster(id) {
   }
 }
 
-async function updateMovieInfo(id, formData) {
+async function updateFilmInfo(id, formData) {
   try {
     let response = await axiosApiInstance.put(
-      `http://192.168.1.119:3000/movies/${id}`,
+      `http://${DB_SERVER_ADDRESS}/films/${id}`,
       formData,
     );
     console.log(response);
@@ -115,6 +124,11 @@ function toggleEditFilm() {
         v-if="film.poster_url"
       />
       <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
+      <div class="film_media_trailer">
+        <ImageSkeleton class="film_media_trailerSkeleton" />
+        <div class="film_media_trailerDesc">Трейлер №2 (дублированный)</div>
+        <div class="film_media_trailerDate">17 июня 2019</div>
+      </div>
       <div class="film_media_edit" v-if="editFilm">
         <div v-if="imageUrl">{{ imageUrl }}</div>
         <input type="file" @change="onFileChange" accept="image/*" />
@@ -127,7 +141,7 @@ function toggleEditFilm() {
     </div>
     <div class="film_info">
       <div class="film_info_title">{{ film.title }}</div>
-      <div class="film_info_titleOrig">The Art of Racing in the Rain 12+</div>
+      <div class="film_info_titleOrig">{{ film.title_orig }}</div>
       <div class="btnsContainer">
         <Button
           rounded
@@ -155,7 +169,35 @@ function toggleEditFilm() {
         </div>
         <div>Режиссер</div>
         <div>
-          {{ film.director }}
+          {{ film.director_name }}
+        </div>
+        <div>Композитор</div>
+        <div>
+          {{ film.composer }}
+        </div>
+        <div>Слоган</div>
+        <div>
+          {{ film.slogan }}
+        </div>
+        <div>Жанр</div>
+        <div>
+          {{ film.genre }}
+        </div>
+        <div>Бюджет</div>
+        <div>
+          {{ film.budget }}
+        </div>
+        <div>Возраст</div>
+        <div>
+          {{ film.age_restriction }}
+        </div>
+        <div>Премьера в России</div>
+        <div>
+          {{ film.premiere_russia }}
+        </div>
+        <div>Премьера в мире</div>
+        <div>
+          {{ film.premiere_world }}
         </div>
       </div>
       <form @submit.prevent="submitForm" v-if="editFilm" class="film_info_edit">
@@ -206,16 +248,12 @@ function toggleEditFilm() {
       <div class="film_misc_reviewCount">19 рецензий</div>
       <div class="film_misc_actors">
         <div class="film_misc_actorsTitle">В главных ролях</div>
-        <span class="film_misc_actors_actor">Кевин Костнер</span>
-        <span class="film_misc_actors_actor">Майло Вентимилья</span>
-        <span class="film_misc_actors_actor">Аманда Сайфред</span>
-        <span class="film_misc_actors_actor">Кэти Бейкер</span>
-        <span class="film_misc_actors_actor">Мартин Донован</span>
-        <span class="film_misc_actors_actor">Гэри Коул</span>
-        <span class="film_misc_actors_actor">МакКинли Белчер III</span>
-        <span class="film_misc_actors_actor">Джеки Миннс</span>
-        <span class="film_misc_actors_actor">Маркус Хондро</span>
-        <span class="film_misc_actors_actor">Йен Лэйк</span>
+        <span
+          class="film_misc_actors_actor"
+          v-for="actor of film.actors"
+          @click="$router.push({ name: 'name', params: { id: actor.id } })"
+          >{{ actor.name }}</span
+        >
         <span class="film_misc_actors_actorsCount">57 актеров</span>
       </div>
       <div class="film_misc_voiceActors">
@@ -260,6 +298,7 @@ function toggleEditFilm() {
     font-family: Tahoma;
   }
   &_titleOrig {
+    margin-top: 10px;
     font-size: 18px;
     color: #666666;
   }
@@ -307,6 +346,10 @@ function toggleEditFilm() {
       margin-top: 2px;
       display: block;
       font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        color: #ff5500;
+      }
     }
     &_actorsCount {
       display: block;
@@ -348,6 +391,23 @@ function toggleEditFilm() {
     display: inherit;
     flex-direction: inherit;
     gap: inherit;
+  }
+  &_trailer {
+    display: flex;
+    flex-direction: column;
+    &Skeleton {
+      width: 100%;
+      height: 170px;
+    }
+    &Desc {
+      font-size: 16px;
+      // font-weight: bold;
+      color: black;
+    }
+    &Date {
+      font-size: 12px;
+      color: gray;
+    }
   }
 }
 

@@ -19,7 +19,7 @@ async function signUp() {
 
   await authStore.auth(payload, "signUp");
 
-  router.push("/movies");
+  router.push("/films");
 }
 </script>
 

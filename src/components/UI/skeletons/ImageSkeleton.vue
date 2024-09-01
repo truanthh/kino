@@ -11,6 +11,8 @@ import { Icon as IconifyIcon } from "@iconify/vue";
 
 <style lang="scss" scoped>
 .image_skeleton {
+  width: 200px;
+  height: 200px;
   position: relative;
   border: solid 2px #cccccc;
   border-radius: 6px;
@@ -21,7 +23,7 @@ import { Icon as IconifyIcon } from "@iconify/vue";
     left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
-    font-size: 200px;
+    font-size: 150px;
     color: #cccccc;
   }
 }

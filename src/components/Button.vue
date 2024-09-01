@@ -51,6 +51,9 @@ const props = defineProps({
           :style="{
             fontSize: '20px',
             color: 'black',
+            // stroke: 'black',
+            // strokeWidth: '1.5',
+            // fill: 'none',
           }"
         />
       </span>

@@ -140,7 +140,7 @@ function toggleEditFilm() {
       </div>
     </div>
     <div class="film_info">
-      <div class="film_info_title">{{ film.title }}</div>
+      <div class="film_info_title">{{ film.title }} ({{ film.prod_year }})</div>
       <div class="film_info_titleOrig">{{ film.title_orig }}</div>
       <div class="btnsContainer">
         <Button
@@ -176,9 +176,7 @@ function toggleEditFilm() {
           {{ film.composer }}
         </div>
         <div>Слоган</div>
-        <div>
-          {{ film.slogan }}
-        </div>
+        <div class="film_info_about_slogan">«{{ film.slogan }}»</div>
         <div>Жанр</div>
         <div>
           {{ film.genre }}
@@ -315,6 +313,9 @@ function toggleEditFilm() {
     margin-top: 1.2rem;
     font-size: 0.8rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    &_slogan {
+      color: gray;
+    }
   }
   &_edit {
     margin-top: 2rem;

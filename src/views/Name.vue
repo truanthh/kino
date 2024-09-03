@@ -64,6 +64,12 @@ onMounted(async () => {
     <div class="name_misc">
       <div class="name_misc_films">
         <div class="name_misc_filmsTitle">Лучшие Фильмы</div>
+        <span
+          class="name_misc_films_item"
+          v-for="film of name.films"
+          @click="$router.push({ name: 'film', params: { id: film.id } })"
+          >{{ film.title }}</span
+        >
       </div>
       <div class="name_misc_series">
         <div class="name_misc_seriesTitle">Лучшие сериалы</div>
@@ -131,6 +137,10 @@ onMounted(async () => {
       margin-top: 2px;
       display: block;
       font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        color: #ff5500;
+      }
     }
   }
 
@@ -143,6 +153,10 @@ onMounted(async () => {
       margin-top: 2px;
       display: block;
       font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        color: #ff5500;
+      }
     }
   }
 }
@@ -155,6 +169,7 @@ onMounted(async () => {
     width: 100%;
     height: 453px;
     // border-radius: 4px;
+    object-fit: cover;
   }
 }
 

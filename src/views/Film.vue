@@ -141,7 +141,9 @@ function toggleEditFilm() {
     </div>
     <div class="film_info">
       <div class="film_info_title">{{ film.title }} ({{ film.prod_year }})</div>
-      <div class="film_info_titleOrig">{{ film.title_orig }}</div>
+      <div class="film_info_titleOrig">
+        {{ film.title_orig }} {{ film.age_restriction }}
+      </div>
       <div class="btnsContainer">
         <Button
           rounded
@@ -167,6 +169,12 @@ function toggleEditFilm() {
         <div>
           {{ film.country }}
         </div>
+        <div>Жанр</div>
+        <div>
+          {{ film.genre }}
+        </div>
+        <div>Слоган</div>
+        <div class="film_info_about_slogan">«{{ film.slogan }}»</div>
         <div>Режиссер</div>
         <div>
           {{ film.director_name }}
@@ -174,12 +182,6 @@ function toggleEditFilm() {
         <div>Композитор</div>
         <div>
           {{ film.composer }}
-        </div>
-        <div>Слоган</div>
-        <div class="film_info_about_slogan">«{{ film.slogan }}»</div>
-        <div>Жанр</div>
-        <div>
-          {{ film.genre }}
         </div>
         <div>Бюджет</div>
         <div>
@@ -353,10 +355,7 @@ function toggleEditFilm() {
       }
     }
     &_actorsCount {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #ff5500;
+      @extend .actorsCount;
     }
   }
 
@@ -371,10 +370,7 @@ function toggleEditFilm() {
       font-size: 14px;
     }
     &_actorsCount {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #ff5500;
+      @extend .actorsCount;
     }
   }
 }
@@ -456,6 +452,7 @@ function toggleEditFilm() {
   position: relative;
   display: inline-block;
   margin-bottom: 10px;
+  cursor: pointer;
   &::after {
     content: "";
     position: absolute;
@@ -468,5 +465,13 @@ function toggleEditFilm() {
     background-size: contain;
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='48' height='48' fill='%23000' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M29.519 23.968 13.339 8.466 16.66 5l18 17.246 1.821 1.745-1.832 1.732-18 17.02-3.298-3.487L29.52 23.968Z'/%3E%3C/svg%3E");
   }
+}
+
+.actorsCount {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ff5500;
+  cursor: pointer;
 }
 </style>

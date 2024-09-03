@@ -57,6 +57,9 @@ const hideDropdown = () => {
       <b>Главная</b>
     </router-link>
     <router-link to="/films" class="navbar__content"> Top250 </router-link>
+    <router-link to="/videoplayer" class="navbar__content">
+      VideoPlayer
+    </router-link>
 
     <SearchInput />
 
@@ -92,7 +95,7 @@ const hideDropdown = () => {
   padding: 0 80px;
   z-index: 2000;
   display: grid;
-  grid-template-columns: auto 1fr 1fr auto;
+  grid-template-columns: auto auto auto 1fr auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -100,6 +103,7 @@ const hideDropdown = () => {
   width: 100%;
   // box-sizing: border-box;
   background-color: #141414;
+  gap: 80px;
   &__content {
     display: flex;
     justify-content: center;

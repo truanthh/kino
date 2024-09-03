@@ -63,30 +63,26 @@ const hideDropdown = () => {
 
     <SearchInput />
 
-    <div
-      class="navbar__content"
+    <router-link to="/signin" v-if="!userInfo.token" class="navbar__content">
+      <b>Войти</b>
+    </router-link>
+    <IconifyIcon
+      icon="ic:sharp-bookmark"
+      class="iconbookmark"
+      :style="{ fontSize: '24px' }"
+      v-if="userInfo.token"
+    />
+    <img
+      v-if="userInfo.token"
+      :src="userInfo.userProfileData.photoUrl"
+      class="avatar"
       @mouseover="showDropdown"
       @mouseleave="hideDropdown"
+    />
+    <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
+      >Регистрация</router-link
     >
-      <router-link to="/signin" v-if="!userInfo.token" class="navbar__content">
-        <b>Войти</b>
-      </router-link>
-      <IconifyIcon
-        icon="ic:sharp-bookmark"
-        class="iconbookmark"
-        :style="{ fontSize: '24px' }"
-        v-if="userInfo.token"
-      />
-      <img
-        v-if="userInfo.token"
-        :src="userInfo.userProfileData.photoUrl"
-        class="avatar"
-      />
-      <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
-        >Регистрация</router-link
-      >
-      <!-- <span @click="debug" class="debug"> debug </span> -->
-    </div>
+    <!-- <span @click="debug" class="debug"> debug </span> -->
   </div>
 </template>
 
@@ -95,7 +91,7 @@ const hideDropdown = () => {
   padding: 0 80px;
   z-index: 2000;
   display: grid;
-  grid-template-columns: auto auto auto 1fr auto;
+  grid-template-columns: auto auto auto 1fr auto auto;
   position: fixed;
   top: 0;
   left: 0;
@@ -110,6 +106,7 @@ const hideDropdown = () => {
     align-items: center;
     overflow: auto;
     color: #a1a1a1;
+    // background-color: orange;
   }
 }
 .debug {

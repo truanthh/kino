@@ -5,6 +5,11 @@ import axiosApiInstance from "@/api";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
+import VideoPlayer from "@/components/VideoPlayer.vue";
+import { Icon as IconifyIcon } from "@iconify/vue";
+import VideoPreview from "@/components/VideoPreview.vue";
+
+const isOpenVideoPlayer = ref(false);
 
 const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 
@@ -105,9 +110,22 @@ async function updateFilmInfo(id, formData) {
 function toggleEditFilm() {
   editFilm.value = !editFilm.value;
 }
+
+function openVideoPlayer() {
+  isOpenVideoPlayer.value = true;
+}
+
+// function closeVideoPlayer(){
+//   isOpenVideoPlayer.value = false;
+// }
 </script>
 
 <template>
+  <VideoPlayer
+    :openVideoPlayer="isOpenVideoPlayer"
+    @closePlayer="isOpenVideoPlayer = false"
+  />
+
   <div class="wrapper">
     <!-- <Button -->
     <!--   class="wrapper_editbtn" -->
@@ -124,11 +142,22 @@ function toggleEditFilm() {
         v-if="film.poster_url"
       />
       <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
-      <div class="film_media_trailer">
-        <ImageSkeleton class="film_media_trailerSkeleton" />
-        <div class="film_media_trailerDesc">Трейлер №2 (дублированный)</div>
-        <div class="film_media_trailerDate">17 июня 2019</div>
-      </div>
+
+      <VideoPreview
+        :openVideoPlayer
+        thumbnailSrc="@/assets/bla.jpg"
+        desc="Трейлер №2 (дублированный)"
+        date="17 июня 2019"
+      />
+
+      <!-- <div class="film_media_trailer" @click="openVideoPlayer"> -->
+      <!-- <ImageSkeleton class="film_media_trailerSkeleton" /> -->
+      <!-- <div class="film_media_trailerPlayButton"></div> -->
+      <!-- <IconifyIcon class="film_media_trailerPlayIcon" icon="ion:play-sharp" /> -->
+      <!-- <img class="film_media_trailerThumbnail" src="@/assets/bla.jpg" /> -->
+      <!-- <div class="film_media_trailerDesc">Трейлер №2 (дублированный)</div> -->
+      <!-- <div class="film_media_trailerDate">17 июня 2019</div> -->
+      <!-- </div> -->
       <div class="film_media_edit" v-if="editFilm">
         <div v-if="imageUrl">{{ imageUrl }}</div>
         <input type="file" @change="onFileChange" accept="image/*" />
@@ -388,23 +417,6 @@ function toggleEditFilm() {
     display: inherit;
     flex-direction: inherit;
     gap: inherit;
-  }
-  &_trailer {
-    display: flex;
-    flex-direction: column;
-    &Skeleton {
-      width: 100%;
-      height: 170px;
-    }
-    &Desc {
-      font-size: 16px;
-      // font-weight: bold;
-      color: black;
-    }
-    &Date {
-      font-size: 12px;
-      color: gray;
-    }
   }
 }
 

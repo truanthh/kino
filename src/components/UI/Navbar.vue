@@ -49,40 +49,55 @@ const hideDropdown = () => {
     :enabled="isShowedAvatarDropdown"
     :logout
     :email="userInfo.userProfileData.email"
+    :photoUrl="userInfo.userProfileData.photoUrl"
     @mouseover="showDropdown"
     @mouseleave="hideDropdown"
   />
   <div class="navbar">
+    <!-- 1 -->
     <router-link to="/home" class="navbar__content">
       <b>Главная</b>
     </router-link>
-    <router-link to="/films" class="navbar__content"> Top250 </router-link>
-    <router-link to="/videoplayer" class="navbar__content">
-      VideoPlayer
-    </router-link>
 
+    <!-- 2 -->
+    <router-link to="/films" class="navbar__content"> Top250 </router-link>
+
+    <!-- 3 -->
+    <!-- <router-link to="/videoplayer" class="navbar__content"> -->
+    <!--   VideoPlayer -->
+    <!-- </router-link> -->
+
+    <!-- 4 -->
     <SearchInput />
 
+    <!-- 5 -->
     <router-link to="/signin" v-if="!userInfo.token" class="navbar__content">
       <b>Войти</b>
     </router-link>
-    <IconifyIcon
-      icon="ic:sharp-bookmark"
-      class="iconbookmark"
-      :style="{ fontSize: '24px' }"
-      v-if="userInfo.token"
-    />
-    <img
-      v-if="userInfo.token"
-      :src="userInfo.userProfileData.photoUrl"
-      class="avatar"
-      @mouseover="showDropdown"
-      @mouseleave="hideDropdown"
-    />
+
+    <!-- 6 -->
     <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
       >Регистрация</router-link
     >
-    <!-- <span @click="debug" class="debug"> debug </span> -->
+
+    <!-- 7 -->
+    <div class="navbar__content" v-if="userInfo.token">
+      <IconifyIcon
+        icon="ic:sharp-bookmark"
+        class="iconbookmark"
+        :style="{ fontSize: '24px' }"
+      />
+    </div>
+
+    <!-- 8 -->
+    <div
+      class="navbar__content"
+      v-if="userInfo.token"
+      @mouseover="showDropdown"
+      @mouseleave="hideDropdown"
+    >
+      <img :src="userInfo.userProfileData.photoUrl" class="avatar" />
+    </div>
   </div>
 </template>
 
@@ -91,7 +106,7 @@ const hideDropdown = () => {
   padding: 0 80px;
   z-index: 2000;
   display: grid;
-  grid-template-columns: auto auto auto 1fr auto auto;
+  grid-template-columns: auto auto 1fr auto auto;
   position: fixed;
   top: 0;
   left: 0;

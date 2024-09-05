@@ -1,53 +1,93 @@
 <script setup>
+// vidstack
 import "vidstack/player/styles/default/theme.css";
 import "vidstack/player/styles/default/layouts/audio.css";
 import "vidstack/player/styles/default/layouts/video.css";
 import "vidstack/player";
 import "vidstack/player/layouts";
 import "vidstack/player/ui";
-import path from "path";
-
 import { MediaPlayerElement } from "vidstack/elements";
+
+//other
 import { onMounted, ref } from "vue";
+import { Icon as IconifyIcon } from "@iconify/vue";
+
+const emit = defineEmits(["closePlayer"]);
 
 const videoUrl = ref(new URL("@/assets/video.mp4", import.meta.url).href);
+
+const player = ref();
+
+const props = defineProps({
+  openVideoPlayer: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+function handleClick() {
+  player.value.paused = true;
+  emit("closePlayer");
+}
 </script>
 
 <template>
-  <div class="wrapper">
+  <div
+    :class="['modal-overlay', { 'modal-overlay_isopen': openVideoPlayer }]"
+    @click.self="handleClick"
+  >
+    <IconifyIcon
+      class="btn_close"
+      icon="material-symbols:close"
+      @click="handleClick"
+    />
     <media-player
       class="player"
-      title="Sprite Fight"
+      title="ken carson"
       :src="videoUrl"
       crossOrigin
       playsInline
+      ref="player"
     >
       <media-provider>
-        <media-poster
-          class="vds-poster"
-          src="https://files.vidstack.io/sprite-fight/poster.webp"
-          alt="Girl walks into campfire with gnomes surrounding her friend ready for their next meal!"
-        />
+        <media-poster class="vds-poster" />
       </media-provider>
       <media-audio-layout />
-      <media-video-layout
-        thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-      />
+      <media-video-layout />
     </media-player>
   </div>
 </template>
 
-<style scoped>
-.wrapper {
-  display: flex;
-  height: calc(100vh - 72px);
+<style lang="scss" scoped>
+.modal-overlay {
+  position: fixed;
+  display: none;
   justify-content: center;
   align-items: center;
-  /* background-color: orange; */
+  z-index: 2000;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  &_isopen {
+    display: flex;
+  }
+}
+
+.btn_close {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  color: gray;
+  cursor: pointer;
+  font-size: 34px;
+  &:hover {
+    color: white;
+  }
 }
 
 .player {
-  --brand-color: #f5f5f5;
+  --brand-color: orange;
   --focus-color: #4e9cf6;
 
   --audio-brand: var(--brand-color);
@@ -71,6 +111,10 @@ const videoUrl = ref(new URL("@/assets/video.mp4", import.meta.url).href);
 
 .player[data-view-type="video"] {
   aspect-ratio: 16 /9;
+}
+
+.play-button[data-paused] {
+  color: orange;
 }
 
 .src-buttons {

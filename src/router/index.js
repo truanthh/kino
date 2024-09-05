@@ -6,16 +6,10 @@ import UserProfile from "../views/UserProfile.vue";
 import Film from "../views/Film.vue";
 import Films from "../views/Films.vue";
 import Name from "../views/Name.vue";
-import VideoPlayer from "../components/VideoPlayer.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: "/videoplayer",
-      name: "videoplayer",
-      component: VideoPlayer,
-    },
     {
       path: "/home",
       alias: ["/"],

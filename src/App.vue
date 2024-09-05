@@ -39,8 +39,4 @@ if (!authStore.userInfo.email) {
 #app {
   height: 100%;
 }
-
-.userinfo {
-  margin: auto 20px;
-}
 </style>

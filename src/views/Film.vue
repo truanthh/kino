@@ -127,172 +127,172 @@ function openVideoPlayer() {
   />
 
   <div class="wrapper">
-    <!-- <Button -->
-    <!--   class="wrapper_editbtn" -->
-    <!--   @click="toggleEditFilm" -->
-    <!--   icon="icon-park-outline:edit" -->
-    <!--   rounded -->
-    <!--   outlined -->
-    <!--   color="gray" -->
-    <!-- /> -->
-    <div class="film_media">
-      <img
-        :src="film.poster_url"
-        class="film_media_poster"
-        v-if="film.poster_url"
-      />
-      <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
+    <div class="grid__main">
+      <!-- <Button -->
+      <!--   class="wrapper_editbtn" -->
+      <!--   @click="toggleEditFilm" -->
+      <!--   icon="icon-park-outline:edit" -->
+      <!--   rounded -->
+      <!--   outlined -->
+      <!--   color="gray" -->
+      <!-- /> -->
+      <div class="film_media">
+        <img
+          :src="film.poster_url"
+          class="film_media_poster"
+          v-if="film.poster_url"
+        />
+        <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
 
-      <VideoPreview
-        :openVideoPlayer
-        thumbnailSrc="@/assets/bla.jpg"
-        desc="Трейлер №2 (дублированный)"
-        date="17 июня 2019"
-      />
+        <VideoPreview
+          :openVideoPlayer
+          thumbnailSrc="@/assets/bla.jpg"
+          desc="Трейлер №2 (дублированный)"
+          date="17 июня 2019"
+        />
 
-      <!-- <div class="film_media_trailer" @click="openVideoPlayer"> -->
-      <!-- <ImageSkeleton class="film_media_trailerSkeleton" /> -->
-      <!-- <div class="film_media_trailerPlayButton"></div> -->
-      <!-- <IconifyIcon class="film_media_trailerPlayIcon" icon="ion:play-sharp" /> -->
-      <!-- <img class="film_media_trailerThumbnail" src="@/assets/bla.jpg" /> -->
-      <!-- <div class="film_media_trailerDesc">Трейлер №2 (дублированный)</div> -->
-      <!-- <div class="film_media_trailerDate">17 июня 2019</div> -->
-      <!-- </div> -->
-      <div class="film_media_edit" v-if="editFilm">
-        <div v-if="imageUrl">{{ imageUrl }}</div>
-        <input type="file" @change="onFileChange" accept="image/*" />
-        <Button
-          label="Обновить постер"
-          class="btn_edit"
-          @click="updatePoster(route.params.id)"
-        />
-      </div>
-    </div>
-    <div class="film_info">
-      <div class="film_info_title">{{ film.title }} ({{ film.prod_year }})</div>
-      <div class="film_info_titleOrig">
-        {{ film.title_orig }} {{ film.age_restriction }}
-      </div>
-      <div class="btnsContainer">
-        <Button
-          rounded
-          color="lightgray"
-          icon="tdesign:bookmark-add"
-          label="Буду смотреть"
-          class="btnsContainer_bookmark"
-        />
-        <Button
-          rounded
-          color="lightgray"
-          icon="tabler:dots"
-          class="btnsContainer_bookmarkMore"
-        />
-      </div>
-      <div class="film_info_titleAbout">О фильме</div>
-      <div class="film_info_about" v-if="!editFilm">
-        <div>Год производства</div>
-        <div>
-          {{ film.prod_year }}
-        </div>
-        <div>Страна</div>
-        <div>
-          {{ film.country }}
-        </div>
-        <div>Жанр</div>
-        <div>
-          {{ film.genre }}
-        </div>
-        <div>Слоган</div>
-        <div class="film_info_about_slogan">«{{ film.slogan }}»</div>
-        <div>Режиссер</div>
-        <div>
-          {{ film.director_name }}
-        </div>
-        <div>Композитор</div>
-        <div>
-          {{ film.composer }}
-        </div>
-        <div>Бюджет</div>
-        <div>
-          {{ film.budget }}
-        </div>
-        <div>Возраст</div>
-        <div>
-          {{ film.age_restriction }}
-        </div>
-        <div>Премьера в России</div>
-        <div>
-          {{ film.premiere_russia }}
-        </div>
-        <div>Премьера в мире</div>
-        <div>
-          {{ film.premiere_world }}
+        <div class="film_media_edit" v-if="editFilm">
+          <div v-if="imageUrl">{{ imageUrl }}</div>
+          <input type="file" @change="onFileChange" accept="image/*" />
+          <Button
+            label="Обновить постер"
+            class="btn_edit"
+            @click="updatePoster(route.params.id)"
+          />
         </div>
       </div>
-      <form @submit.prevent="submitForm" v-if="editFilm" class="film_info_edit">
-        <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
-        <Input
-          name="title"
-          type="text"
-          v-model:value="titleField"
-          :placeholder="film.title"
-          label="Название фильма"
-        />
-        <Input
-          name="prod_year"
-          type="text"
-          v-model:value="prodyearField"
-          :placeholder="film.prod_year"
-          label="Год производства"
-        />
-        <Input
-          name="country"
-          type="text"
-          v-model:value="countryField"
-          :placeholder="film.country"
-          label="Страна производства"
-        />
-        <Input
-          name="director"
-          type="text"
-          v-model:value="directorField"
-          :placeholder="film.director"
-          label="Режиссер"
-        />
-        <Button label="Обновить данные" class="btn_edit" />
-      </form>
-    </div>
-    <div class="film_misc">
-      <div class="film_misc_rating">
-        <div class="film_misc_rating_valueBlock">8.3</div>
-        <div class="film_misc_rating_countBlock">158 195 оценок</div>
-      </div>
-      <Button
-        color="lightgray"
-        label="Оценить фильм"
-        name="rate"
-        rounded
-        class="btn_rate"
-      />
-      <div class="film_misc_reviewCount">19 рецензий</div>
-      <div class="film_misc_actors">
-        <div class="film_misc_actorsTitle">В главных ролях</div>
-        <span
-          class="film_misc_actors_actor"
-          v-for="actor of film.actors"
-          @click="$router.push({ name: 'name', params: { id: actor.id } })"
-          >{{ actor.name }}</span
+      <div class="film_info">
+        <div class="film_info_title">
+          {{ film.title }} ({{ film.prod_year }})
+        </div>
+        <div class="film_info_titleOrig">
+          {{ film.title_orig }} {{ film.age_restriction }}
+        </div>
+        <div class="btnsContainer">
+          <Button
+            rounded
+            color="lightgray"
+            icon="tdesign:bookmark-add"
+            label="Буду смотреть"
+            class="btnsContainer_bookmark"
+          />
+          <Button
+            rounded
+            color="lightgray"
+            icon="tabler:dots"
+            class="btnsContainer_bookmarkMore"
+          />
+        </div>
+        <div class="film_info_titleAbout">О фильме</div>
+        <div class="film_info_about" v-if="!editFilm">
+          <div>Год производства</div>
+          <div>
+            {{ film.prod_year }}
+          </div>
+          <div>Страна</div>
+          <div>
+            {{ film.country }}
+          </div>
+          <div>Жанр</div>
+          <div>
+            {{ film.genre }}
+          </div>
+          <div>Слоган</div>
+          <div class="film_info_about_slogan">«{{ film.slogan }}»</div>
+          <div>Режиссер</div>
+          <div>
+            {{ film.director_name }}
+          </div>
+          <div>Композитор</div>
+          <div>
+            {{ film.composer }}
+          </div>
+          <div>Бюджет</div>
+          <div>
+            {{ film.budget }}
+          </div>
+          <div>Возраст</div>
+          <div>
+            {{ film.age_restriction }}
+          </div>
+          <div>Премьера в России</div>
+          <div>
+            {{ film.premiere_russia }}
+          </div>
+          <div>Премьера в мире</div>
+          <div>
+            {{ film.premiere_world }}
+          </div>
+        </div>
+        <form
+          @submit.prevent="submitForm"
+          v-if="editFilm"
+          class="film_info_edit"
         >
-        <span class="film_misc_actors_actorsCount">57 актеров</span>
+          <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
+          <Input
+            name="title"
+            type="text"
+            v-model:value="titleField"
+            :placeholder="film.title"
+            label="Название фильма"
+          />
+          <Input
+            name="prod_year"
+            type="text"
+            v-model:value="prodyearField"
+            :placeholder="film.prod_year"
+            label="Год производства"
+          />
+          <Input
+            name="country"
+            type="text"
+            v-model:value="countryField"
+            :placeholder="film.country"
+            label="Страна производства"
+          />
+          <Input
+            name="director"
+            type="text"
+            v-model:value="directorField"
+            :placeholder="film.director"
+            label="Режиссер"
+          />
+          <Button label="Обновить данные" class="btn_edit" />
+        </form>
       </div>
-      <div class="film_misc_voiceActors">
-        <div class="film_misc_voiceActorsTitle">Роли дублировали</div>
-        <span class="film_misc_voiceActors_actor">Владимир Антоник</span>
-        <span class="film_misc_voiceActors_actor">Антон Эльдаров</span>
-        <span class="film_misc_voiceActors_actor">Евгения Ваган</span>
-        <span class="film_misc_voiceActors_actor">Елена Шульман</span>
-        <span class="film_misc_voiceActors_actor">Сергей Чихачёв</span>
-        <span class="film_misc_voiceActors_actorsCount">10 актеров</span>
+      <div class="film_misc">
+        <div class="film_misc_rating">
+          <div class="film_misc_rating_valueBlock">8.3</div>
+          <div class="film_misc_rating_countBlock">158 195 оценок</div>
+        </div>
+        <Button
+          color="lightgray"
+          label="Оценить фильм"
+          name="rate"
+          rounded
+          class="btn_rate"
+        />
+        <div class="film_misc_reviewCount">19 рецензий</div>
+        <div class="film_misc_actors">
+          <div class="film_misc_actorsTitle">В главных ролях</div>
+          <span
+            class="film_misc_actors_actor"
+            v-for="actor of film.actors"
+            @click="$router.push({ name: 'name', params: { id: actor.id } })"
+            >{{ actor.name }}</span
+          >
+          <span class="film_misc_actors_actorsCount">57 актеров</span>
+        </div>
+        <div class="film_misc_voiceActors">
+          <div class="film_misc_voiceActorsTitle">Роли дублировали</div>
+          <span class="film_misc_voiceActors_actor">Владимир Антоник</span>
+          <span class="film_misc_voiceActors_actor">Антон Эльдаров</span>
+          <span class="film_misc_voiceActors_actor">Евгения Ваган</span>
+          <span class="film_misc_voiceActors_actor">Елена Шульман</span>
+          <span class="film_misc_voiceActors_actor">Сергей Чихачёв</span>
+          <span class="film_misc_voiceActors_actorsCount">10 актеров</span>
+        </div>
       </div>
     </div>
   </div>
@@ -300,19 +300,38 @@ function openVideoPlayer() {
 
 <style lang="scss" scoped>
 .wrapper {
+  display: flex;
+  height: 100%;
+  padding: 50px 300px;
+  align-items: center;
+  justify-content: center;
+  // background-color: orange;
+}
+
+.grid__main {
+  position: relative;
   display: grid;
   grid-template-columns: 0.27fr 0.6fr 0.2fr;
   width: 100%;
-  max-width: 1200px;
-  margin: 120px auto;
-  min-height: 2000px;
-  position: relative;
-  // border: solid 2px gray;
+  height: 100%;
+  min-width: 1200px;
+  // background-color: #f0f0f0;
+  border-bottom: 1px solid rgba(222, 222, 222, 0.4);
+  overflow: hidden;
   &_editbtn {
     position: absolute;
     max-width: 200px;
     top: 6px;
     right: 6px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    padding: 50px 50px;
+  }
+  .grid__main {
+    min-width: 0px;
   }
 }
 

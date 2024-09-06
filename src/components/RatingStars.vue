@@ -10,36 +10,88 @@ const props = defineProps({
   },
 });
 
+const COLOR_FILLED_STAR = "#ff5500";
+const COLOR_FILLED_STAR_TEXT = "#999999";
+const COLOR_EMPTY_STAR = "#cccccc";
+const COLOR_EMPTY_STAR_TEXT = "#cccccc";
+const COLOR_SELECTED_STAR = "black";
+const COLOR_SELECTED_STAR_TEXT = "black";
+
 let starsCount = 10;
 
 let stars = ref(Array(starsCount).fill("0%"));
 
-function setStars() {
+let colors = ref(
+  Array(starsCount).fill({
+    star: COLOR_EMPTY_STAR,
+    text: COLOR_EMPTY_STAR_TEXT,
+  }),
+);
+
+function setRating() {
   let rating = Number(props.filmRating);
 
   for (let i = 0; i < starsCount; i++) {
     if (rating - 1 >= 0) {
       stars.value[i] = "100%";
+      colors.value[i] = {
+        star: COLOR_FILLED_STAR,
+        text: COLOR_FILLED_STAR_TEXT,
+      };
       rating--;
     } else {
-      stars.value[i] = `${Math.trunc(rating * 100)}%`;
+      stars.value[i] = `${Math.round(rating * 100)}%`;
+      colors.value[i] = {
+        star: COLOR_FILLED_STAR,
+        text: COLOR_FILLED_STAR_TEXT,
+      };
       break;
     }
   }
 }
 
-setStars();
+setRating();
+
+let tempColors = [];
+let tempPerc = [];
+
+function handleMouseEnter(i) {
+  tempColors = colors.value;
+  colors.value = colors.value.map((el, idx) =>
+    idx <= i
+      ? { star: COLOR_SELECTED_STAR, text: COLOR_SELECTED_STAR_TEXT }
+      : { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
+  );
+  tempPerc = stars.value;
+  stars.value = stars.value.map((el, idx) => (idx <= i ? "100%" : "0%"));
+}
+
+function handleMouseLeave(i) {
+  colors.value = tempColors;
+  stars.value = tempPerc;
+}
 </script>
 
 <template>
   <div class="ratingBar">
-    <div class="ratingBar_slot" v-for="(star, i) of stars" :key="i">
-      <StarIcon
-        class="ratingBar_slot_icon"
-        :percentage="stars[i]"
-        :starId="i"
-      />
-      <div class="ratingBar_slot_numberText">{{ i + 1 }}</div>
+    <div
+      class="ratingBar_slot"
+      v-for="(star, i) of stars"
+      :key="i"
+      @mouseenter="handleMouseEnter(i)"
+      @mouseleave="handleMouseLeave(i)"
+    >
+      <div class="ratingBar_slot_iconContainer">
+        <StarIcon
+          class="ratingBar_slot_iconContainer_icon"
+          :percentage="stars[i]"
+          :starColor="colors[i].star"
+          :starId="i"
+        />
+      </div>
+      <div class="ratingBar_slot_numberText" :style="'color:' + colors[i].text">
+        {{ i + 1 }}
+      </div>
     </div>
   </div>
 </template>
@@ -47,13 +99,18 @@ setStars();
 <style lang="scss" scoped>
 .ratingBar {
   display: flex;
-  gap: 5px;
   &_slot {
     display: flex;
     flex-direction: column;
-    &_icon {
-      font-size: 35px;
-      color: #cccccc;
+    cursor: pointer;
+    width: 40px;
+    justify-content: center;
+    align-items: center;
+    &_iconContainer {
+      &_icon {
+        font-size: 35px;
+        color: #cccccc;
+      }
     }
     &_numberText {
       font-size: 14px;

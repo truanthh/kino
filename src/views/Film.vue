@@ -326,7 +326,7 @@ function openVideoPlayer() {
       </div>
       <div class="ratingMain">
         <h2>Рейтинг фильма</h2>
-        <RatingStars />
+        <RatingStars filmRating="5.5" />
       </div>
     </div>
     <div class="friends"></div>

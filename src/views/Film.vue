@@ -363,46 +363,47 @@ function handleStarClick(i) {
 </template>
 
 <style lang="scss" scoped>
-// cuz i need full width border xd
-.upperSection_wrapper_borderBottom {
-  border-bottom: solid 1px rgba(222, 222, 222, 0.4);
+.widthGlobal {
+  min-width: 1200px;
 }
 
-.upperSection_wrapper {
-  display: flex;
-  height: 100%;
-  padding: 50px 360px;
-  align-items: center;
-  justify-content: center;
-}
-
-.upperSection_gridMain {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto auto auto;
-  width: 100%;
-  height: 100%;
-  // min-width: 1100px;
-  // background-color: #f0f0f0;
-  &_editbtn {
-    position: absolute;
-    max-width: 200px;
-    top: 6px;
-    right: 6px;
+@media screen and (max-width: 1200px) {
+  .widthGlobal {
+    min-width: 1000px;
   }
 }
 
-@media screen and (max-width: 1500px) {
-  // .grid__wrapper {
-  //   padding: 50px 0px;
-  // }
-  .grid__main {
-    // min-width: none;
+.upperSection {
+  &_wrapper {
+    // cuz i need full width border xd
+    &_borderBottom {
+      border-bottom: solid 1px rgba(222, 222, 222, 0.4);
+    }
+    display: flex;
+    height: 100%;
+    padding: 50px 360px;
+    align-items: center;
+    justify-content: center;
+  }
+  &_gridMain {
+    @extend .widthGlobal;
+    display: grid;
+    position: relative;
+    height: 100%;
+    grid-template-columns: auto auto auto;
+    // background-color: #f0f0f0;
+    &_editbtn {
+      position: absolute;
+      max-width: 200px;
+      top: 6px;
+      right: 6px;
+    }
   }
 }
 
 .middleSection {
   &_wrapper {
+    @extend .widthGlobal;
     display: flex;
     height: 100%;
     padding: 50px 360px;

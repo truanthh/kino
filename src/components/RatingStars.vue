@@ -1,12 +1,15 @@
 <script setup>
 import { ref } from "vue";
-import { Icon as IconifyIcon } from "@iconify/vue";
 import StarIcon from "@/components/StarIcon.vue";
 
 const props = defineProps({
   filmRating: {
     type: String,
     default: "0",
+  },
+  handleStarClick: {
+    type: Function,
+    default: () => {},
   },
 });
 
@@ -80,12 +83,13 @@ function handleMouseLeave(i) {
       :key="i"
       @mouseenter="handleMouseEnter(i)"
       @mouseleave="handleMouseLeave(i)"
+      @click="handleStarClick(i)"
     >
       <div class="ratingBar_slot_iconContainer">
         <StarIcon
           class="ratingBar_slot_iconContainer_icon"
           :percentage="stars[i]"
-          :starColor="colors[i].star"
+          :starFilledColor="colors[i].star"
           :starId="i"
         />
       </div>

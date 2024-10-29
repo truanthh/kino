@@ -119,6 +119,10 @@ function openVideoPlayer() {
 // function closeVideoPlayer(){
 //   isOpenVideoPlayer.value = false;
 // }
+
+function handleStarClick(i) {
+  console.log(i + 1);
+}
 </script>
 
 <template>
@@ -299,7 +303,7 @@ function openVideoPlayer() {
     </div>
   </div>
   <div class="middleSection_wrapper">
-    <div class="middleSection_misc">
+    <div class="middleSection_spoilers">
       <div class="spoilerItemsBar">
         <a class="spoilerItemsBar_item">Обзор</a>
         <a class="spoilerItemsBar_item">Награды</a>
@@ -324,12 +328,37 @@ function openVideoPlayer() {
         Бильбо отдает Кольцо племяннику Фродо, чтобы тот отнёс его к Роковой
         Горе и уничтожил.
       </div>
-      <div class="ratingMain">
+      <div class="ratingMai n">
         <h2>Рейтинг фильма</h2>
-        <RatingStars filmRating="5.5" />
+        <RatingStars filmRating="5.5" :handleStarClick />
       </div>
     </div>
-    <div class="friends"></div>
+    <div class="middleSection_rightPanel">
+      <div class="middleSection_rightPanel_friends">
+        <div class="middleSection_rightPanel_friends_title">
+          <b>Друзья</b>
+        </div>
+        <div class="middleSection_rightPanel_friends_noFriends">
+          Пока никто из друзей не оценил этот фильм...
+        </div>
+      </div>
+      <div class="middleSection_rightPanel_lists">
+        <div class="middleSection_rightPanel_lists_title"><b>В списках</b></div>
+        <div class="middleSection_rightPanel_lists_content">
+          <div>Фильмы про волшебство и про магию</div>
+          <div>Лучшие фильмы для Детей: список лучших детских фильмов</div>
+        </div>
+      </div>
+      <div class="middleSection_rightPanel_soundtracks">
+        <div class="middleSection_rightPanel_soundtracks_title">
+          <b> Саундтреки </b>
+        </div>
+        <div class="middleSection_rightPanel_soundtracks_content">
+          <div>Soundtrack1</div>
+          <div>Soundtrack2</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -364,9 +393,9 @@ function openVideoPlayer() {
 }
 
 @media screen and (max-width: 1500px) {
-  .grid__wrapper {
-    padding: 50px 0px;
-  }
+  // .grid__wrapper {
+  //   padding: 50px 0px;
+  // }
   .grid__main {
     // min-width: none;
   }
@@ -379,10 +408,37 @@ function openVideoPlayer() {
     padding: 50px 360px;
     justify-content: space-between;
   }
-  &_misc {
+  &_spoilers {
     display: flex;
     flex-direction: column;
     // background-color: orange;
+  }
+  &_rightPanel {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    width: 320px;
+    height: 1000px;
+    &_friends {
+      &_title {
+        display: flex;
+        font-size: 18px;
+      }
+      &_noFriends {
+        font-size: 14px;
+      }
+    }
+    &_lists {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      font-size: 18px;
+      background-color: teal;
+      height: 400px;
+      &_content {
+        font-size: 14px;
+      }
+    }
   }
 }
 
@@ -413,13 +469,6 @@ function openVideoPlayer() {
   display: flex;
   padding: 40px 0px;
   width: 728px;
-}
-
-.friends {
-  display: flex;
-  background-color: blue;
-  width: 320px;
-  height: 1000px;
 }
 
 .film_info {

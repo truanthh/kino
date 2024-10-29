@@ -11,9 +11,13 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  starColor: {
+  starFilledColor: {
     type: String,
     default: "#ff5500",
+  },
+  starEmptyColor: {
+    type: String,
+    default: "#cccccc",
   },
 });
 </script>
@@ -28,8 +32,8 @@ const props = defineProps({
         :x2="percentage"
         y2="0%"
       >
-        <stop offset="100%" class="default_color1" />
-        <stop offset="100%" class="default_color2" />
+        <stop offset="100%" class="star_filled" />
+        <stop offset="100%" class="star_empty" />
       </linearGradient>
     </defs>
     <path
@@ -40,12 +44,12 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.default_color1 {
-  stop-color: v-bind("starColor");
+.star_filled {
+  stop-color: v-bind("starFilledColor");
   stop-opacity: 1;
 }
-.default_color2 {
-  stop-color: #cccccc;
+.star_empty {
+  stop-color: v-bind("starEmptyColor");
   stop-opacity: 1;
 }
 </style>

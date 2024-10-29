@@ -303,59 +303,63 @@ function handleStarClick(i) {
     </div>
   </div>
   <div class="middleSection_wrapper">
-    <div class="middleSection_spoilers">
-      <div class="spoilerItemsBar">
-        <a class="spoilerItemsBar_item">Обзор</a>
-        <a class="spoilerItemsBar_item">Награды</a>
-        <a class="spoilerItemsBar_item">Премьеры</a>
-        <a class="spoilerItemsBar_item">Изображения</a>
-        <a class="spoilerItemsBar_item">Трейлеры</a>
-        <a class="spoilerItemsBar_item">Студии</a>
-        <a class="spoilerItemsBar_item">Связи</a>
-        <a class="spoilerItemsBar_item">Рецензии</a>
-        <a class="spoilerItemsBar_item">Сайты</a>
-        <a class="spoilerItemsBar_item">Еще</a>
-      </div>
-      <div class="desc">
-        Сказания о Средиземье — это хроника Великой войны за Кольцо, длившейся
-        не одну тысячу лет. Тот, кто владел Кольцом, получал неограниченную
-        власть, но был обязан служить злу. Тихая деревня, где живут хоббиты.
-        Придя на 111-й день рождения к своему старому другу Бильбо Бэггинсу,
-        волшебник Гэндальф начинает вести разговор о кольце, которое Бильбо
-        нашел много лет назад. Это кольцо принадлежало когда-то темному
-        властителю Средиземья Саурону, и оно дает большую власть своему
-        обладателю. Теперь Саурон хочет вернуть себе власть над Средиземьем.
-        Бильбо отдает Кольцо племяннику Фродо, чтобы тот отнёс его к Роковой
-        Горе и уничтожил.
-      </div>
-      <div class="ratingMai n">
-        <h2>Рейтинг фильма</h2>
-        <RatingStars filmRating="5.5" :handleStarClick />
-      </div>
-    </div>
-    <div class="middleSection_rightPanel">
-      <div class="middleSection_rightPanel_friends">
-        <div class="middleSection_rightPanel_friends_title">
-          <b>Друзья</b>
+    <div class="middleSection_flexMain">
+      <div class="middleSection_spoilers">
+        <div class="spoilerItemsBar">
+          <a class="spoilerItemsBar_item">Обзор</a>
+          <a class="spoilerItemsBar_item">Награды</a>
+          <a class="spoilerItemsBar_item">Премьеры</a>
+          <a class="spoilerItemsBar_item">Изображения</a>
+          <a class="spoilerItemsBar_item">Трейлеры</a>
+          <a class="spoilerItemsBar_item">Студии</a>
+          <a class="spoilerItemsBar_item">Связи</a>
+          <a class="spoilerItemsBar_item">Рецензии</a>
+          <a class="spoilerItemsBar_item">Сайты</a>
+          <a class="spoilerItemsBar_item">Еще</a>
         </div>
-        <div class="middleSection_rightPanel_friends_noFriends">
-          Пока никто из друзей не оценил этот фильм...
+        <div class="desc">
+          Сказания о Средиземье — это хроника Великой войны за Кольцо, длившейся
+          не одну тысячу лет. Тот, кто владел Кольцом, получал неограниченную
+          власть, но был обязан служить злу. Тихая деревня, где живут хоббиты.
+          Придя на 111-й день рождения к своему старому другу Бильбо Бэггинсу,
+          волшебник Гэндальф начинает вести разговор о кольце, которое Бильбо
+          нашел много лет назад. Это кольцо принадлежало когда-то темному
+          властителю Средиземья Саурону, и оно дает большую власть своему
+          обладателю. Теперь Саурон хочет вернуть себе власть над Средиземьем.
+          Бильбо отдает Кольцо племяннику Фродо, чтобы тот отнёс его к Роковой
+          Горе и уничтожил.
+        </div>
+        <div class="ratingMai n">
+          <h2>Рейтинг фильма</h2>
+          <RatingStars filmRating="5.5" :handleStarClick />
         </div>
       </div>
-      <div class="middleSection_rightPanel_lists">
-        <div class="middleSection_rightPanel_lists_title"><b>В списках</b></div>
-        <div class="middleSection_rightPanel_lists_content">
-          <div>Фильмы про волшебство и про магию</div>
-          <div>Лучшие фильмы для Детей: список лучших детских фильмов</div>
+      <div class="middleSection_rightPanel">
+        <div class="middleSection_rightPanel_friends">
+          <div class="middleSection_rightPanel_friends_title">
+            <b>Друзья</b>
+          </div>
+          <div class="middleSection_rightPanel_friends_noFriends">
+            Пока никто из друзей не оценил этот фильм...
+          </div>
         </div>
-      </div>
-      <div class="middleSection_rightPanel_soundtracks">
-        <div class="middleSection_rightPanel_soundtracks_title">
-          <b> Саундтреки </b>
+        <div class="middleSection_rightPanel_lists">
+          <div class="middleSection_rightPanel_lists_title">
+            <b>В списках</b>
+          </div>
+          <div class="middleSection_rightPanel_lists_content">
+            <div>Фильмы про волшебство и про магию</div>
+            <div>Лучшие фильмы для Детей: список лучших детских фильмов</div>
+          </div>
         </div>
-        <div class="middleSection_rightPanel_soundtracks_content">
-          <div>Soundtrack1</div>
-          <div>Soundtrack2</div>
+        <div class="middleSection_rightPanel_soundtracks">
+          <div class="middleSection_rightPanel_soundtracks_title">
+            <b> Саундтреки </b>
+          </div>
+          <div class="middleSection_rightPanel_soundtracks_content">
+            <div>Soundtrack1</div>
+            <div>Soundtrack2</div>
+          </div>
         </div>
       </div>
     </div>
@@ -363,12 +367,12 @@ function handleStarClick(i) {
 </template>
 
 <style lang="scss" scoped>
-.widthGlobal {
+.contentWidthGlobal {
   min-width: 1200px;
 }
 
 @media screen and (max-width: 1200px) {
-  .widthGlobal {
+  .contentWidthGlobal {
     min-width: 1000px;
   }
 }
@@ -386,12 +390,12 @@ function handleStarClick(i) {
     justify-content: center;
   }
   &_gridMain {
-    @extend .widthGlobal;
+    @extend .contentWidthGlobal;
     display: grid;
-    position: relative;
+    // position: relative;
     height: 100%;
     grid-template-columns: auto auto auto;
-    // background-color: #f0f0f0;
+    background-color: #f0f0f0;
     &_editbtn {
       position: absolute;
       max-width: 200px;
@@ -403,11 +407,19 @@ function handleStarClick(i) {
 
 .middleSection {
   &_wrapper {
-    @extend .widthGlobal;
     display: flex;
     height: 100%;
     padding: 50px 360px;
-    justify-content: space-between;
+    // justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+  }
+  &_flexMain {
+    @extend .contentWidthGlobal;
+    display: flex;
+    height: 100%;
+    gap: 80px;
+    // position: relative;
   }
   &_spoilers {
     display: flex;

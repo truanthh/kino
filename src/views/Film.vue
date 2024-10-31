@@ -9,6 +9,7 @@ import VideoPlayer from "@/components/VideoPlayer.vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import VideoPreview from "@/components/VideoPreview.vue";
 import RatingStars from "@/components/RatingStars.vue";
+import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
 
 const isOpenVideoPlayer = ref(false);
 
@@ -329,9 +330,22 @@ function handleStarClick(i) {
           Бильбо отдает Кольцо племяннику Фродо, чтобы тот отнёс его к Роковой
           Горе и уничтожил.
         </div>
-        <div class="ratingMai n">
+        <div class="ratingMain">
           <h2>Рейтинг фильма</h2>
-          <RatingStars filmRating="5.5" :handleStarClick />
+          <RatingStars filmRating="8.6" :handleStarClick />
+        </div>
+        <div class="ratingCritics">
+          <FilmRatingCritics
+            header="Рейтинг кинокритиков в мире"
+            positiveReviewsCount="217"
+            negativeReviewsCount="20"
+            starValueEnabled
+          />
+          <FilmRatingCritics
+            header="В России"
+            positiveReviewsCount="5"
+            negativeReviewsCount="2"
+          />
         </div>
       </div>
       <div class="middleSection_rightPanel">
@@ -476,6 +490,11 @@ function handleStarClick(i) {
   padding: 40px 0px;
   width: 728px;
   // background-color: orange;
+}
+
+.ratingCritics {
+  display: flex;
+  gap: 40px;
 }
 
 .desc {

@@ -107,7 +107,7 @@ function handleMouseLeave(i) {
     display: flex;
     flex-direction: column;
     cursor: pointer;
-    width: 40px;
+    width: 38px;
     justify-content: center;
     align-items: center;
     &_iconContainer {

@@ -8,7 +8,7 @@ import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 import VideoPlayer from "@/components/VideoPlayer.vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import VideoPreview from "@/components/VideoPreview.vue";
-import RatingStars from "@/components/RatingStars.vue";
+import FilmRatingMain from "@/components/FilmRatingMain.vue";
 import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
 
 const isOpenVideoPlayer = ref(false);
@@ -331,8 +331,7 @@ function handleStarClick(i) {
           Горе и уничтожил.
         </div>
         <div class="ratingMain">
-          <h2>Рейтинг фильма</h2>
-          <RatingStars filmRating="8.6" :handleStarClick />
+          <FilmRatingMain />
         </div>
         <div class="ratingCritics">
           <FilmRatingCritics
@@ -484,16 +483,17 @@ function handleStarClick(i) {
 }
 
 .ratingMain {
-  display: flex;
-  flex-direction: column;
-  color: black;
-  padding: 40px 0px;
-  width: 728px;
+  // display: flex;
+  // flex-direction: column;
+  // color: black;
+  // padding: 40px 0px;
+  // width: 728px;
   // background-color: orange;
 }
 
 .ratingCritics {
   display: flex;
+  margin-top: 20px;
   gap: 40px;
 }
 

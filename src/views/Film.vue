@@ -11,6 +11,7 @@ import VideoPreview from "@/components/VideoPreview.vue";
 import FilmRatingMain from "@/components/FilmRatingMain.vue";
 import FilmRatingStats from "@/components/FilmRatingStats.vue";
 import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
+import SimilarFilms from "@/components/SimilarFilms.vue";
 
 const isOpenVideoPlayer = ref(false);
 
@@ -132,24 +133,24 @@ function handleStarClick(i) {
     :openVideoPlayer="isOpenVideoPlayer"
     @closePlayer="isOpenVideoPlayer = false"
   />
-  <div class="upperSection_wrapper_borderBottom">
-    <div class="upperSection_wrapper">
-      <div class="upperSection_gridMain">
+  <div class="upper-section__wrapper-border-bottom">
+    <div class="upper-section__wrapper">
+      <div class="upper-section__grid-main">
         <!-- <Button -->
-        <!--   class="wrapper_editbtn" -->
+        <!--   class="upper-section__wrapper__editbtn" -->
         <!--   @click="toggleEditFilm" -->
         <!--   icon="icon-park-outline:edit" -->
         <!--   rounded -->
         <!--   outlined -->
         <!--   color="gray" -->
         <!-- /> -->
-        <div class="film_media">
+        <div class="film-media">
           <img
             :src="film.poster_url"
-            class="film_media_poster"
+            class="film-media__poster"
             v-if="film.poster_url"
           />
-          <ImageSkeleton v-if="!film.poster_url" class="film_media_poster" />
+          <ImageSkeleton v-if="!film.poster_url" class="film-media__poster" />
 
           <VideoPreview
             :openVideoPlayer
@@ -158,40 +159,40 @@ function handleStarClick(i) {
             date="17 июня 2019"
           />
 
-          <div class="film_media_edit" v-if="editFilm">
+          <div class="film-media__edit" v-if="editFilm">
             <div v-if="imageUrl">{{ imageUrl }}</div>
             <input type="file" @change="onFileChange" accept="image/*" />
             <Button
               label="Обновить постер"
-              class="btn_edit"
+              class="btn-edit"
               @click="updatePoster(route.params.id)"
             />
           </div>
         </div>
-        <div class="film_info">
-          <div class="film_info_title">
+        <div class="film-info">
+          <div class="film-info__title">
             {{ film.title }} ({{ film.prod_year }})
           </div>
-          <div class="film_info_titleOrig">
+          <div class="film-info__title-orig">
             {{ film.title_orig }} {{ film.age_restriction }}
           </div>
-          <div class="btnsContainer">
+          <div class="btns-container">
             <Button
               rounded
               color="lightgray"
               icon="tdesign:bookmark-add"
               label="Буду смотреть"
-              class="btnsContainer_bookmark"
+              class="btns-container__bookmark"
             />
             <Button
               rounded
               color="lightgray"
               icon="tabler:dots"
-              class="btnsContainer_bookmarkMore"
+              class="btns-container__bookmark-more"
             />
           </div>
-          <div class="film_info_titleAbout">О фильме</div>
-          <div class="film_info_about" v-if="!editFilm">
+          <div class="film-info__about__title">О фильме</div>
+          <div class="film-info__about" v-if="!editFilm">
             <div>Год производства</div>
             <div>
               {{ film.prod_year }}
@@ -205,7 +206,7 @@ function handleStarClick(i) {
               {{ film.genre }}
             </div>
             <div>Слоган</div>
-            <div class="film_info_about_slogan">«{{ film.slogan }}»</div>
+            <div class="film-info__about__slogan">«{{ film.slogan }}»</div>
             <div>Режиссер</div>
             <div>
               {{ film.director_name }}
@@ -234,7 +235,7 @@ function handleStarClick(i) {
           <form
             @submit.prevent="submitForm"
             v-if="editFilm"
-            class="film_info_edit"
+            class="film-info__edit"
           >
             <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
             <Input
@@ -265,55 +266,55 @@ function handleStarClick(i) {
               :placeholder="film.director"
               label="Режиссер"
             />
-            <Button label="Обновить данные" class="btn_edit" />
+            <Button label="Обновить данные" class="btn-edit" />
           </form>
         </div>
-        <div class="film_misc">
+        <div class="film-misc">
           <FilmRatingStats
             :imdbRatingEnabled="false"
             rateFilmButtonEnabled
             reviewsCountEnabled
             smallRatingEnabled
           />
-          <div class="film_misc_actors">
-            <div class="film_misc_actorsTitle">В главных ролях</div>
+          <div class="film-misc__actors">
+            <div class="film-misc__actors__title">В главных ролях</div>
             <span
-              class="film_misc_actors_actor"
+              class="film-misc__actors__actor"
               v-for="actor of film.actors"
               @click="$router.push({ name: 'name', params: { id: actor.id } })"
               >{{ actor.name }}</span
             >
-            <span class="film_misc_actors_actorsCount">57 актеров</span>
+            <span class="film-misc__actors__count">57 актеров</span>
           </div>
-          <div class="film_misc_voiceActors">
-            <div class="film_misc_voiceActorsTitle">Роли дублировали</div>
-            <span class="film_misc_voiceActors_actor">Владимир Антоник</span>
-            <span class="film_misc_voiceActors_actor">Антон Эльдаров</span>
-            <span class="film_misc_voiceActors_actor">Евгения Ваган</span>
-            <span class="film_misc_voiceActors_actor">Елена Шульман</span>
-            <span class="film_misc_voiceActors_actor">Сергей Чихачёв</span>
-            <span class="film_misc_voiceActors_actorsCount">10 актеров</span>
+          <div class="film-misc__voice-actors">
+            <div class="film-misc__voice-actors__title">Роли дублировали</div>
+            <span class="film-misc__voice-actors__actor">Владимир Антоник</span>
+            <span class="film-misc__voice-actors__actor">Антон Эльдаров</span>
+            <span class="film-misc__voice-actors__actor">Евгения Ваган</span>
+            <span class="film-misc__voice-actors__actor">Елена Шульман</span>
+            <span class="film-misc__voice-actors__actor">Сергей Чихачёв</span>
+            <span class="film-misc__voice-actors__count">10 актеров</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="middleSection_wrapper">
-    <div class="middleSection_flexMain">
-      <div class="middleSection_spoilers">
-        <div class="spoilerItemsBar">
-          <a class="spoilerItemsBar_item">Обзор</a>
-          <a class="spoilerItemsBar_item">Награды</a>
-          <a class="spoilerItemsBar_item">Премьеры</a>
-          <a class="spoilerItemsBar_item">Изображения</a>
-          <a class="spoilerItemsBar_item">Трейлеры</a>
-          <a class="spoilerItemsBar_item">Студии</a>
-          <a class="spoilerItemsBar_item">Связи</a>
-          <a class="spoilerItemsBar_item">Рецензии</a>
-          <a class="spoilerItemsBar_item">Сайты</a>
-          <a class="spoilerItemsBar_item">Еще</a>
+  <div class="middle-section__wrapper">
+    <div class="middle-section__flex-main">
+      <div class="middle-section__spoilers">
+        <div class="spoiler-bar">
+          <a class="spoler-bar__item">Обзор</a>
+          <a class="spoler-bar__item">Награды</a>
+          <a class="spoler-bar__item">Премьеры</a>
+          <a class="spoler-bar__item">Изображения</a>
+          <a class="spoler-bar__item">Трейлеры</a>
+          <a class="spoler-bar__item">Студии</a>
+          <a class="spoler-bar__item">Связи</a>
+          <a class="spoler-bar__item">Рецензии</a>
+          <a class="spoler-bar__item">Сайты</a>
+          <a class="spoler-bar__item">Еще</a>
         </div>
-        <div class="desc">
+        <div class="film-description">
           Сказания о Средиземье — это хроника Великой войны за Кольцо, длившейся
           не одну тысячу лет. Тот, кто владел Кольцом, получал неограниченную
           власть, но был обязан служить злу. Тихая деревня, где живут хоббиты.
@@ -325,10 +326,10 @@ function handleStarClick(i) {
           Бильбо отдает Кольцо племяннику Фродо, чтобы тот отнёс его к Роковой
           Горе и уничтожил.
         </div>
-        <div class="ratingMain">
+        <div class="rating-main">
           <FilmRatingMain />
         </div>
-        <div class="ratingCritics">
+        <div class="rating-critics">
           <FilmRatingCritics
             header="Рейтинг кинокритиков в мире"
             positiveReviewsCount="217"
@@ -341,30 +342,33 @@ function handleStarClick(i) {
             negativeReviewsCount="2"
           />
         </div>
+        <div class="middle-section__similar-films">
+          <SimilarFilms />
+        </div>
       </div>
-      <div class="middleSection_rightPanel">
-        <div class="middleSection_rightPanel_friends">
-          <div class="middleSection_rightPanel_friends_title">
+      <div class="middle-section__right-panel">
+        <div class="middle-section__right-panel__friends">
+          <div class="middle-section__right-panel__friends__title">
             <b>Друзья</b>
           </div>
-          <div class="middleSection_rightPanel_friends_noFriends">
+          <div class="middle-section__right-panel__friends__noFriends">
             Пока никто из друзей не оценил этот фильм...
           </div>
         </div>
-        <div class="middleSection_rightPanel_lists">
-          <div class="middleSection_rightPanel_lists_title">
+        <div class="middle-section__right-panel__lists">
+          <div class="middle-section__right-panel__lists__title">
             <b>В списках</b>
           </div>
-          <div class="middleSection_rightPanel_lists_content">
+          <div class="middle-section__right-panel__lists__content">
             <div>Фильмы про волшебство и про магию</div>
             <div>Лучшие фильмы для Детей: список лучших детских фильмов</div>
           </div>
         </div>
-        <div class="middleSection_rightPanel_soundtracks">
-          <div class="middleSection_rightPanel_soundtracks_title">
+        <div class="middle-section__right-panel__soundtracks">
+          <div class="middle-section__right-panel__soundtracks__title">
             <b> Саундтреки </b>
           </div>
-          <div class="middleSection_rightPanel_soundtracks_content">
+          <div class="middle-section__right-panel__soundtracks__content">
             <div>Soundtrack1</div>
             <div>Soundtrack2</div>
           </div>
@@ -375,20 +379,20 @@ function handleStarClick(i) {
 </template>
 
 <style lang="scss" scoped>
-.contentWidthGlobal {
+.content-width-global {
   min-width: 1200px;
 }
 
 @media screen and (max-width: 1200px) {
-  .contentWidthGlobal {
+  .content-width-global {
     min-width: 1000px;
   }
 }
 
-.upperSection {
-  &_wrapper {
+.upper-section {
+  &__wrapper {
     // cuz i need full width border xd
-    &_borderBottom {
+    &-border-bottom {
       border-bottom: solid 1px rgba(222, 222, 222, 0.4);
     }
     display: flex;
@@ -397,14 +401,14 @@ function handleStarClick(i) {
     align-items: center;
     justify-content: center;
   }
-  &_gridMain {
-    @extend .contentWidthGlobal;
+  &__grid-main {
+    @extend .content-width-global;
     display: grid;
     // position: relative;
     height: 100%;
     grid-template-columns: auto auto auto;
     // background-color: #f0f0f0;
-    &_editbtn {
+    &__editbtn {
       position: absolute;
       max-width: 200px;
       top: 6px;
@@ -413,8 +417,8 @@ function handleStarClick(i) {
   }
 }
 
-.middleSection {
-  &_wrapper {
+.middle-section {
+  &__wrapper {
     display: flex;
     height: 100%;
     padding: 50px 360px;
@@ -422,137 +426,137 @@ function handleStarClick(i) {
     align-items: center;
     justify-content: center;
   }
-  &_flexMain {
-    @extend .contentWidthGlobal;
+  &__flex-main {
+    @extend .content-width-global;
     display: flex;
     height: 100%;
     gap: 80px;
     // position: relative;
   }
-  &_spoilers {
+  &__spoilers {
     display: flex;
     flex-direction: column;
     // background-color: orange;
   }
-  &_rightPanel {
+  &__right-panel {
     display: flex;
     flex-direction: column;
     background-color: #f0f0f0;
     width: 320px;
     height: 1000px;
-    &_friends {
-      &_title {
+    &__friends {
+      &__title {
         display: flex;
         font-size: 18px;
       }
-      &_noFriends {
+      &__noFriends {
         font-size: 14px;
       }
     }
-    &_lists {
+    &__lists {
       margin-top: 30px;
       display: flex;
       flex-direction: column;
       font-size: 18px;
       background-color: teal;
       height: 400px;
-      &_content {
+      &__content {
         font-size: 14px;
       }
     }
   }
 }
 
-.spoilerItemsBar {
+.spoiler-bar {
   // background-color: #f0f0f0;
   display: flex;
   gap: 14px;
   height: 37px;
   border-bottom: solid 1px rgba(222, 222, 222, 0.4);
   cursor: pointer;
-  &_item {
+  &__item {
     &:hover {
       color: #ff5500;
     }
   }
 }
 
-.ratingMain {
+.rating-main {
   padding-bottom: 20px;
   border-bottom: solid 1px rgba(222, 222, 222, 0.4);
 }
 
-.ratingCritics {
+.rating-critics {
   display: flex;
   margin-top: 20px;
   gap: 40px;
 }
 
-.desc {
+.film-description {
   display: flex;
   padding: 40px 0px;
   width: 728px;
 }
 
-.film_info {
+.film-info {
   display: flex;
   flex-direction: column;
   padding: 0rem 3.2rem;
-  &_title {
+  &__title {
     font-size: 2.5rem;
     font-weight: bold;
     color: black;
     font-family: Tahoma;
   }
-  &_titleOrig {
+  &__title-orig {
     margin-top: 10px;
     font-size: 18px;
     color: #666666;
   }
-  &_titleAbout {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: black;
-    margin-top: 3rem;
-  }
-  &_about {
+  &__about {
     display: grid;
     grid-template-columns: 0.5fr 1fr;
     row-gap: 1rem;
     margin-top: 1.2rem;
     font-size: 0.8rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    &_slogan {
+    &__title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: black;
+      margin-top: 3rem;
+    }
+    &__slogan {
       color: gray;
     }
   }
-  &_edit {
+  &__edit {
     margin-top: 2rem;
   }
 }
 
-.film_misc {
-  &_ratingSmall {
-    display: flex;
-    flex-direction: column;
-    &_valueBlock {
-      font-size: 32px;
-      font-weight: bold;
-      color: #3bb33b;
-    }
-    &_countBlock {
-      font-size: 14px;
-    }
-  }
-  &_reviewCount {
-    font-size: 13px;
-  }
-  &_actors {
+.film-misc {
+  // &__rating-small {
+  //   display: flex;
+  //   flex-direction: column;
+  //   &__valueBlock {
+  //     font-size: 32px;
+  //     font-weight: bold;
+  //     color: #3bb33b;
+  //   }
+  //   &__countBlock {
+  //     font-size: 14px;
+  //   }
+  // }
+  // &__reviewCount {
+  //   font-size: 13px;
+  // }
+  &__actors {
     margin-top: 100px;
-    &Title {
-      @extend .actorsTitle;
+    &__title {
+      @extend .actors-title;
     }
-    &_actor {
+    &__actor {
       margin-top: 2px;
       display: block;
       font-size: 14px;
@@ -561,37 +565,40 @@ function handleStarClick(i) {
         color: #ff5500;
       }
     }
-    &_actorsCount {
-      @extend .actorsCount;
+    &__count {
+      @extend .actors-count;
     }
   }
-
-  &_voiceActors {
+  &__voice-actors {
     margin-top: 50px;
-    &Title {
-      @extend .actorsTitle;
+    &__title {
+      @extend .actors-title;
     }
-    &_actor {
+    &__actor {
       margin-top: 2px;
       display: block;
       font-size: 14px;
+      cursor: pointer;
+      &:hover {
+        color: #ff5500;
+      }
     }
-    &_actorsCount {
-      @extend .actorsCount;
+    &__count {
+      @extend .actors-count;
     }
   }
 }
 
-.film_media {
+.film-media {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  &_poster {
+  &__poster {
     width: 100%;
     height: 453px;
     // border-radius: 4px;
   }
-  &_edit {
+  &__edit {
     display: inherit;
     flex-direction: inherit;
     gap: inherit;
@@ -599,10 +606,10 @@ function handleStarClick(i) {
 }
 
 .btn {
-  &_edit {
+  &-edit {
     max-width: 200px;
   }
-  &_rate {
+  &-rate {
     margin-top: 10px;
     height: 33px;
     width: 200px;
@@ -614,11 +621,11 @@ function handleStarClick(i) {
   }
 }
 
-.btnsContainer {
+.btns-container {
   margin-top: 40px;
   display: flex;
   gap: 8px;
-  &_bookmark {
+  &__bookmark {
     font-weight: bold;
     height: 50px;
     width: 200px;
@@ -626,7 +633,7 @@ function handleStarClick(i) {
       transform: scale(1.05);
     }
   }
-  &_bookmarkMore {
+  &__bookmarkMore {
     font-weight: bold;
     height: 50px;
     width: 50px;
@@ -636,7 +643,7 @@ function handleStarClick(i) {
   }
 }
 
-.actorsTitle {
+.actors-title {
   font-weight: bold;
   font-size: 16px;
   position: relative;
@@ -658,7 +665,7 @@ function handleStarClick(i) {
   }
 }
 
-.actorsCount {
+.actors-count {
   display: block;
   margin-top: 10px;
   font-size: 14px;

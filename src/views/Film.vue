@@ -9,6 +9,7 @@ import VideoPlayer from "@/components/VideoPlayer.vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import VideoPreview from "@/components/VideoPreview.vue";
 import FilmRatingMain from "@/components/FilmRatingMain.vue";
+import FilmRatingStats from "@/components/FilmRatingStats.vue";
 import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
 
 const isOpenVideoPlayer = ref(false);
@@ -268,18 +269,12 @@ function handleStarClick(i) {
           </form>
         </div>
         <div class="film_misc">
-          <div class="film_misc_ratingSmall">
-            <div class="film_misc_ratingSmall_valueBlock">8.3</div>
-            <div class="film_misc_ratingSmall_countBlock">158 195 оценок</div>
-          </div>
-          <Button
-            color="lightgray"
-            label="Оценить фильм"
-            name="rate"
-            rounded
-            class="btn_rate"
+          <FilmRatingStats
+            :imdbRatingEnabled="false"
+            rateFilmButtonEnabled
+            reviewsCountEnabled
+            smallRatingEnabled
           />
-          <div class="film_misc_reviewCount">19 рецензий</div>
           <div class="film_misc_actors">
             <div class="film_misc_actorsTitle">В главных ролях</div>
             <span
@@ -408,7 +403,7 @@ function handleStarClick(i) {
     // position: relative;
     height: 100%;
     grid-template-columns: auto auto auto;
-    background-color: #f0f0f0;
+    // background-color: #f0f0f0;
     &_editbtn {
       position: absolute;
       max-width: 200px;
@@ -483,12 +478,8 @@ function handleStarClick(i) {
 }
 
 .ratingMain {
-  // display: flex;
-  // flex-direction: column;
-  // color: black;
-  // padding: 40px 0px;
-  // width: 728px;
-  // background-color: orange;
+  padding-bottom: 20px;
+  border-bottom: solid 1px rgba(222, 222, 222, 0.4);
 }
 
 .ratingCritics {

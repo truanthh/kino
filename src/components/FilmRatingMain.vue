@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import StarIcon from "@/components/StarIcon.vue";
 import RatingStars from "@/components/RatingStars.vue";
+import FilmRatingStats from "@/components/FilmRatingStats.vue";
 </script>
 
 <template>
@@ -10,28 +10,26 @@ import RatingStars from "@/components/RatingStars.vue";
       <h2>Рейтинг фильма</h2>
     </div>
     <div class="filmRatingMain">
-      <RatingStars filmRating="8.6" :handleStarClick />
-      <div class="filmRatingMain-stats">8.6</div>
+      <RatingStars filmRating="8.6" :handleStarClick class="ratingStars" />
+      <FilmRatingStats />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.ratingStars {
+  // background-color: orange;
+}
 .filmRatingMain {
   display: flex;
+  gap: 30px;
   &-header {
     color: black;
   }
   &-container {
-    background-color: gray;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding-bottom: 20px;
-    border-bottom: solid 1px rgba(222, 222, 222, 0.4);
-  }
-  &-stats {
-    background-color: orange;
+    align-items: start;
   }
 }
 </style>

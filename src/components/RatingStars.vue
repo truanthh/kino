@@ -103,6 +103,8 @@ function handleMouseLeave(i) {
 <style lang="scss" scoped>
 .ratingBar {
   display: flex;
+  justify-content: center;
+  align-items: center;
   &_slot {
     display: flex;
     flex-direction: column;

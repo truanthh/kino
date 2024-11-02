@@ -1,29 +1,38 @@
 <script setup>
-import { ref } from "vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 </script>
 
 <template>
-  <div class="image_skeleton">
-    <IconifyIcon icon="clarity:picture-line" class="image_skeleton__icon" />
+  <div class="imageSkeleton__container">
+    <div class="imageSkeleton__iconContainer">
+      <IconifyIcon
+        icon="clarity:picture-line"
+        class="imageSkeleton__icon"
+        height="none"
+      />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.image_skeleton {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  border: solid 2px #cccccc;
-  border-radius: 6px;
-  background-color: #f2f2f2;
+.imageSkeleton {
+  &__container {
+    width: 100%;
+    height: 100%;
+    border: solid 2px #cccccc;
+    border-radius: 6px;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__iconContainer {
+    width: 40%;
+    aspect-ratio: 1 / 1;
+  }
   &__icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-sizing: border-box;
-    font-size: 150px;
+    width: 100%;
+    height: 100%;
     color: #cccccc;
   }
 }

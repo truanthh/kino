@@ -47,14 +47,14 @@ setRating();
 </script>
 
 <template>
-  <div class="filmRatingCritics-container">
-    <div class="filmRatingCritics-header">
+  <div class="filmRatingCritics__container">
+    <div class="filmRatingCritics__header">
       <h3>{{ header }}</h3>
     </div>
-    <div class="bar-container" :style="[{ 'max-width': maxWidth }]">
+    <div class="bar__container" :style="[{ 'max-width': maxWidth }]">
       <div class="bar">
         <div
-          class="bar-progress"
+          class="bar__progress"
           :style="[
             {
               width: `${progressPercent > 0 ? progressPercent : 0}%`,
@@ -62,10 +62,12 @@ setRating();
             },
           ]"
         >
-          <div class="bar-progress-text">{{ progressCount }}</div>
+          <div class="bar__progress__text" v-if="progressPercent > 0">
+            {{ progressCount }}
+          </div>
         </div>
         <div
-          class="bar-remainder"
+          class="bar__remainder"
           :style="[
             {
               width: `${progressPercent > 0 ? 100 - progressPercent : 0}%`,
@@ -73,53 +75,54 @@ setRating();
             },
           ]"
         >
-          <div class="bar-remainder-text" v-if="progressPercent < 100">
+          <div class="bar__remainder__text" v-if="progressPercent < 100">
             {{ remainderCount }}
           </div>
         </div>
       </div>
     </div>
-    <div class="filmRatingCritics-addInfo">
-      <span class="filmRatingCritics-ratingPercentage">
+    <div class="filmRatingCritics__addInfo">
+      <span class="filmRatingCritics__ratingPercentage">
         {{ Math.round(progressPercent) }}%
       </span>
-      <span class="filmRatingCritics-totalCount">
+      <span class="filmRatingCritics__totalCount">
         {{ totalCount }} оценок
       </span>
-      <span class="filmRatingCritics-starValue" v-if="starValueEnabled">
+      <span class="filmRatingCritics__starValue" v-if="starValueEnabled">
         {{ starValue }}
       </span>
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .filmRatingCritics {
-  &-container {
+  &__container {
     // background-color: orange;
     display: flex;
     flex-direction: column;
     gap: 18px;
     width: 371px;
   }
-  &-header {
+  &__header {
     color: black;
   }
-  &-addInfo {
+  &__addInfo {
     // background-color: #b3b3b3;
     // text-align: left;
   }
-  &-ratingPercentage {
+  &__ratingPercentage {
     font-family: sans-serif;
     font-weight: bold;
     font-size: 22px;
     color: #3bb33b;
   }
-  &-totalCount {
+  &__totalCount {
     font-family: sans-serif;
     font-size: 12px;
     color: #666666;
   }
-  &-starValue {
+  &__starValue {
     margin-left: 10px;
     font-size: 18px;
     &::before {
@@ -136,7 +139,7 @@ setRating();
   }
 }
 
-.gen-countText {
+.genCountText {
   height: 100%;
   display: flex;
   font-weight: bold;
@@ -145,7 +148,7 @@ setRating();
   font-family: sans-serif;
 }
 
-.gen-bar {
+.genBar {
   border-radius: 2px;
   height: 100%;
   width: 10px;
@@ -155,28 +158,28 @@ setRating();
 }
 
 .bar {
-  &-container {
+  &__container {
     // margin-top: 10px;
     // overflow: hidden;
   }
   height: 16px;
   border-radius: 2px;
   display: flex;
-  &-remainder {
-    @extend .gen-bar;
+  &__remainder {
+    @extend .genBar;
     background-color: #ffd1b2;
-    &-text {
-      @extend .gen-countText;
+    &__text {
+      @extend .genCountText;
       color: #fe000b;
     }
   }
-  &-progress {
-    @extend .gen-bar;
+  &__progress {
+    @extend .genBar;
     background-color: #99d6ad;
     transition: 0.3s;
     position: relative;
-    &-text {
-      @extend .gen-countText;
+    &__text {
+      @extend .genCountText;
       color: #149933;
     }
     &::after {

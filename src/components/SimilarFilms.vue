@@ -15,7 +15,7 @@ const props = defineProps({
       <h2>Если вам понравился этот фильм</h2>
     </div>
     <div class="similarFilms__carousel">
-      <Carousel :visibleSlides="4" :slides="similarFilms" />
+      <Carousel :gap="1.25" :visibleSlides="4" :slides="similarFilms" />
     </div>
   </div>
 </template>

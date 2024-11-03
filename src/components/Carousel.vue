@@ -15,6 +15,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  gap: {
+    type: Number,
+    default: 0,
+  },
 });
 
 let firstItemId = ref(0);
@@ -56,15 +60,15 @@ function handleButtonLeftClick() {
   <div class="carousel__container">
     <div class="carousel__scrollBar">
       <span class="carousel__buttonLeft" @click="handleButtonLeftClick"></span>
-      <div class="carousel__itemsList">
+      <div class="carousel__itemsList" :style="{ gap: gap + '%' }">
         <div
           class="carousel__itemsList__item"
           v-for="(slide, id) of slides"
           :key="id"
           :style="{
             'margin-left': id === 0 ? `-${firstItemId * slideWidth}%` : '0px',
-            width: slideWidth + '%',
-            'min-width': slideWidth + '%',
+            width: slideWidth - gap + '%',
+            'min-width': slideWidth - gap + '%',
           }"
         >
           <ImageSkeleton :id="slide" />
@@ -72,6 +76,7 @@ function handleButtonLeftClick() {
       </div>
       <span
         class="carousel__buttonRight"
+        :style="{ right: `calc(-22px + ${gap}%)` }"
         @click="handleButtonRightClick"
       ></span>
     </div>
@@ -91,8 +96,9 @@ function handleButtonLeftClick() {
     display: flex;
     height: 100%;
     width: 100%;
-    max-width: 800px;
+    max-width: 1000px;
     overflow-x: hidden;
+    scrollbar-width: none;
     &__item {
       transition: margin 0.2s ease-out;
     }
@@ -103,7 +109,7 @@ function handleButtonLeftClick() {
     width: 44px;
     position: absolute;
     top: calc(50% - 22px);
-    right: -22px;
+    // right: -22px;
     background-color: orange;
     border-radius: 50%;
     background-color: #fff;

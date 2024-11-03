@@ -1,61 +1,74 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 
 const props = defineProps({
-  header: {
-    type: String,
-    default: "Если вам понравился этот фильм",
+  slides: {
+    type: Array,
+    required: true,
+  },
+  visibleSlides: {
+    type: Number,
+    default: 3,
+  },
+  slideStepSize: {
+    type: Number,
+    default: 0,
   },
 });
 
-let itemsAll = ref([1, 2, 3, 4, 5, 6, 7, 8]);
+let firstItemId = ref(0);
 
-let from = 0;
-let to = 4;
+const slideWidth = computed(() => {
+  // width in percentage of scrollBar
+  return 100 / props.visibleSlides;
+});
 
-let itemsVisible = ref(itemsAll.value.slice(from, to));
+const stepSize = computed(() => {
+  return props.slideStepSize > 0
+    ? props.slideStepSize
+    : props.visibleSlides - 1;
+});
 
 function handleButtonRightClick() {
-  if (to + 2 <= itemsAll.value.length) {
-    from += 2;
-    to += 2;
-    itemsVisible.value = itemsAll.value.slice(from, to);
+  let newId = firstItemId.value + stepSize.value;
+  let firstItemVisibleMax = props.slides.length - props.visibleSlides;
+
+  while (newId > firstItemVisibleMax) {
+    newId--;
   }
+
+  firstItemId.value = newId;
 }
 
 function handleButtonLeftClick() {
-  if (from - 2 >= 0) {
-    from -= 2;
-    to -= 2;
-    itemsVisible.value = itemsAll.value.slice(from, to);
+  let newId = firstItemId.value - stepSize.value;
+
+  while (newId < 0) {
+    newId++;
   }
+
+  firstItemId.value = newId;
 }
 </script>
 
 <template>
   <div class="carousel__container">
-    <div class="carousel__header">
-      <h2>{{ header }}</h2>
-      {{ itemsVisible }}
-    </div>
     <div class="carousel__scrollBar">
       <span class="carousel__buttonLeft" @click="handleButtonLeftClick"></span>
-      <!-- <div class="carousel__itemsList"> -->
-      <!--   <div -->
-      <!--     v-for="(item, id) of itemsAll" -->
-      <!--     :key="id" -->
-      <!--     :class=" -->
-      <!--       itemsVisible.includes(item) -->
-      <!--         ? 'carousel__itemsList__item_visible' -->
-      <!--         : 'carousel__itemsList__item' -->
-      <!--     " -->
-      <!--   > -->
-      <!--     <ImageSkeleton displayId :id="item" /> -->
-      <!--   </div> -->
-      <!-- </div> -->
-      <div class="carousel__itemsList" v-for="(item, id) of itemsAll" :key="id">
-        <ImageSkeleton displayId :id="item" />
+      <div class="carousel__itemsList">
+        <div
+          class="carousel__itemsList__item"
+          v-for="(slide, id) of slides"
+          :key="id"
+          :style="{
+            'margin-left': id === 0 ? `-${firstItemId * slideWidth}%` : '0px',
+            width: slideWidth + '%',
+            'min-width': slideWidth + '%',
+          }"
+        >
+          <ImageSkeleton :id="slide" />
+        </div>
       </div>
       <span
         class="carousel__buttonRight"
@@ -68,33 +81,20 @@ function handleButtonLeftClick() {
 <style lang="scss" scoped>
 .carousel {
   &__container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  &__header {
-    color: black;
+    height: 100%;
   }
   &__scrollBar {
-    // display: flex;
-    // height: 290px;
-    // background-color: orange;
-    // position: relative;
-    // max-width: 800px;
+    height: 100%;
+    position: relative;
   }
   &__itemsList {
-    flex: 1;
     display: flex;
-    overflow-x: auto;
-    height: 290px;
-    z-index: 0;
-    -webkit-user-select: none;
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    overflow-x: hidden;
     &__item {
-      width: 200px;
-      &_visible {
-        display: inherit;
-        width: 200px;
-      }
+      transition: margin 0.2s ease-out;
     }
   }
   &__buttonRight {

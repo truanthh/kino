@@ -2,10 +2,6 @@
 import { Icon as IconifyIcon } from "@iconify/vue";
 
 const props = defineProps({
-  displayId: {
-    type: Boolean,
-    default: false,
-  },
   id: {
     type: String,
     default: "",
@@ -15,7 +11,7 @@ const props = defineProps({
 
 <template>
   <div class="imageSkeleton__container">
-    <div class="imageSkeleton_idText" v-if="displayId">
+    <div class="imageSkeleton_idText" v-if="id">
       <h2>{{ id }}</h2>
     </div>
     <div class="imageSkeleton__iconContainer">

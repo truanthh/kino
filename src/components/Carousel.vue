@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 
 const props = defineProps({
@@ -7,21 +8,59 @@ const props = defineProps({
     default: "Если вам понравился этот фильм",
   },
 });
+
+let itemsAll = ref([1, 2, 3, 4, 5, 6, 7, 8]);
+
+let from = 0;
+let to = 4;
+
+let itemsVisible = ref(itemsAll.value.slice(from, to));
+
+function handleButtonRightClick() {
+  if (to + 2 <= itemsAll.value.length) {
+    from += 2;
+    to += 2;
+    itemsVisible.value = itemsAll.value.slice(from, to);
+  }
+}
+
+function handleButtonLeftClick() {
+  if (from - 2 >= 0) {
+    from -= 2;
+    to -= 2;
+    itemsVisible.value = itemsAll.value.slice(from, to);
+  }
+}
 </script>
 
 <template>
   <div class="carousel__container">
     <div class="carousel__header">
       <h2>{{ header }}</h2>
+      {{ itemsVisible }}
     </div>
-    <div class="carousel__suggestions">
-      <span class="carousel__buttonLeft"></span>
-      <ImageSkeleton
-        class="carousel__filmPoster"
-        v-for="i of [1, 2, 3, 4, 5, 6, 7, 8]"
-        :key="i"
-      />
-      <span class="carousel__buttonRight"></span>
+    <div class="carousel__scrollBar">
+      <span class="carousel__buttonLeft" @click="handleButtonLeftClick"></span>
+      <!-- <div class="carousel__itemsList"> -->
+      <!--   <div -->
+      <!--     v-for="(item, id) of itemsAll" -->
+      <!--     :key="id" -->
+      <!--     :class=" -->
+      <!--       itemsVisible.includes(item) -->
+      <!--         ? 'carousel__itemsList__item_visible' -->
+      <!--         : 'carousel__itemsList__item' -->
+      <!--     " -->
+      <!--   > -->
+      <!--     <ImageSkeleton displayId :id="item" /> -->
+      <!--   </div> -->
+      <!-- </div> -->
+      <div class="carousel__itemsList" v-for="(item, id) of itemsAll" :key="id">
+        <ImageSkeleton displayId :id="item" />
+      </div>
+      <span
+        class="carousel__buttonRight"
+        @click="handleButtonRightClick"
+      ></span>
     </div>
   </div>
 </template>
@@ -36,14 +75,27 @@ const props = defineProps({
   &__header {
     color: black;
   }
-  &__suggestions {
-    display: flex;
-    height: 290px;
+  &__scrollBar {
+    // display: flex;
+    // height: 290px;
     // background-color: orange;
-    position: relative;
+    // position: relative;
+    // max-width: 800px;
   }
-  &__filmPoster {
-    width: 200px;
+  &__itemsList {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    height: 290px;
+    z-index: 0;
+    -webkit-user-select: none;
+    &__item {
+      width: 200px;
+      &_visible {
+        display: inherit;
+        width: 200px;
+      }
+    }
   }
   &__buttonRight {
     z-index: 20;
@@ -67,6 +119,7 @@ const props = defineProps({
     &:hover {
       transform: translateX(5px);
     }
+    -webkit-user-select: none;
   }
   &__buttonLeft {
     z-index: 20;
@@ -91,6 +144,7 @@ const props = defineProps({
     &:hover {
       transform: scaleX(-1) translateX(5px);
     }
+    -webkit-user-select: none;
   }
 }
 </style>

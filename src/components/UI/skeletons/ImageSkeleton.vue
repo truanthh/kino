@@ -1,9 +1,23 @@
 <script setup>
 import { Icon as IconifyIcon } from "@iconify/vue";
+
+const props = defineProps({
+  displayId: {
+    type: Boolean,
+    default: false,
+  },
+  id: {
+    type: String,
+    default: "",
+  },
+});
 </script>
 
 <template>
   <div class="imageSkeleton__container">
+    <div class="imageSkeleton_idText" v-if="displayId">
+      <h2>{{ id }}</h2>
+    </div>
     <div class="imageSkeleton__iconContainer">
       <IconifyIcon
         icon="clarity:picture-line"
@@ -23,6 +37,7 @@ import { Icon as IconifyIcon } from "@iconify/vue";
     border-radius: 6px;
     background-color: #f2f2f2;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
@@ -34,6 +49,8 @@ import { Icon as IconifyIcon } from "@iconify/vue";
     width: 100%;
     height: 100%;
     color: #cccccc;
+  }
+  &__idText {
   }
 }
 </style>

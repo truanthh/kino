@@ -1,5 +1,6 @@
 <script setup>
 import Carousel from "@/components/Carousel.vue";
+import FilmPosterLink from "@/components/FilmPosterLink.vue";
 
 const props = defineProps({
   similarFilms: {
@@ -15,7 +16,9 @@ const props = defineProps({
       <h2>Если вам понравился этот фильм</h2>
     </div>
     <div class="similarFilms__carousel">
-      <Carousel :gap="1.25" :visibleSlides="4" :slides="similarFilms" />
+      <Carousel :gap="1" :visibleSlides="5" :slides="similarFilms">
+        <FilmPosterLink />
+      </Carousel>
     </div>
   </div>
 </template>
@@ -31,7 +34,7 @@ const props = defineProps({
     color: black;
   }
   &__carousel {
-    width: 800px;
+    width: 790px;
     height: 290px;
   }
 }

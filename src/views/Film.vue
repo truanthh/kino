@@ -11,7 +11,8 @@ import VideoPreview from "@/components/VideoPreview.vue";
 import FilmRatingMain from "@/components/FilmRatingMain.vue";
 import FilmRatingStats from "@/components/FilmRatingStats.vue";
 import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
-import SimilarFilms from "@/components/SimilarFilms.vue";
+import Carousel from "@/components/Carousel.vue";
+import FilmPosterLink from "@/components/FilmPosterLink.vue";
 
 const isOpenVideoPlayer = ref(false);
 
@@ -25,7 +26,7 @@ const film = ref({});
 //   return film.value.actor_names || [];
 // });
 
-let similarFilms = ref([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+let similarFilms = ref([]);
 
 const editFilm = ref(false);
 
@@ -44,6 +45,10 @@ async function getFilmById(id) {
     film.value = response.data;
     // idk if that should be here, but i need only 10 actor names on this page
     film.value.actors = film.value.actors.slice(0, 10);
+    //just for testing
+    for (let i = 0; i < 10; i++) {
+      similarFilms.value.push(film.value);
+    }
   } catch (error) {
     console.log(error);
   } finally {
@@ -131,168 +136,166 @@ function openVideoPlayer() {
     :openVideoPlayer="isOpenVideoPlayer"
     @closePlayer="isOpenVideoPlayer = false"
   />
-  <div class="upperSection__wrapperborderBottom">
-    <div class="upperSection__wrapper">
-      <div class="upperSection__grid-main">
-        <!-- <Button -->
-        <!--   class="upperSection__wrapper__editbtn" -->
-        <!--   @click="toggleEditFilm" -->
-        <!--   icon="icon-park-outline:edit" -->
-        <!--   rounded -->
-        <!--   outlined -->
-        <!--   color="gray" -->
-        <!-- /> -->
-        <div class="filmMedia">
-          <img
-            :src="film.poster_url"
-            class="filmMedia__poster"
-            v-if="film.poster_url"
-          />
-          <ImageSkeleton v-if="!film.poster_url" class="filmMedia__poster" />
+  <div class="upperSection__wrapper">
+    <div class="upperSection__grid-main">
+      <!-- <Button -->
+      <!--   class="upperSection__wrapper__editbtn" -->
+      <!--   @click="toggleEditFilm" -->
+      <!--   icon="icon-park-outline:edit" -->
+      <!--   rounded -->
+      <!--   outlined -->
+      <!--   color="gray" -->
+      <!-- /> -->
+      <div class="filmMedia">
+        <img
+          :src="film.poster_url"
+          class="filmMedia__poster"
+          v-if="film.poster_url"
+        />
+        <ImageSkeleton v-if="!film.poster_url" class="filmMedia__poster" />
 
-          <VideoPreview
-            :openVideoPlayer
-            thumbnailSrc="@/assets/bla.jpg"
-            desc="Трейлер №2 (дублированный)"
-            date="17 июня 2019"
-          />
+        <VideoPreview
+          :openVideoPlayer
+          thumbnailSrc="@/assets/bla.jpg"
+          desc="Трейлер №2 (дублированный)"
+          date="17 июня 2019"
+        />
 
-          <div class="filmMedia__edit" v-if="editFilm">
-            <div v-if="imageUrl">{{ imageUrl }}</div>
-            <input type="file" @change="onFileChange" accept="image/*" />
-            <Button
-              label="Обновить постер"
-              class="btn__edit"
-              @click="updatePoster(route.params.id)"
-            />
+        <div class="filmMedia__edit" v-if="editFilm">
+          <div v-if="imageUrl">{{ imageUrl }}</div>
+          <input type="file" @change="onFileChange" accept="image/*" />
+          <Button
+            label="Обновить постер"
+            class="btn__edit"
+            @click="updatePoster(route.params.id)"
+          />
+        </div>
+      </div>
+      <div class="filmInfo">
+        <div class="filmInfo__title">
+          {{ film.title }} ({{ film.prod_year }})
+        </div>
+        <div class="filmInfo__titleOrig">
+          {{ film.title_orig }} {{ film.age_restriction }}
+        </div>
+        <div class="btnsContainer">
+          <Button
+            rounded
+            color="lightgray"
+            icon="tdesign:bookmark-add"
+            label="Буду смотреть"
+            class="btnsContainer__bookmark"
+          />
+          <Button
+            rounded
+            color="lightgray"
+            icon="tabler:dots"
+            class="btnsContainer__bookmarkMore"
+          />
+        </div>
+        <div class="filmInfo__about__title">О фильме</div>
+        <div class="filmInfo__about" v-if="!editFilm">
+          <div>Год производства</div>
+          <div>
+            {{ film.prod_year }}
+          </div>
+          <div>Страна</div>
+          <div>
+            {{ film.country }}
+          </div>
+          <div>Жанр</div>
+          <div>
+            {{ film.genre }}
+          </div>
+          <div>Слоган</div>
+          <div class="filmInfo__about__slogan">«{{ film.slogan }}»</div>
+          <div>Режиссер</div>
+          <div>
+            {{ film.director_name }}
+          </div>
+          <div>Композитор</div>
+          <div>
+            {{ film.composer }}
+          </div>
+          <div>Бюджет</div>
+          <div>
+            {{ film.budget }}
+          </div>
+          <div>Возраст</div>
+          <div>
+            {{ film.age_restriction }}
+          </div>
+          <div>Премьера в России</div>
+          <div>
+            {{ film.premiere_russia }}
+          </div>
+          <div>Премьера в мире</div>
+          <div>
+            {{ film.premiere_world }}
           </div>
         </div>
-        <div class="filmInfo">
-          <div class="filmInfo__title">
-            {{ film.title }} ({{ film.prod_year }})
-          </div>
-          <div class="filmInfo__titleOrig">
-            {{ film.title_orig }} {{ film.age_restriction }}
-          </div>
-          <div class="btnsContainer">
-            <Button
-              rounded
-              color="lightgray"
-              icon="tdesign:bookmark-add"
-              label="Буду смотреть"
-              class="btnsContainer__bookmark"
-            />
-            <Button
-              rounded
-              color="lightgray"
-              icon="tabler:dots"
-              class="btnsContainer__bookmark-more"
-            />
-          </div>
-          <div class="filmInfo__about__title">О фильме</div>
-          <div class="filmInfo__about" v-if="!editFilm">
-            <div>Год производства</div>
-            <div>
-              {{ film.prod_year }}
-            </div>
-            <div>Страна</div>
-            <div>
-              {{ film.country }}
-            </div>
-            <div>Жанр</div>
-            <div>
-              {{ film.genre }}
-            </div>
-            <div>Слоган</div>
-            <div class="filmInfo__about__slogan">«{{ film.slogan }}»</div>
-            <div>Режиссер</div>
-            <div>
-              {{ film.director_name }}
-            </div>
-            <div>Композитор</div>
-            <div>
-              {{ film.composer }}
-            </div>
-            <div>Бюджет</div>
-            <div>
-              {{ film.budget }}
-            </div>
-            <div>Возраст</div>
-            <div>
-              {{ film.age_restriction }}
-            </div>
-            <div>Премьера в России</div>
-            <div>
-              {{ film.premiere_russia }}
-            </div>
-            <div>Премьера в мире</div>
-            <div>
-              {{ film.premiere_world }}
-            </div>
-          </div>
-          <form
-            @submit.prevent="submitForm"
-            v-if="editFilm"
-            class="filmInfo__edit"
+        <form
+          @submit.prevent="submitForm"
+          v-if="editFilm"
+          class="filmInfo__edit"
+        >
+          <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
+          <Input
+            name="title"
+            type="text"
+            v-model:value="titleField"
+            :placeholder="film.title"
+            label="Название фильма"
+          />
+          <Input
+            name="prod_year"
+            type="text"
+            v-model:value="prodyearField"
+            :placeholder="film.prod_year"
+            label="Год производства"
+          />
+          <Input
+            name="country"
+            type="text"
+            v-model:value="countryField"
+            :placeholder="film.country"
+            label="Страна производства"
+          />
+          <Input
+            name="director"
+            type="text"
+            v-model:value="directorField"
+            :placeholder="film.director"
+            label="Режиссер"
+          />
+          <Button label="Обновить данные" class="btn__edit" />
+        </form>
+      </div>
+      <div class="filmMisc">
+        <FilmRatingStats
+          :imdbRatingEnabled="false"
+          rateFilmButtonEnabled
+          reviewsCountEnabled
+          smallRatingEnabled
+        />
+        <div class="filmMisc__actors">
+          <div class="filmMisc__actors__title">В главных ролях</div>
+          <span
+            class="filmMisc__actors__actor"
+            v-for="actor of film.actors"
+            @click="$router.push({ name: 'name', params: { id: actor.id } })"
+            >{{ actor.name }}</span
           >
-            <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
-            <Input
-              name="title"
-              type="text"
-              v-model:value="titleField"
-              :placeholder="film.title"
-              label="Название фильма"
-            />
-            <Input
-              name="prod_year"
-              type="text"
-              v-model:value="prodyearField"
-              :placeholder="film.prod_year"
-              label="Год производства"
-            />
-            <Input
-              name="country"
-              type="text"
-              v-model:value="countryField"
-              :placeholder="film.country"
-              label="Страна производства"
-            />
-            <Input
-              name="director"
-              type="text"
-              v-model:value="directorField"
-              :placeholder="film.director"
-              label="Режиссер"
-            />
-            <Button label="Обновить данные" class="btn__edit" />
-          </form>
+          <span class="filmMisc__actors__count">57 актеров</span>
         </div>
-        <div class="filmMisc">
-          <FilmRatingStats
-            :imdbRatingEnabled="false"
-            rateFilmButtonEnabled
-            reviewsCountEnabled
-            smallRatingEnabled
-          />
-          <div class="filmMisc__actors">
-            <div class="filmMisc__actors__title">В главных ролях</div>
-            <span
-              class="filmMisc__actors__actor"
-              v-for="actor of film.actors"
-              @click="$router.push({ name: 'name', params: { id: actor.id } })"
-              >{{ actor.name }}</span
-            >
-            <span class="filmMisc__actors__count">57 актеров</span>
-          </div>
-          <div class="filmMisc__voiceActors">
-            <div class="filmMisc__voiceActors__title">Роли дублировали</div>
-            <span class="filmMisc__voiceActors__actor">Владимир Антоник</span>
-            <span class="filmMisc__voiceActors__actor">Антон Эльдаров</span>
-            <span class="filmMisc__voiceActors__actor">Евгения Ваган</span>
-            <span class="filmMisc__voiceActors__actor">Елена Шульман</span>
-            <span class="filmMisc__voiceActors__actor">Сергей Чихачёв</span>
-            <span class="filmMisc__voiceActors__count">10 актеров</span>
-          </div>
+        <div class="filmMisc__voiceActors">
+          <div class="filmMisc__voiceActors__title">Роли дублировали</div>
+          <span class="filmMisc__voiceActors__actor">Владимир Антоник</span>
+          <span class="filmMisc__voiceActors__actor">Антон Эльдаров</span>
+          <span class="filmMisc__voiceActors__actor">Евгения Ваган</span>
+          <span class="filmMisc__voiceActors__actor">Елена Шульман</span>
+          <span class="filmMisc__voiceActors__actor">Сергей Чихачёв</span>
+          <span class="filmMisc__voiceActors__count">10 актеров</span>
         </div>
       </div>
     </div>
@@ -341,8 +344,31 @@ function openVideoPlayer() {
           />
         </div>
         <div class="middleSection__similarFilms">
-          <SimilarFilms :similarFilms />
+          <div class="middleSection__similarFilms__header">
+            <h2>Если вам понравился этот фильм</h2>
+          </div>
+          <Carousel
+            class="middleSection__similarFilms__carousel"
+            :slides="similarFilms"
+            :component="FilmPosterLink"
+            :slidesShown="5"
+            gapPercent="1"
+            buttonsOffsetPercent="-10"
+          />
         </div>
+        <!-- <div class="middleSection__trailers"> -->
+        <!--   <div class="middleSection__trailers__header"> -->
+        <!--     <h2>Трейлеры и тизеры</h2> -->
+        <!--   </div> -->
+        <!--   <Carousel -->
+        <!--     class="middleSection__trailers__carousel" -->
+        <!--     :slides="similarFilms" -->
+        <!--     :component="VideoPreview" -->
+        <!--     :slidesShown="2" -->
+        <!--     gapPercent="1" -->
+        <!--     buttonsOffsetPercent="-10" -->
+        <!--   /> -->
+        <!-- </div> -->
       </div>
       <div class="middleSection__rightPanel">
         <div class="middleSection__rightPanel__friends">
@@ -389,10 +415,7 @@ function openVideoPlayer() {
 
 .upperSection {
   &__wrapper {
-    // cuz i need full width border xd
-    &borderBottom {
-      border-bottom: solid 1px rgba(222, 222, 222, 0.4);
-    }
+    border-bottom: solid 1px rgba(222, 222, 222, 0.4);
     display: flex;
     height: 100%;
     padding: 50px 360px;
@@ -417,7 +440,26 @@ function openVideoPlayer() {
 
 .middleSection {
   &__similarFilms {
-    margin-top: 80px;
+    margin-top: 60px;
+    &__header {
+      color: black;
+      margin-bottom: 14px;
+    }
+    &__carousel {
+      width: 800px;
+      height: 290px;
+    }
+  }
+  &__trailers {
+    margin-top: 60px;
+    &__header {
+      color: black;
+      margin-bottom: 14px;
+    }
+    &__carousel {
+      width: 800px;
+      height: 290px;
+    }
   }
   &__wrapper {
     display: flex;

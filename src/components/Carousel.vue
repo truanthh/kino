@@ -7,17 +7,25 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  visibleSlides: {
+  component: {
+    type: Object,
+    required: true,
+  },
+  slidesShown: {
     type: Number,
-    default: 3,
+    default: 4,
   },
   slideStepSize: {
     type: Number,
     default: 0,
   },
-  gap: {
-    type: Number,
-    default: 0,
+  gapPercent: {
+    type: String,
+    default: "",
+  },
+  buttonsOffsetPercent: {
+    type: String,
+    default: "",
   },
 });
 
@@ -25,18 +33,16 @@ let firstItemId = ref(0);
 
 const slideWidth = computed(() => {
   // width in percentage of scrollBar
-  return 100 / props.visibleSlides;
+  return 100 / props.slidesShown;
 });
 
 const stepSize = computed(() => {
-  return props.slideStepSize > 0
-    ? props.slideStepSize
-    : props.visibleSlides - 1;
+  return props.slideStepSize > 0 ? props.slideStepSize : props.slidesShown - 1;
 });
 
 function handleButtonRightClick() {
   let newId = firstItemId.value + stepSize.value;
-  let firstItemVisibleMax = props.slides.length - props.visibleSlides;
+  let firstItemVisibleMax = props.slides.length - props.slidesShown;
 
   while (newId > firstItemVisibleMax) {
     newId--;
@@ -57,37 +63,40 @@ function handleButtonLeftClick() {
 </script>
 
 <template>
-  <div class="carousel__container">
-    <div class="carousel__scrollBar">
-      <span class="carousel__buttonLeft" @click="handleButtonLeftClick"></span>
-      <div class="carousel__itemsList" :style="{ gap: gap + '%' }">
-        <div
-          class="carousel__itemsList__item"
-          v-for="(slide, id) of slides"
-          :key="id"
-          :style="{
-            'margin-left': id === 0 ? `-${firstItemId * slideWidth}%` : '0px',
-            width: slideWidth - gap + '%',
-            'min-width': slideWidth - gap + '%',
-          }"
-        >
-          <ImageSkeleton :id="slide" />
-        </div>
+  <div class="carousel__scrollBar">
+    <span
+      class="carousel__buttonLeft"
+      @click="handleButtonLeftClick"
+      :style="{ top: `calc(50% - 22px + ${buttonsOffsetPercent}%)` }"
+    ></span>
+    <div class="carousel__itemsList" :style="{ gap: gapPercent + '%' }">
+      <div
+        class="carousel__itemsList__item"
+        v-for="(slide, id) of slides"
+        :key="id"
+        :style="{
+          'margin-left': id === 0 ? `-${firstItemId * slideWidth}%` : '0px',
+          width: slideWidth - gapPercent + '%',
+          'min-width': slideWidth - gapPercent + '%',
+        }"
+      >
+        <!-- <ImageSkeleton /> -->
+        <component :film="slide" />
       </div>
-      <span
-        class="carousel__buttonRight"
-        :style="{ right: `calc(-22px + ${gap}%)` }"
-        @click="handleButtonRightClick"
-      ></span>
     </div>
+    <span
+      class="carousel__buttonRight"
+      :style="{
+        right: `calc(-22px + ${gapPercent}%)`,
+        top: `calc(50% - 22px + ${buttonsOffsetPercent}%)`,
+      }"
+      @click="handleButtonRightClick"
+    ></span>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .carousel {
-  &__container {
-    height: 100%;
-  }
   &__scrollBar {
     height: 100%;
     position: relative;
@@ -101,6 +110,7 @@ function handleButtonLeftClick() {
     scrollbar-width: none;
     &__item {
       transition: margin 0.2s ease-out;
+      overflow: hidden;
     }
   }
   &__buttonRight {

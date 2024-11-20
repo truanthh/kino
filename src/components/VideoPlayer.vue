@@ -32,7 +32,8 @@ function handleClick() {
   videoStore.isOpenVideoPlayer = false;
 }
 
-// this is very very bad probably, but it works for now
+// this is very very bad probably, but i didnt find better solution
+// it seems that it is a bug with vidstack player cuz its ignoring direct volume value set in template
 function setVolume() {
   if (player.value) {
     setTimeout(() => {

@@ -65,7 +65,7 @@ function setVolume() {
       crossOrigin
       playsInline
       ref="player"
-      :onSourceChange="setVolume"
+      :onCanPlay="setVolume"
     >
       <media-provider>
         <media-poster class="vds-poster" />

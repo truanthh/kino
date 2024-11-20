@@ -13,8 +13,7 @@ import FilmRatingStats from "@/components/FilmRatingStats.vue";
 import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
 import Carousel from "@/components/Carousel.vue";
 import FilmPosterLink from "@/components/FilmPosterLink.vue";
-
-const isOpenVideoPlayer = ref(false);
+import FilmTrailerPreview from "@/components/FilmTrailerPreview.vue";
 
 const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 
@@ -122,20 +121,23 @@ function toggleEditFilm() {
   editFilm.value = !editFilm.value;
 }
 
-function openVideoPlayer() {
-  isOpenVideoPlayer.value = true;
-}
+const videoUrl = ref("");
 
-// function closeVideoPlayer(){
-//   isOpenVideoPlayer.value = false;
-// }
+//TRAILER STUFF
+const testVideoUrl = "@/assets/video.mp4";
+
+const testThumbnailUrl = "@/assets/bla.jpg";
+
+let filmTrailers = ref([
+  { videoUrl: "@/assets/video.mp4", thumbnailUrl: "@/assets/bla.jpg" },
+  { videoUrl: "@/assets/perp1.mp4", thumbnailUrl: "@/assets/perp1.jpg" },
+  { videoUrl: "@/assets/video.mp4", thumbnailUrl: "@/assets/bla.jpg" },
+  { videoUrl: "@/assets/perp1.mp4", thumbnailUrl: "@/assets/perp1.jpg" },
+]);
 </script>
 
 <template>
-  <VideoPlayer
-    :openVideoPlayer="isOpenVideoPlayer"
-    @closePlayer="isOpenVideoPlayer = false"
-  />
+  <VideoPlayer />
   <div class="upperSection__wrapper">
     <div class="upperSection__grid-main">
       <!-- <Button -->
@@ -154,11 +156,9 @@ function openVideoPlayer() {
         />
         <ImageSkeleton v-if="!film.poster_url" class="filmMedia__poster" />
 
-        <VideoPreview
-          :openVideoPlayer
-          thumbnailSrc="@/assets/bla.jpg"
-          desc="Трейлер №2 (дублированный)"
-          date="17 июня 2019"
+        <FilmTrailerPreview
+          :item="filmTrailers[0]"
+          class="filmMedia__trailer"
         />
 
         <div class="filmMedia__edit" v-if="editFilm">
@@ -350,25 +350,29 @@ function openVideoPlayer() {
           <Carousel
             class="middleSection__similarFilms__carousel"
             :slides="similarFilms"
-            :component="FilmPosterLink"
             :slidesShown="5"
+            :component="FilmPosterLink"
             gapPercent="1"
             buttonsOffsetPercent="-10"
           />
         </div>
-        <!-- <div class="middleSection__trailers"> -->
-        <!--   <div class="middleSection__trailers__header"> -->
-        <!--     <h2>Трейлеры и тизеры</h2> -->
-        <!--   </div> -->
-        <!--   <Carousel -->
-        <!--     class="middleSection__trailers__carousel" -->
-        <!--     :slides="similarFilms" -->
-        <!--     :component="VideoPreview" -->
-        <!--     :slidesShown="2" -->
-        <!--     gapPercent="1" -->
-        <!--     buttonsOffsetPercent="-10" -->
-        <!--   /> -->
-        <!-- </div> -->
+        <div class="middleSection__trailers">
+          <div class="middleSection__trailers__header">
+            <h2>Трейлеры и тизеры</h2>
+          </div>
+          <Carousel
+            class="middleSection__trailers__carousel"
+            :slides="filmTrailers"
+            :component="FilmTrailerPreview"
+            :slidesShown="2"
+            gapPercent="1"
+          />
+        </div>
+        <div class="middleSection__filmFacts">
+          <div class="middleSection__filmFacts__header">
+            <h2>Знаете ли вы, что...</h2>
+          </div>
+        </div>
       </div>
       <div class="middleSection__rightPanel">
         <div class="middleSection__rightPanel__friends">
@@ -458,7 +462,14 @@ function openVideoPlayer() {
     }
     &__carousel {
       width: 800px;
-      height: 290px;
+      height: 217px;
+    }
+  }
+  &__filmFacts {
+    margin-top: 60px;
+    &__header {
+      color: black;
+      margin-bottom: 14px;
     }
   }
   &__wrapper {
@@ -630,6 +641,9 @@ function openVideoPlayer() {
     display: inherit;
     flex-direction: inherit;
     gap: inherit;
+  }
+  &__trailer {
+    height: 170px;
   }
 }
 

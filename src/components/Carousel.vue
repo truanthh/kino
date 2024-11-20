@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
+import FilmPosterLink from "@/components/FilmPosterLink.vue";
+import FilmTrailerPreview from "@/components/FilmTrailerPreview.vue";
 
 const props = defineProps({
   slides: {
@@ -81,7 +83,8 @@ function handleButtonLeftClick() {
         }"
       >
         <!-- <ImageSkeleton /> -->
-        <component :film="slide" />
+        <component :item="slide" />
+        <!-- <slot :film="slide"></slot> -->
       </div>
     </div>
     <span

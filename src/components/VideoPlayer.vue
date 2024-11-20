@@ -9,31 +9,46 @@ import "vidstack/player/ui";
 import { MediaPlayerElement } from "vidstack/elements";
 
 //other
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
+import { useVideoStore } from "@/stores/video";
 
-const emit = defineEmits(["closePlayer"]);
+const videoStore = useVideoStore();
 
-const videoUrl = ref(new URL("@/assets/video.mp4", import.meta.url).href);
+const player = ref(null);
 
-const player = ref();
+// const videoUrlStatic = ref(new URL("@/assets/video.mp4", import.meta.url).href);
 
-const props = defineProps({
-  openVideoPlayer: {
-    type: Boolean,
-    default: false,
-  },
+const videoUrl = computed(() => {
+  return new URL(videoStore.currentVideoPlaying, import.meta.url).href.replace(
+    "components/@/",
+    "",
+  );
 });
 
 function handleClick() {
   player.value.paused = true;
-  emit("closePlayer");
+  // player.value.volume = 0.5;
+  videoStore.isOpenVideoPlayer = false;
+}
+
+// this is very very bad probably, but it works for now
+function setVolume() {
+  if (player.value) {
+    setTimeout(() => {
+      player.value.volume = 0.5;
+    }, 200);
+  }
 }
 </script>
 
 <template>
+  <!-- <button class="debug" @click="debug">ALEKY</button> -->
   <div
-    :class="['modal-overlay', { 'modal-overlay_isopen': openVideoPlayer }]"
+    :class="[
+      'modal-overlay',
+      { 'modal-overlay_isopen': videoStore.isOpenVideoPlayer },
+    ]"
     @click.self="handleClick"
   >
     <IconifyIcon
@@ -43,11 +58,13 @@ function handleClick() {
     />
     <media-player
       class="player"
-      title="ken carson"
+      title="title"
       :src="videoUrl"
+      :autoplay="true"
       crossOrigin
       playsInline
       ref="player"
+      :onSourceChange="setVolume"
     >
       <media-provider>
         <media-poster class="vds-poster" />
@@ -59,6 +76,13 @@ function handleClick() {
 </template>
 
 <style lang="scss" scoped>
+.debug {
+  position: fixed;
+  width: 200px;
+  height: 20px;
+  background-color: red;
+  z-index: 6666;
+}
 .modal-overlay {
   position: fixed;
   display: none;

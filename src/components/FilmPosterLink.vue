@@ -2,29 +2,29 @@
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
 
 const props = defineProps({
-  film: {
+  item: {
     type: Object,
     default: {},
   },
 });
 
-// console.log(film);
+// console.log(item);
 </script>
 
 <template>
   <div class="filmPosterLink__container">
     <div class="filmPosterLink__poster">
       <img
-        :src="film.poster_url"
+        :src="item.poster_url"
         class="filmPosterLink__poster__img"
-        v-if="film.poster_url"
+        v-if="item.poster_url"
       />
       <!-- <ImageSkeleton v-else /> -->
       <div class="filmPosterLink__poster__rating">1.2</div>
     </div>
-    <div class="filmPosterLink__title">{{ film.title }}</div>
+    <div class="filmPosterLink__title">{{ item.title }}</div>
     <div class="filmPosterLink__misc">
-      {{ film.prod_year }}, {{ film.director_name }}
+      {{ item.prod_year }}, {{ item.director_name }}
     </div>
   </div>
 </template>

@@ -14,6 +14,7 @@ import FilmRatingCritics from "@/components/FilmRatingCritics.vue";
 import Carousel from "@/components/Carousel.vue";
 import FilmPosterLink from "@/components/FilmPosterLink.vue";
 import FilmTrailerPreview from "@/components/FilmTrailerPreview.vue";
+import ListItems from "@/components/ListItems.vue";
 
 const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 
@@ -133,6 +134,13 @@ let filmTrailers = ref([
   { videoUrl: "@/assets/perp1.mp4", thumbnailUrl: "@/assets/perp1.jpg" },
   { videoUrl: "@/assets/video.mp4", thumbnailUrl: "@/assets/bla.jpg" },
   { videoUrl: "@/assets/perp1.mp4", thumbnailUrl: "@/assets/perp1.jpg" },
+]);
+
+let filmFacts = ref([
+  "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
+  "Руководство кинокомпании New Line Cinema настаивало на двухминутном прологе, и в итоге вступление растянулось на 7,5 минут.",
+  "На празднике Бильбо должно было присутствовать 144 хоббита-статиста, чтобы максимально соответствовать тексту книги, но в целях экономии наняли лишь 100.",
+  "В некоторых сценах Гэндальфа озвучивал Джон Эстин, отец актёра Шона Эстина, сыгравшего Сэма.",
 ]);
 </script>
 
@@ -371,6 +379,9 @@ let filmTrailers = ref([
         <div class="middleSection__filmFacts">
           <div class="middleSection__filmFacts__header">
             <h2>Знаете ли вы, что...</h2>
+          </div>
+          <div class="middleSection__filmFacts__list">
+            <ListItems :items="filmFacts" />
           </div>
         </div>
       </div>

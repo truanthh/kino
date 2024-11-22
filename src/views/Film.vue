@@ -15,6 +15,7 @@ import Carousel from "@/components/Carousel.vue";
 import FilmPosterLink from "@/components/FilmPosterLink.vue";
 import FilmTrailerPreview from "@/components/FilmTrailerPreview.vue";
 import ListItems from "@/components/ListItems.vue";
+import FilmReviewsList from "@/components/FilmReviewsList.vue";
 
 const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 
@@ -141,6 +142,12 @@ let filmFacts = ref([
   "Руководство кинокомпании New Line Cinema настаивало на двухминутном прологе, и в итоге вступление растянулось на 7,5 минут.",
   "На празднике Бильбо должно было присутствовать 144 хоббита-статиста, чтобы максимально соответствовать тексту книги, но в целях экономии наняли лишь 100.",
   "В некоторых сценах Гэндальфа озвучивал Джон Эстин, отец актёра Шона Эстина, сыгравшего Сэма.",
+]);
+
+let filmReviews = ref([
+  "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
+  "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
+  "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
 ]);
 </script>
 
@@ -384,6 +391,24 @@ let filmFacts = ref([
             <ListItems :items="filmFacts" />
           </div>
         </div>
+        <div class="middleSection__filmReviewsCritics">
+          <div class="middleSection__filmReviewsCritics__header">
+            <h2>Рецензии кинокритиков</h2>
+          </div>
+          <Carousel
+            class="middleSection__filmReviewsCritics__carousel"
+            :slides="filmReviews"
+            :component="FilmTrailerPreview"
+            :slidesShown="3"
+            gapPercent="1"
+          />
+        </div>
+        <div class="middleSection__filmReviews">
+          <div class="middleSection__filmReviews__header">
+            <h2>Рецензии зрителей</h2>
+          </div>
+          <FilmReviewsList :items="filmReviews" />
+        </div>
       </div>
       <div class="middleSection__rightPanel">
         <div class="middleSection__rightPanel__friends">
@@ -481,6 +506,17 @@ let filmFacts = ref([
     &__header {
       color: black;
       margin-bottom: 14px;
+    }
+  }
+  &__filmReviewsCritics {
+    margin-top: 60px;
+    &__header {
+      color: black;
+      margin-bottom: 14px;
+    }
+    &__carousel {
+      width: 800px;
+      height: 290px;
     }
   }
   &__wrapper {

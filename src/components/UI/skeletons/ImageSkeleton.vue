@@ -6,11 +6,18 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  rounded: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
 <template>
-  <div class="imageSkeleton__container">
+  <div
+    class="imageSkeleton__container"
+    :style="{ 'border-radius': rounded ? '50%' : '2px' }"
+  >
     <div class="imageSkeleton_idText" v-if="id">
       <h2>{{ id }}</h2>
     </div>
@@ -30,7 +37,6 @@ const props = defineProps({
     width: 100%;
     height: 100%;
     border: solid 2px #cccccc;
-    border-radius: 6px;
     background-color: #f2f2f2;
     display: flex;
     flex-direction: column;
@@ -44,6 +50,8 @@ const props = defineProps({
   &__icon {
     width: 100%;
     height: 100%;
+    // width: auto;
+    // height: auto;
     color: #cccccc;
   }
   &__idText {

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import ImageSkeleton from "@/components/UI/Skeletons/ImageSkeleton.vue";
+import WriteReviewForm from "@/components/WriteReviewForm.vue";
 
 const props = defineProps({
   items: {
@@ -47,16 +48,30 @@ function showFullReview() {
           <span>прямая ссылка</span>
         </div>
       </div>
-      <div class="filmReviewsList__review__title">
-        «Сказка – ложь, да в ней намек…»
+      <div class="filmReviewsList__review__body">
+        <div class="filmReviewsList__review__title">
+          «Сказка – ложь, да в ней намек…»
+        </div>
+        <div :class="isTextExpanded">
+          {{ reviewText }}
+        </div>
+        <button
+          v-if="showButtonMore"
+          class="buttonMore"
+          @click="showFullReview"
+        >
+          показать всю рецензию
+        </button>
       </div>
-      <div :class="isTextExpanded">
-        {{ reviewText }}
+      <div class="filmReviewsList__review__userActions">
+        <button class="buttonComment">Добавить комментарий</button>
+        <div class="filmReviewsList__review__userActions__rateReviewButtons">
+          <span> Полезно </span>
+          <span> Нет </span>
+        </div>
       </div>
-      <button v-if="showButtonMore" class="buttonMore" @click="showFullReview">
-        показать всю рецензию
-      </button>
     </div>
+    <WriteReviewForm />
   </div>
 </template>
 
@@ -77,8 +92,8 @@ function showFullReview() {
     flex-direction: column;
     gap: 2%;
     width: 800px;
-    height: 2000px;
-    background-color: orange;
+    // height: 2000px;
+    // background-color: orange;
   }
   &__review {
     // display: flex;
@@ -132,17 +147,41 @@ function showFullReview() {
         max-height: auto;
       }
     }
+    &__userActions {
+      margin-top: 35px;
+      display: flex;
+      &__rateReviewButtons {
+        gap: 10px;
+        color: #565956;
+        display: flex;
+        margin-left: auto;
+        margin-right: 20px;
+      }
+    }
   }
 }
 
 .buttonMore {
-  background-color: #d3d3d3;
+  // background-color: #d3d3d3;
+  background-color: rgba(31, 31, 31, 0.1);
   color: #565956;
   cursor: pointer;
   border: none;
   width: 160px;
   height: 18px;
   font-size: 13px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  padding: 1px 6px 2px;
+}
+
+.buttonComment {
+  background-color: rgba(0, 0, 0, 0);
+  color: #565956;
+  cursor: pointer;
+  border: none;
+  height: 18px;
+  font-size: 14px;
   margin-left: 20px;
   margin-bottom: 20px;
   padding: 1px 6px 2px;

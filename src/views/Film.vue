@@ -391,18 +391,18 @@ let filmReviews = ref([
             <ListItems :items="filmFacts" />
           </div>
         </div>
-        <div class="middleSection__filmReviewsCritics">
-          <div class="middleSection__filmReviewsCritics__header">
-            <h2>Рецензии кинокритиков</h2>
-          </div>
-          <Carousel
-            class="middleSection__filmReviewsCritics__carousel"
-            :slides="filmReviews"
-            :component="FilmTrailerPreview"
-            :slidesShown="3"
-            gapPercent="1"
-          />
-        </div>
+        <!-- <div class="middleSection__filmReviewsCritics"> -->
+        <!--   <div class="middleSection__filmReviewsCritics__header"> -->
+        <!--     <h2>Рецензии кинокритиков</h2> -->
+        <!--   </div> -->
+        <!--   <Carousel -->
+        <!--     class="middleSection__filmReviewsCritics__carousel" -->
+        <!--     :slides="filmReviews" -->
+        <!--     :component="FilmTrailerPreview" -->
+        <!--     :slidesShown="3" -->
+        <!--     gapPercent="1" -->
+        <!--   /> -->
+        <!-- </div> -->
         <div class="middleSection__filmReviews">
           <div class="middleSection__filmReviews__header">
             <h2>Рецензии зрителей</h2>
@@ -518,6 +518,29 @@ let filmReviews = ref([
       width: 800px;
       height: 290px;
     }
+  }
+  &__filmReviews {
+    margin-top: 40px;
+    &__header {
+      color: black;
+      margin-bottom: 20px;
+    }
+  }
+  &__writeReview {
+    margin-top: 40px;
+    &__header {
+      color: black;
+      margin-bottom: 20px;
+    }
+    // &__inputForm {
+    //   display: flex;
+    //   width: 622px;
+    //   height: 776px;
+    //   background-color: orange;
+    //   &__inputText {
+    //     height: 20px;
+    //   }
+    // }
   }
   &__wrapper {
     display: flex;

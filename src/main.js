@@ -18,6 +18,7 @@ const fb = initializeApp(firebaseConfig);
 // console.log(auth);
 
 const app = createApp(App);
+
 const pinia = createPinia();
 
 components.forEach((component) => {

@@ -20,7 +20,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: "placeholder",
+    default: "",
   },
   label: {
     type: String,
@@ -31,6 +31,10 @@ const props = defineProps({
     default: "300px",
   },
   disabled: {
+    type: Boolean,
+    default: false,
+  },
+  labelAlwaysVisible: {
     type: Boolean,
     default: false,
   },
@@ -53,9 +57,12 @@ function updateValue() {
       :disabled
       @input="updateValue"
     />
-    <label :for="name" class="input-label" :style="{ width: width }">{{
-      label
-    }}</label>
+    <label
+      :for="name"
+      :class="labelAlwaysVisible ? 'labelAlwaysVisible' : 'input-label'"
+      :style="{ width: width }"
+      >{{ label }}</label
+    >
     <!-- added v-if value here, so we hiding error if the field is empty, but error still persists -->
     <div
       class="form-error"
@@ -86,9 +93,9 @@ function updateValue() {
 
 .input {
   &-text {
-    font-size: 20px;
+    font-size: 16px;
     width: 100%;
-    height: 40px;
+    height: 30px;
     border-radius: 7px;
     padding: 0 10px;
     border: 1px solid var(--primary);
@@ -111,5 +118,15 @@ function updateValue() {
     font-size: 14px;
     font-weight: bold;
   }
+}
+.labelAlwaysVisible {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  opacity: 1;
+  top: -24px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: bold;
 }
 </style>

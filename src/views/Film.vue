@@ -16,6 +16,7 @@ import FilmPosterLink from "@/components/FilmPosterLink.vue";
 import FilmTrailerPreview from "@/components/FilmTrailerPreview.vue";
 import ListItems from "@/components/ListItems.vue";
 import FilmReviewsList from "@/components/FilmReviewsList.vue";
+import FilmEdit from "@/components/FilmEdit.vue";
 
 const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 
@@ -30,11 +31,6 @@ const film = ref({});
 let similarFilms = ref([]);
 
 const editFilm = ref(false);
-
-const titleField = ref("");
-const prodyearField = ref("");
-const directorField = ref("");
-const countryField = ref("");
 
 async function getFilmById(id) {
   // console.log(`trying to get film ${id}`);
@@ -62,62 +58,7 @@ onMounted(async () => {
   await getFilmById(route.params.id);
 });
 
-const submitForm = async () => {
-  const formData = {
-    id: route.params.id,
-    title: titleField.value,
-    prod_year: prodyearField.value,
-    country: countryField.value,
-    director: directorField.value,
-  };
-
-  await updateFilmInfo(route.params.id, formData);
-};
-
 // const imagePath = ref("");
-const imageUrl = ref("");
-const file = ref();
-
-const onFileChange = () => {
-  file.value = event.target.files[0];
-  if (file.value) {
-    imageUrl.value = URL.createObjectURL(file.value);
-    // imagePath.value = file.value.name;
-  }
-};
-
-async function updatePoster(id) {
-  if (file.value) {
-    const formData = new FormData();
-    formData.append("poster", file.value);
-    try {
-      let response = await axiosApiInstance.post(
-        `http://${DB_SERVER_ADDRESS}/films/${id}/poster`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
-      );
-
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-    }
-  } else {
-    imageUrl.value = "select file! :)";
-  }
-}
-
-async function updateFilmInfo(id, formData) {
-  try {
-    let response = await axiosApiInstance.put(
-      `http://${DB_SERVER_ADDRESS}/films/${id}`,
-      formData,
-    );
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 function toggleEditFilm() {
   editFilm.value = !editFilm.value;
@@ -153,16 +94,17 @@ let filmReviews = ref([
 
 <template>
   <VideoPlayer />
+  <FilmEdit :isOpenFilmEdit="editFilm" :film="film" @close="toggleEditFilm" />
   <div class="upperSection__wrapper">
     <div class="upperSection__grid-main">
-      <!-- <Button -->
-      <!--   class="upperSection__wrapper__editbtn" -->
-      <!--   @click="toggleEditFilm" -->
-      <!--   icon="icon-park-outline:edit" -->
-      <!--   rounded -->
-      <!--   outlined -->
-      <!--   color="gray" -->
-      <!-- /> -->
+      <Button
+        class="upperSection__wrapper__editbtn"
+        @click="toggleEditFilm"
+        icon="icon-park-outline:edit"
+        rounded
+        outlined
+        color="gray"
+      />
       <div class="filmMedia">
         <img
           :src="film.poster_url"
@@ -175,16 +117,6 @@ let filmReviews = ref([
           :item="filmTrailers[0]"
           class="filmMedia__trailer"
         />
-
-        <div class="filmMedia__edit" v-if="editFilm">
-          <div v-if="imageUrl">{{ imageUrl }}</div>
-          <input type="file" @change="onFileChange" accept="image/*" />
-          <Button
-            label="Обновить постер"
-            class="btn__edit"
-            @click="updatePoster(route.params.id)"
-          />
-        </div>
       </div>
       <div class="filmInfo">
         <div class="filmInfo__title">
@@ -209,7 +141,7 @@ let filmReviews = ref([
           />
         </div>
         <div class="filmInfo__about__title">О фильме</div>
-        <div class="filmInfo__about" v-if="!editFilm">
+        <div class="filmInfo__about">
           <div>Год производства</div>
           <div>
             {{ film.prod_year }}
@@ -249,42 +181,6 @@ let filmReviews = ref([
             {{ film.premiere_world }}
           </div>
         </div>
-        <form
-          @submit.prevent="submitForm"
-          v-if="editFilm"
-          class="filmInfo__edit"
-        >
-          <Input name="id" type="text" :placeholder="`${film.id}`" disabled />
-          <Input
-            name="title"
-            type="text"
-            v-model:value="titleField"
-            :placeholder="film.title"
-            label="Название фильма"
-          />
-          <Input
-            name="prod_year"
-            type="text"
-            v-model:value="prodyearField"
-            :placeholder="film.prod_year"
-            label="Год производства"
-          />
-          <Input
-            name="country"
-            type="text"
-            v-model:value="countryField"
-            :placeholder="film.country"
-            label="Страна производства"
-          />
-          <Input
-            name="director"
-            type="text"
-            v-model:value="directorField"
-            :placeholder="film.director"
-            label="Режиссер"
-          />
-          <Button label="Обновить данные" class="btn__edit" />
-        </form>
       </div>
       <div class="filmMisc">
         <FilmRatingStats
@@ -461,20 +357,20 @@ let filmReviews = ref([
     padding: 50px 360px;
     align-items: center;
     justify-content: center;
+    position: relative;
+    &__editbtn {
+      position: absolute;
+      max-width: 200px;
+      top: 50px;
+      right: 50px;
+    }
   }
   &__grid-main {
     @extend .content-width-global;
     display: grid;
-    // position: relative;
     height: 100%;
     grid-template-columns: auto auto auto;
     // background-color: #f0f0f0;
-    &__editbtn {
-      position: absolute;
-      max-width: 200px;
-      top: 6px;
-      right: 6px;
-    }
   }
 }
 
@@ -654,9 +550,6 @@ let filmReviews = ref([
       color: gray;
     }
   }
-  &__edit {
-    margin-top: 2rem;
-  }
 }
 
 .filmMisc {
@@ -707,20 +600,12 @@ let filmReviews = ref([
     height: 453px;
     // border-radius: 4px;
   }
-  &__edit {
-    display: inherit;
-    flex-direction: inherit;
-    gap: inherit;
-  }
   &__trailer {
     height: 170px;
   }
 }
 
 .btn {
-  &__edit {
-    max-width: 200px;
-  }
   &__rate {
     margin-top: 10px;
     height: 33px;

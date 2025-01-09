@@ -7,6 +7,7 @@ import BaseTable from "@/components/UI/Table/BaseTable.vue";
 import TableRow from "@/components/UI/Table/TableRow.vue";
 import TableColumn from "@/components/UI/Table/TableColumn.vue";
 
+const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 const authStore = useAuthStore();
 
 const films = ref([]);
@@ -27,7 +28,9 @@ const columnsTemplate = "50px 80px 340px 200px 50px 100px";
 
 async function getAllFilms() {
   try {
-    let response = await axiosApiInstance.get(`http://localhost:3000/films`);
+    let response = await axiosApiInstance.get(
+      `http://${DB_SERVER_ADDRESS}/films`,
+    );
     films.value = response.data;
   } catch (error) {
   } finally {

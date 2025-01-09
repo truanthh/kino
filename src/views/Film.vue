@@ -24,8 +24,8 @@ const route = useRoute();
 
 const film = ref({});
 
-// const actors = computed(() => {
-//   return film.value.actor_names || [];
+// const filmFacts = computed(() => {
+//   return film.value.facts ? film.value.facts.split('\n') : ["fact1","fact2"]
 // });
 
 let similarFilms = ref([]);
@@ -38,10 +38,7 @@ async function getFilmById(id) {
     let response = await axiosApiInstance.get(
       `http://${DB_SERVER_ADDRESS}/film/${id}`,
     );
-    // console.log(response.data);
     film.value = response.data;
-    // idk if that should be here, but i need only 10 actor names on this page
-    film.value.actors = film.value.actors.slice(0, 10);
     //just for testing
     for (let i = 0; i < 10; i++) {
       similarFilms.value.push(film.value);
@@ -78,13 +75,6 @@ let filmTrailers = ref([
   { videoUrl: "@/assets/perp1.mp4", thumbnailUrl: "@/assets/perp1.jpg" },
 ]);
 
-let filmFacts = ref([
-  "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
-  "Руководство кинокомпании New Line Cinema настаивало на двухминутном прологе, и в итоге вступление растянулось на 7,5 минут.",
-  "На празднике Бильбо должно было присутствовать 144 хоббита-статиста, чтобы максимально соответствовать тексту книги, но в целях экономии наняли лишь 100.",
-  "В некоторых сценах Гэндальфа озвучивал Джон Эстин, отец актёра Шона Эстина, сыгравшего Сэма.",
-]);
-
 let filmReviews = ref([
   "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
   "Фильм снят по мотивам романа Джона Рональда Руэла Толкина «Властелин колец» (The Lord of the Rings, 1954-1955).",
@@ -96,7 +86,7 @@ let filmReviews = ref([
   <VideoPlayer />
   <FilmEdit :isOpenFilmEdit="editFilm" :film="film" @close="toggleEditFilm" />
   <div class="upperSection__wrapper">
-    <div class="upperSection__grid-main">
+    <div class="upperSection__flexMain">
       <Button
         class="upperSection__wrapper__editbtn"
         @click="toggleEditFilm"
@@ -158,7 +148,7 @@ let filmReviews = ref([
           <div class="filmInfo__about__slogan">«{{ film.slogan }}»</div>
           <div>Режиссер</div>
           <div>
-            {{ film.director_name }}
+            {{ film.director }}
           </div>
           <div>Композитор</div>
           <div>
@@ -189,24 +179,15 @@ let filmReviews = ref([
           reviewsCountEnabled
           smallRatingEnabled
         />
-        <div class="filmMisc__actors">
+        <div class="filmMisc__actors" v-if="film.actors">
           <div class="filmMisc__actors__title">В главных ролях</div>
-          <span
-            class="filmMisc__actors__actor"
-            v-for="actor of film.actors"
-            @click="$router.push({ name: 'name', params: { id: actor.id } })"
-            >{{ actor.name }}</span
-          >
-          <span class="filmMisc__actors__count">57 актеров</span>
+          <span class="filmMisc__actors__actor" v-for="actor of film.actors"> {{ actor }} </span>
+          <span class="filmMisc__actors__count">{{ film.actors.length}} актеров </span>
         </div>
-        <div class="filmMisc__voiceActors">
-          <div class="filmMisc__voiceActors__title">Роли дублировали</div>
-          <span class="filmMisc__voiceActors__actor">Владимир Антоник</span>
-          <span class="filmMisc__voiceActors__actor">Антон Эльдаров</span>
-          <span class="filmMisc__voiceActors__actor">Евгения Ваган</span>
-          <span class="filmMisc__voiceActors__actor">Елена Шульман</span>
-          <span class="filmMisc__voiceActors__actor">Сергей Чихачёв</span>
-          <span class="filmMisc__voiceActors__count">10 актеров</span>
+        <div class="filmMisc__actorsVoice" v-if="film.actors_voice">
+          <div class="filmMisc__actorsVoice__title"> Роли дублировали </div>
+          <span class="filmMisc__actorsVoice__actor" v-for="actor of film.actors_voice"> {{ actor }} </span>
+          <span class="filmMisc__actorsVoice__count">{{ film.actors_voice.length}} актеров </span>
         </div>
       </div>
     </div>
@@ -226,18 +207,9 @@ let filmReviews = ref([
           <a class="spoilerBar__item">Сайты</a>
           <a class="spoilerBar__item">Еще</a>
         </div>
-        <div class="filmDescription">
-          Сказания о Средиземье — это хроника Великой войны за Кольцо, длившейся
-          не одну тысячу лет. Тот, кто владел Кольцом, получал неограниченную
-          власть, но был обязан служить злу. Тихая деревня, где живут хоббиты.
-          Придя на 111-й день рождения к своему старому другу Бильбо Бэггинсу,
-          волшебник Гэндальф начинает вести разговор о кольце, которое Бильбо
-          нашел много лет назад. Это кольцо принадлежало когда-то темному
-          властителю Средиземья Саурону, и оно дает большую власть своему
-          обладателю. Теперь Саурон хочет вернуть себе власть над Средиземьем.
-          Бильбо отдает Кольцо племяннику Фродо, чтобы тот отнёс его к Роковой
-          Горе и уничтожил.
-        </div>
+        <div class="filmSynopsis">
+          {{ film.synopsis }}
+        </div film.synopsis >
         <div class="ratingMain">
           <FilmRatingMain />
         </div>
@@ -284,7 +256,7 @@ let filmReviews = ref([
             <h2>Знаете ли вы, что...</h2>
           </div>
           <div class="middleSection__filmFacts__list">
-            <ListItems :items="filmFacts" />
+            <ListItems v-if="film.facts" :items="film.facts" />
           </div>
         </div>
         <!-- <div class="middleSection__filmReviewsCritics"> -->
@@ -366,11 +338,16 @@ let filmReviews = ref([
     }
   }
   &__grid-main {
-    @extend .content-width-global;
-    display: grid;
-    height: 100%;
-    grid-template-columns: auto auto auto;
+    // @extend .content-width-global;
+    // display: grid;
+    // height: 100%;
+    // grid-template-columns: auto auto auto;
     // background-color: #f0f0f0;
+  }
+  &__flexMain{
+    @extend .content-width-global;
+    display: flex;
+    justify-content: space-between;
   }
 }
 
@@ -428,15 +405,6 @@ let filmReviews = ref([
       color: black;
       margin-bottom: 20px;
     }
-    // &__inputForm {
-    //   display: flex;
-    //   width: 622px;
-    //   height: 776px;
-    //   background-color: orange;
-    //   &__inputText {
-    //     height: 20px;
-    //   }
-    // }
   }
   &__wrapper {
     display: flex;
@@ -512,7 +480,7 @@ let filmReviews = ref([
   gap: 40px;
 }
 
-.filmDescription {
+.filmSynopsis {
   display: flex;
   padding: 40px 0px;
   width: 728px;
@@ -520,6 +488,7 @@ let filmReviews = ref([
 
 .filmInfo {
   display: flex;
+  width: 100%;
   flex-direction: column;
   padding: 0rem 3.2rem;
   &__title {
@@ -571,7 +540,7 @@ let filmReviews = ref([
       @extend .actorsCount;
     }
   }
-  &__voiceActors {
+  &__actorsVoice {
     margin-top: 50px;
     &__title {
       @extend .actorsTitle;
@@ -595,6 +564,8 @@ let filmReviews = ref([
   display: flex;
   flex-direction: column;
   gap: 40px;
+  min-width: 300px;
+  max-width: 300px;
   &__poster {
     width: 100%;
     height: 453px;

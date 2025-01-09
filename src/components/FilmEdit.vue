@@ -3,9 +3,10 @@ import { ref } from "vue";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
+import axiosApiInstance from "@/api";
 
+const DB_SERVER_ADDRESS = import.meta.env.VITE_DB_SERVER_ADDRESS;
 const emit = defineEmits(["filmEditClose"]);
-
 const props = defineProps({
   film: {
     type: Object,
@@ -20,27 +21,46 @@ const props = defineProps({
 const newPosterURL = ref("Выбрать новый постер");
 const file = ref();
 
-const titleField = ref("");
-const titleOrigField = ref("");
-const prodyearField = ref("");
-const directorIDField = ref("");
-const countryField = ref("");
-const genreField = ref("");
-const composerField = ref("");
-const sloganField = ref("");
-const budgetField = ref("");
-const ageRestrictionField = ref("");
-const premiereWorldField = ref("");
-const premiereRussiaField = ref("");
-const synopsisField = ref("");
+// if null than what in db stays the same
+const titleField = ref(null);
+const titleOrigField = ref(null);
+const prodyearField = ref(null);
+const directorField = ref(null);
+const countryField = ref(null);
+const genreField = ref(null);
+const composerField = ref(null);
+const sloganField = ref(null);
+const budgetField = ref(null);
+const ageRestrictionField = ref(null);
+const premiereWorldField = ref(null);
+const premiereRussiaField = ref(null);
+const synopsisField = ref(null);
+const actorsField = ref(null);
+const actorsVoiceField = ref(null);
+const factsField = ref(null);
+
+const updateStatusMessage = ref("");
 
 const submitForm = async () => {
+  const toArr = (s) => {
+    if (!s) return null;
+    let bla = JSON.stringify(s.split("\n").map((el) => el.trim()));
+    console.log(bla);
+    return bla;
+  };
+
+  const actors = toArr(actorsField.value);
+  const actorsVoice = toArr(actorsVoiceField.value);
+  const facts = toArr(factsField.value);
+
+  console.log(actors);
+
   const formData = {
     id: props.film.id,
     title: titleField.value,
     prod_year: prodyearField.value,
     country: countryField.value,
-    director_id: directorIDField.value,
+    director: directorField.value,
     genre: genreField.value,
     slogan: sloganField.value,
     composer: composerField.value,
@@ -49,10 +69,22 @@ const submitForm = async () => {
     premiere_russia: premiereRussiaField.value,
     budget: budgetField.value,
     synopsis: synopsisField.value,
+    actors: actors,
+    actors_voice: actorsVoice,
+    facts: facts,
+    title_orig: titleOrigField.value,
   };
 
+  // for (let key in formData) {
+  //   if (!formData[key]) {
+  //     formData[key] = null;
+  //   }
+  // }
+
+  console.log(formData);
+
   await updateFilmInfo(props.film.id, formData);
-  await updatePoster(props.filmd.id);
+  await updatePoster(props.film.id);
 };
 
 async function updatePoster(id) {
@@ -65,11 +97,9 @@ async function updatePoster(id) {
         formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );
-
       console.log(response.data);
     } catch (error) {
       console.log(error);
-    } finally {
     }
   } else {
     newPosterURL.value = "select file! :)";
@@ -79,10 +109,11 @@ async function updatePoster(id) {
 async function updateFilmInfo(id, formData) {
   try {
     let response = await axiosApiInstance.put(
-      `http://${DB_SERVER_ADDRESS}/films/${id}`,
+      `http://${DB_SERVER_ADDRESS}/film/${id}`,
       formData,
     );
     console.log(response);
+    updateStatusMessage.value = response.data.message;
   } catch (error) {
     console.log(error);
   }
@@ -129,6 +160,14 @@ function handleClick() {
           labelAlwaysVisible
         />
         <Input
+          name="titleOrig"
+          type="text"
+          v-model:value="titleOrigField"
+          :placeholder="film.title_orig"
+          label="Название фильма(Оригинал)"
+          labelAlwaysVisible
+        />
+        <Input
           name="prod_year"
           type="text"
           v-model:value="prodyearField"
@@ -145,11 +184,11 @@ function handleClick() {
           labelAlwaysVisible
         />
         <Input
-          name="directorID"
+          name="director"
           type="text"
-          v-model:value="directorIDField"
-          :placeholder="film.director_name"
-          label="Режиссер ID"
+          v-model:value="directorField"
+          :placeholder="film.director"
+          label="Режиссер"
           labelAlwaysVisible
         />
         <Input
@@ -210,6 +249,50 @@ function handleClick() {
         />
       </div>
       <div class="filmEdit__rightColumn">
+        <Input
+          name="synopsis"
+          type="text"
+          v-model:value="synopsisField"
+          placeholder=""
+          label="Описание"
+          labelAlwaysVisible
+          width="700px"
+          height="200px"
+          multiline
+        />
+        <Input
+          name="actors"
+          type="text"
+          v-model:value="actorsField"
+          placeholder=""
+          label="Список Актеров(1 актер = 1 строчка)"
+          labelAlwaysVisible
+          width="700px"
+          height="200px"
+          multiline
+        />
+        <Input
+          name="actorsVoice"
+          type="text"
+          v-model:value="actorsVoiceField"
+          placeholder=""
+          label="Список Актеров Озвучки(1 актер = 1 строчка)"
+          labelAlwaysVisible
+          width="700px"
+          height="200px"
+          multiline
+        />
+        <Input
+          name="facts"
+          type="text"
+          v-model:value="factsField"
+          placeholder=""
+          label="Факты о Фильме"
+          labelAlwaysVisible
+          width="700px"
+          height="200px"
+          multiline
+        />
         <label for="posterUpd" class="label__posterUpd">
           {{ newPosterURL }}
         </label>
@@ -219,6 +302,7 @@ function handleClick() {
           @change="onFileChange"
           accept="image/*"
         />
+        <div class="updateStatusMessage">{{ updateStatusMessage }}</div>
         <Button label="Обновить данные" class="btn__submitForm" />
       </div>
     </form>
@@ -226,6 +310,10 @@ function handleClick() {
 </template>
 
 <style lang="scss" scoped>
+.updateStatusMessage {
+  font-size: 24px;
+  color: green;
+}
 .filmEdit {
   &__form {
     display: flex;
@@ -237,18 +325,19 @@ function handleClick() {
   &__leftColumn {
     display: flex;
     flex-direction: column;
-    background-color: orange;
     padding: 2rem 2rem;
+    background: rgba(255, 255, 255, 0.85);
     // border-right: solid 2px white;
     overflow-y: scroll;
   }
   &__rightColumn {
     display: flex;
     flex-direction: column;
-    background-color: green;
-    padding: 2rem 2rem;
+    padding: 3rem 2rem;
+    background: rgba(255, 255, 255, 0.85);
     width: 800px;
     position: relative;
+    overflow-y: scroll;
   }
 }
 
@@ -289,9 +378,10 @@ function handleClick() {
   }
   &__submitForm {
     max-width: 200px;
-    position: absolute;
-    bottom: 40px;
-    right: 60px;
+    margin-top: 20px;
+    background-color: orange;
+    min-height: 40px;
+    margin-left: auto;
   }
 }
 </style>

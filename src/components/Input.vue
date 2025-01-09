@@ -30,11 +30,19 @@ const props = defineProps({
     type: String,
     default: "300px",
   },
+  height: {
+    type: String,
+    default: "30px",
+  },
   disabled: {
     type: Boolean,
     default: false,
   },
   labelAlwaysVisible: {
+    type: Boolean,
+    default: false,
+  },
+  multiline: {
     type: Boolean,
     default: false,
   },
@@ -48,7 +56,19 @@ function updateValue() {
 <template>
   <div class="form-input" :style="{ width: width }">
     <input
+      v-if="!multiline"
       class="input-text"
+      :type
+      :name
+      :id="name"
+      :placeholder
+      :value
+      :disabled
+      @input="updateValue"
+    />
+    <textarea
+      v-else="multiline"
+      class="textarea-text"
       :type
       :name
       :id="name"
@@ -88,6 +108,19 @@ function updateValue() {
     font-size: 13px;
     color: #fff;
     padding: 5px;
+  }
+}
+
+.textarea {
+  &-text {
+    font-size: 16px;
+    width: 700px;
+    height: 200px;
+    resize: none;
+    border-radius: 7px;
+    padding: 2px 10px;
+    border: 1px solid var(--primary);
+    position: relative;
   }
 }
 

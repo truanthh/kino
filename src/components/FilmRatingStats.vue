@@ -1,5 +1,6 @@
 <script setup>
 import Button from "@/components/Button.vue";
+import { ref } from "vue";
 
 const props = defineProps({
   rating: {
@@ -27,6 +28,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+// const ratingFormatted = props.rating.
 </script>
 
 <template>

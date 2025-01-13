@@ -24,13 +24,24 @@ const route = useRoute();
 
 const film = ref({});
 
-// const filmFacts = computed(() => {
-//   return film.value.facts ? film.value.facts.split('\n') : ["fact1","fact2"]
-// });
 
 let similarFilms = ref([]);
 
 const isOpenFilmEdit = ref(false);
+
+async function updateFilmRating(data){
+  try {
+    let response = await axiosApiInstance.put(
+      `http://${DB_SERVER_ADDRESS}/film/${data.id}`,
+      {
+        id: data.id,
+        rating: data.rating
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function getFilmById(id) {
   // console.log(`trying to get film ${id}`);
@@ -211,7 +222,7 @@ let filmReviews = ref([
           {{ film.synopsis }}
         </div film.synopsis >
         <div class="ratingMain">
-          <FilmRatingMain :rating :count />
+          <FilmRatingMain :film @updateRating="updateFilmRating"/>
         </div>
         <div class="ratingCritics">
           <FilmRatingCritics

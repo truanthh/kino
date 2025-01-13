@@ -2,19 +2,25 @@
 import RatingStars from "@/components/RatingStars.vue";
 import FilmRatingStats from "@/components/FilmRatingStats.vue";
 
+const emit = defineEmits(["updateRating"]);
+
 const props = defineProps({
-  rating: {
-    type: Number,
-    default: 0,
+  film: {
+    type: Object,
+    required: true,
   },
-  count: {
-    type: Number,
-    default: 0,
-  },
+  // rating: {
+  //   type: Number,
+  //   default: 0,
+  // },
+  // count: {
+  //   type: Number,
+  //   default: 0,
+  // },
 });
 
-function handleStarClick(i) {
-  console.log(i + 1 + "hey from filmratingmain!");
+function handleStarClick(rating) {
+  emit("updateRating", { rating: rating + 1, id: props.film.id });
 }
 </script>
 
@@ -24,8 +30,11 @@ function handleStarClick(i) {
       <h2>Рейтинг фильма</h2>
     </div>
     <div class="filmRatingMain__body">
-      <RatingStars :rating :handleStarClick />
-      <FilmRatingStats :rating :count />
+      <RatingStars :rating="film.rating_users" :handleStarClick />
+      <FilmRatingStats
+        :rating="film.rating_users"
+        :count="film.rating_users_count"
+      />
     </div>
   </div>
 </template>

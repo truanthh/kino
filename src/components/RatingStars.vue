@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onBeforeUpdate } from "vue";
 import StarIcon from "@/components/StarIcon.vue";
 
 const props = defineProps({
@@ -58,7 +58,9 @@ function setRating() {
   }
 }
 
-setRating();
+onBeforeUpdate(() => {
+  setRating();
+});
 
 let tempColors = [];
 let tempPerc = [];

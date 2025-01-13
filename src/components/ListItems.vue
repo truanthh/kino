@@ -45,7 +45,7 @@ function loadMoreItems() {
     </li>
   </ul>
   <Button
-    v-if="showButtonMore"
+    v-if="showButtonMore && items.length > 3"
     rounded
     color="lightgray"
     icon="icon-park-outline:down"

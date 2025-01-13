@@ -30,7 +30,7 @@ const film = ref({});
 
 let similarFilms = ref([]);
 
-const editFilm = ref(false);
+const isOpenFilmEdit = ref(false);
 
 async function getFilmById(id) {
   // console.log(`trying to get film ${id}`);
@@ -57,8 +57,8 @@ onMounted(async () => {
 
 // const imagePath = ref("");
 
-function toggleEditFilm() {
-  editFilm.value = !editFilm.value;
+function toggleFilmEdit() {
+  isOpenFilmEdit.value = !isOpenFilmEdit.value;
 }
 
 const videoUrl = ref("");
@@ -84,12 +84,12 @@ let filmReviews = ref([
 
 <template>
   <VideoPlayer />
-  <FilmEdit :isOpenFilmEdit="editFilm" :film="film" @close="toggleEditFilm" />
+  <FilmEdit :isOpenFilmEdit :film="film" @close="toggleFilmEdit" />
   <div class="upperSection__wrapper">
     <div class="upperSection__flexMain">
       <Button
         class="upperSection__wrapper__editbtn"
-        @click="toggleEditFilm"
+        @click="toggleFilmEdit"
         icon="icon-park-outline:edit"
         rounded
         outlined

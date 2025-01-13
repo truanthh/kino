@@ -10,9 +10,13 @@ const emit = defineEmits(["filmEditClose"]);
 const props = defineProps({
   film: {
     type: Object,
-    required: true,
+    default: {},
   },
   isOpenFilmEdit: {
+    type: Boolean,
+    required: true,
+  },
+  isAddingFilm: {
     type: Boolean,
     required: true,
   },
@@ -42,18 +46,16 @@ const factsField = ref(null);
 const updateStatusMessage = ref("");
 
 const submitForm = async () => {
-  const toArr = (s) => {
+  const toJSON = (s) => {
     if (!s) return null;
     let bla = JSON.stringify(s.split("\n").map((el) => el.trim()));
     console.log(bla);
     return bla;
   };
 
-  const actors = toArr(actorsField.value);
-  const actorsVoice = toArr(actorsVoiceField.value);
-  const facts = toArr(factsField.value);
-
-  console.log(actors);
+  const actors = toJSON(actorsField.value);
+  const actorsVoice = toJSON(actorsVoiceField.value);
+  const facts = toJSON(factsField.value);
 
   const formData = {
     id: props.film.id,
@@ -75,16 +77,13 @@ const submitForm = async () => {
     title_orig: titleOrigField.value,
   };
 
-  // for (let key in formData) {
-  //   if (!formData[key]) {
-  //     formData[key] = null;
-  //   }
-  // }
-
-  console.log(formData);
-
-  await updateFilmInfo(props.film.id, formData);
-  await updatePoster(props.film.id);
+  if (!props.isAddingFilm) {
+    await updateFilmInfo(props.film.id, formData);
+    await updatePoster(props.film.id);
+  } else {
+    let newFilmID = await addFilm(formData);
+    await updatePoster(newFilmID);
+  }
 };
 
 async function updatePoster(id) {
@@ -110,6 +109,19 @@ async function updateFilmInfo(id, formData) {
   try {
     let response = await axiosApiInstance.put(
       `http://${DB_SERVER_ADDRESS}/film/${id}`,
+      formData,
+    );
+    console.log(response);
+    updateStatusMessage.value = response.data.message;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function addFilm(formData) {
+  try {
+    let response = await axiosApiInstance.post(
+      `http://${DB_SERVER_ADDRESS}/films`,
       formData,
     );
     console.log(response);
@@ -303,7 +315,10 @@ function handleClick() {
           accept="image/*"
         />
         <div class="updateStatusMessage">{{ updateStatusMessage }}</div>
-        <Button label="Обновить данные" class="btn__submitForm" />
+        <Button
+          :label="isAddingFilm ? `Добавить фильм` : `Обновить данные`"
+          class="btn__submitForm"
+        />
       </div>
     </form>
   </div>

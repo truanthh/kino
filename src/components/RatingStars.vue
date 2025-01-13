@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUpdate } from "vue";
+import { ref, onBeforeUpdate, computed, watch } from "vue";
 import StarIcon from "@/components/StarIcon.vue";
 
 const props = defineProps({
@@ -22,6 +22,15 @@ const COLOR_SELECTED_STAR_TEXT = "black";
 
 let starsCount = 10;
 
+// let bla = ref(false);
+
+watch(
+  () => props.rating,
+  () => {
+    setRating();
+  },
+);
+
 let stars = ref(Array(starsCount).fill("0%"));
 
 let colors = ref(
@@ -33,6 +42,7 @@ let colors = ref(
 
 function setRating() {
   let rating = props.rating;
+  // let rating = 6.5;
 
   let ratingInt = Math.floor(rating);
 
@@ -56,11 +66,15 @@ function setRating() {
       text: COLOR_FILLED_STAR_TEXT,
     };
   }
+
+  // bla.value = true;
 }
 
-onBeforeUpdate(() => {
-  setRating();
-});
+// onBeforeUpdate(() => {
+//   if (!bla.value) {
+//     setRating();
+//   }
+// });
 
 let tempColors = [];
 let tempPerc = [];

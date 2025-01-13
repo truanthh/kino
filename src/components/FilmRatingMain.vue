@@ -2,6 +2,17 @@
 import RatingStars from "@/components/RatingStars.vue";
 import FilmRatingStats from "@/components/FilmRatingStats.vue";
 
+const props = defineProps({
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  count: {
+    type: Number,
+    default: 0,
+  },
+});
+
 function handleStarClick(i) {
   console.log(i + 1 + "hey from filmratingmain!");
 }
@@ -13,8 +24,8 @@ function handleStarClick(i) {
       <h2>Рейтинг фильма</h2>
     </div>
     <div class="filmRatingMain__body">
-      <RatingStars filmRating="8.6" :handleStarClick />
-      <FilmRatingStats />
+      <RatingStars :rating :handleStarClick />
+      <FilmRatingStats :rating :count />
     </div>
   </div>
 </template>

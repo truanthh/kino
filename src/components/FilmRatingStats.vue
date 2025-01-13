@@ -2,6 +2,14 @@
 import Button from "@/components/Button.vue";
 
 const props = defineProps({
+  rating: {
+    type: Number,
+    default: 0,
+  },
+  count: {
+    type: Number,
+    default: 0,
+  },
   smallRatingEnabled: {
     type: Boolean,
     default: false,
@@ -27,7 +35,7 @@ const props = defineProps({
       <span
         class="filmRatingStats-ratingBlock-ratingValue"
         :style="{ fontSize: smallRatingEnabled ? '30px' : '48px' }"
-        >8.6</span
+        >{{ rating }}</span
       >
       <div class="filmRatingStats-placement">
         <span class="filmRatingStats-placement-leafLeft"></span>
@@ -42,7 +50,7 @@ const props = defineProps({
     </div>
     <div class="filmRatingStats-countBlock">
       <span class="filmRatingStats-countBlock-gradesCount">
-        680 923 оценки
+        {{ count }} оценки
       </span>
       <div class="filmRatingStats-countBlock-IMDb" v-if="imdbRatingEnabled">
         <span class="filmRatingStats-countBlock-IMDb-rating"> IMDb: 8.90 </span>

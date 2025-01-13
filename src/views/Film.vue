@@ -211,7 +211,7 @@ let filmReviews = ref([
           {{ film.synopsis }}
         </div film.synopsis >
         <div class="ratingMain">
-          <FilmRatingMain />
+          <FilmRatingMain :rating :count />
         </div>
         <div class="ratingCritics">
           <FilmRatingCritics

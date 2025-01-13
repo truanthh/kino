@@ -3,9 +3,9 @@ import { ref } from "vue";
 import StarIcon from "@/components/StarIcon.vue";
 
 const props = defineProps({
-  filmRating: {
-    type: String,
-    default: "0",
+  rating: {
+    type: Number,
+    default: 0,
   },
   handleStarClick: {
     type: Function,
@@ -32,24 +32,29 @@ let colors = ref(
 );
 
 function setRating() {
-  let rating = Number(props.filmRating);
+  let rating = props.rating;
 
-  for (let i = 0; i < starsCount; i++) {
-    if (rating - 1 >= 0) {
-      stars.value[i] = "100%";
-      colors.value[i] = {
-        star: COLOR_FILLED_STAR,
-        text: COLOR_FILLED_STAR_TEXT,
-      };
-      rating--;
-    } else {
-      stars.value[i] = `${Math.round(rating * 100)}%`;
-      colors.value[i] = {
-        star: COLOR_FILLED_STAR,
-        text: COLOR_FILLED_STAR_TEXT,
-      };
-      break;
-    }
+  let ratingInt = Math.floor(rating);
+
+  // after that "rating" is only a remainder
+  while (rating >= 1) {
+    rating--;
+  }
+
+  for (let i = 0; i < ratingInt; i++) {
+    stars.value[i] = "100%";
+    colors.value[i] = {
+      star: COLOR_FILLED_STAR,
+      text: COLOR_FILLED_STAR_TEXT,
+    };
+  }
+
+  if (rating > 0 && ratingInt < starsCount) {
+    stars.value[ratingInt] = `${Math.round(rating * 100)}%`;
+    colors.value[ratingInt] = {
+      star: COLOR_FILLED_STAR,
+      text: COLOR_FILLED_STAR_TEXT,
+    };
   }
 }
 

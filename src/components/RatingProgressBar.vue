@@ -81,13 +81,13 @@ setRating();
 }
 
 .bar {
+  height: 16px;
+  border-radius: 2px;
+  display: flex;
   &-container {
     // margin-top: 10px;
     // overflow: hidden;
   }
-  height: 16px;
-  border-radius: 2px;
-  display: flex;
   &-remainder {
     @extend .gen-bar;
     background-color: #ffd1b2;

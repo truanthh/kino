@@ -135,10 +135,10 @@ function handleButtonLeftClick() {
       0 0 0 1px rgba(0, 0, 0, 0.05);
     transition: 0.2s;
     cursor: pointer;
+    -webkit-user-select: none;
     &:hover {
       transform: translateX(5px);
     }
-    -webkit-user-select: none;
   }
   &__buttonLeft {
     z-index: 20;
@@ -160,10 +160,10 @@ function handleButtonLeftClick() {
     transition: 0.2s;
     cursor: pointer;
     transform: scaleX(-1);
+    -webkit-user-select: none;
     &:hover {
       transform: scaleX(-1) translateX(5px);
     }
-    -webkit-user-select: none;
   }
 }
 </style>

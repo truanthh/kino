@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch } from "vue";
 import StarIcon from "@/components/StarIcon.vue";
 import Button from "@/components/Button.vue";
 
@@ -29,22 +29,21 @@ const starsDisplay = ref(
   }),
 );
 
-// WHY WATCH DOESNT WORK HERE???
-// watch(
-//   () => props.rating,
-//   () => {
-//     setRating();
-//   },
-// );
+watch(
+  () => props.rating,
+  () => {
+    savedStarsState = drawStars();
+  },
+);
 
-function setRating() {
+function drawStars() {
   const stars = new Array(starsCount);
 
   for (let i = 0; i < stars.length; i++) {
-    stars.push({
+    stars[i] = {
       fill: "0%",
       colors: { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
-    });
+    };
   }
 
   let rating = props.rating;
@@ -55,7 +54,6 @@ function setRating() {
   }
 
   for (let i = 0; i < ratingInt; i++) {
-    // console.log([...stars]);
     stars[i].fill = "100%";
     stars[i].colors.star = COLOR_FILLED_STAR;
     stars[i].colors.text = COLOR_FILLED_STAR_TEXT;
@@ -71,41 +69,50 @@ function setRating() {
 }
 
 function handleMouseEnter(i) {
-  // colors.value = colors.value.map((el, idx) =>
-  //   idx <= i
-  //     ? { star: COLOR_SELECTED_STAR, text: COLOR_SELECTED_STAR_TEXT }
-  //     : { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
-  // );
-  // stars.value = stars.value.map((el, idx) => (idx <= i ? "100%" : "0%"));
+  starsDisplay.value = starsDisplay.value.map((el, idx) => {
+    if (idx <= i) {
+      return {
+        fill: "100%",
+        colors: { star: COLOR_SELECTED_STAR, text: COLOR_SELECTED_STAR_TEXT },
+      };
+    }
+    return {
+      fill: "0%",
+      colors: { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
+    };
+  });
 }
 
-function handleMouseLeave(i) {}
+function handleMouseLeave(i) {
+  starsDisplay.value = savedStarsState;
+}
 
-function handleStarClickWrapper(i) {}
-
-console.log(setRating());
+starsDisplay.value = drawStars();
+let savedStarsState = starsDisplay.value;
 </script>
 
 <template>
-  <Button class="btn__debug" @click="setRating"> DEBUG </Button>
   <div class="ratingBar">
     <div
       class="ratingBar_slot"
-      v-for="(star, i) of stars"
+      v-for="(star, i) of starsDisplay"
       :key="i"
       @mouseenter="handleMouseEnter(i)"
       @mouseleave="handleMouseLeave(i)"
-      @click="handleStarClickWrapper(i)"
+      @click="handleStarClick(i)"
     >
       <div class="ratingBar_slot_iconContainer">
         <StarIcon
           class="ratingBar_slot_iconContainer_icon"
-          :percentage="stars[i]"
-          :starFilledColor="colors[i].star"
+          :percentage="star.fill"
+          :starFilledColor="star.colors.star"
           :starId="i"
         />
       </div>
-      <div class="ratingBar_slot_numberText" :style="'color:' + colors[i].text">
+      <div
+        class="ratingBar_slot_numberText"
+        :style="'color:' + star.colors.text"
+      >
         {{ i + 1 }}
       </div>
     </div>

@@ -28,8 +28,6 @@ const props = defineProps({
     default: false,
   },
 });
-
-// const ratingFormatted = props.rating.
 </script>
 
 <template>
@@ -38,7 +36,7 @@ const props = defineProps({
       <span
         class="filmRatingStats-ratingBlock-ratingValue"
         :style="{ fontSize: smallRatingEnabled ? '30px' : '48px' }"
-        >{{ rating }}</span
+        >{{ Math.round(rating * 100) / 100 }}</span
       >
       <div class="filmRatingStats-placement">
         <span class="filmRatingStats-placement-leafLeft"></span>

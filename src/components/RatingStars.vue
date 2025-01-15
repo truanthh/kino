@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeUpdate, computed, watch } from "vue";
+import { ref, onBeforeUpdate, watch } from "vue";
 import StarIcon from "@/components/StarIcon.vue";
 
 const props = defineProps({
@@ -22,14 +22,12 @@ const COLOR_SELECTED_STAR_TEXT = "black";
 
 let starsCount = 10;
 
-// let bla = ref(false);
-
-watch(
-  () => props.rating,
-  () => {
-    setRating();
-  },
-);
+// watch(
+//   () => props.rating,
+//   () => {
+//     setRating();
+//   },
+// );
 
 let stars = ref(Array(starsCount).fill("0%"));
 
@@ -66,15 +64,7 @@ function setRating() {
       text: COLOR_FILLED_STAR_TEXT,
     };
   }
-
-  // bla.value = true;
 }
-
-// onBeforeUpdate(() => {
-//   if (!bla.value) {
-//     setRating();
-//   }
-// });
 
 let tempColors = [];
 let tempPerc = [];
@@ -94,6 +84,8 @@ function handleMouseLeave(i) {
   colors.value = tempColors;
   stars.value = tempPerc;
 }
+
+setRating();
 </script>
 
 <template>

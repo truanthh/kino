@@ -9,15 +9,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  // rating: {
-  //   type: Number,
-  //   default: 0,
-  // },
-  // count: {
-  //   type: Number,
-  //   default: 0,
-  // },
 });
+
+// let rating = props.film.rating_users;
+// let count = props.film.rating_users_count;
 
 function handleStarClick(rating) {
   emit("updateRating", { rating: rating + 1, id: props.film.id });

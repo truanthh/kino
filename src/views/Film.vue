@@ -24,7 +24,7 @@ const route = useRoute();
 
 const film = ref({});
 
-const isFilmLoaded = ref(false);
+const isFilmDataLoaded = ref(false);
 
 
 let similarFilms = ref([]);
@@ -59,7 +59,7 @@ async function getFilmById(id) {
   } catch (error) {
     console.log(error);
   } finally {
-    isFilmLoaded.value = true;
+    isFilmDataLoaded.value = true;
   }
 }
 
@@ -225,7 +225,7 @@ let filmReviews = ref([
           {{ film.synopsis }}
         </div film.synopsis >
         <div class="ratingMain">
-          <FilmRatingMain v-if="isFilmLoaded" :film @updateRating="updateFilmRating"/>
+          <FilmRatingMain v-if="isFilmDataLoaded" :film @updateRating="updateFilmRating"/>
         </div>
         <div class="ratingCritics">
           <FilmRatingCritics

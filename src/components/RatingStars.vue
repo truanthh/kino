@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onBeforeUpdate, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import StarIcon from "@/components/StarIcon.vue";
+import Button from "@/components/Button.vue";
 
 const props = defineProps({
   rating: {
@@ -22,21 +23,20 @@ const COLOR_SELECTED_STAR_TEXT = "black";
 
 let starsCount = 10;
 
-// watch(
-//   () => props.rating,
-//   () => {
-//     setRating();
-//   },
-// );
-
 let stars = ref(Array(starsCount).fill("0%"));
-
 let colors = ref(
   Array(starsCount).fill({
     star: COLOR_EMPTY_STAR,
     text: COLOR_EMPTY_STAR_TEXT,
   }),
 );
+
+// watch(
+//   () => props.rating,
+//   () => {
+//     setRating();
+//   },
+// );
 
 function setRating() {
   let rating = props.rating;
@@ -89,6 +89,7 @@ setRating();
 </script>
 
 <template>
+  <Button class="btn__debug" @click="setRating"> DEBUG </Button>
   <div class="ratingBar">
     <div
       class="ratingBar_slot"
@@ -114,6 +115,11 @@ setRating();
 </template>
 
 <style lang="scss" scoped>
+.btn__debug {
+  position: sticky;
+  left: 0;
+  top: 0;
+}
 .ratingBar {
   display: flex;
   justify-content: center;

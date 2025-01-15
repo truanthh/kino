@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   percentage: {
@@ -20,6 +20,10 @@ const props = defineProps({
     default: "#cccccc",
   },
 });
+
+// const perc = computed(() => {
+//   return props.percentage
+// });
 </script>
 
 <template>

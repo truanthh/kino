@@ -1,6 +1,6 @@
 <script setup>
 import Button from "@/components/Button.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
   rating: {
@@ -28,6 +28,10 @@ const props = defineProps({
     default: false,
   },
 });
+
+const rating = computed(() => {
+  return Math.round(props.rating * 100) / 100;
+});
 </script>
 
 <template>
@@ -36,8 +40,9 @@ const props = defineProps({
       <span
         class="filmRatingStats-ratingBlock-ratingValue"
         :style="{ fontSize: smallRatingEnabled ? '30px' : '48px' }"
-        >{{ Math.round(rating * 100) / 100 }}</span
       >
+        {{ rating }}
+      </span>
       <div class="filmRatingStats-placement">
         <span class="filmRatingStats-placement-leafLeft"></span>
         <div class="filmRatingStats-placement-text">

@@ -1,6 +1,7 @@
 <script setup>
 import RatingStars from "@/components/RatingStars.vue";
 import FilmRatingStats from "@/components/FilmRatingStats.vue";
+import { ref } from "vue";
 
 const emit = defineEmits(["updateRating"]);
 
@@ -11,11 +12,17 @@ const props = defineProps({
   },
 });
 
-// let rating = props.film.rating_users;
-// let count = props.film.rating_users_count;
+// making this instead of referencing props directly
+// for debouncing. and to immediately reflect changes to rating
+// after user set their grade
+const rating = ref(props.film.rating_users);
+const count = ref(props.film.rating_users_count);
 
-function handleStarClick(rating) {
-  emit("updateRating", { rating: rating + 1, id: props.film.id });
+function handleStarClick(i) {
+  const newRating = i + 1;
+  rating.value =
+    Math.round(rating.value * count.value + newRating) / ++count.value;
+  // emit("updateRating", { rating: i + 1, id: props.film.id });
 }
 </script>
 
@@ -25,11 +32,8 @@ function handleStarClick(rating) {
       <h2>Рейтинг фильма</h2>
     </div>
     <div class="filmRatingMain__body">
-      <RatingStars :rating="film.rating_users" :handleStarClick />
-      <FilmRatingStats
-        :rating="film.rating_users"
-        :count="film.rating_users_count"
-      />
+      <RatingStars :rating :handleStarClick />
+      <FilmRatingStats :rating :count />
     </div>
   </div>
 </template>

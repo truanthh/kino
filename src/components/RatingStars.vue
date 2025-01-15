@@ -21,16 +21,15 @@ const COLOR_EMPTY_STAR_TEXT = "#cccccc";
 const COLOR_SELECTED_STAR = "black";
 const COLOR_SELECTED_STAR_TEXT = "black";
 
-let starsCount = 10;
-
-let stars = ref(Array(starsCount).fill("0%"));
-let colors = ref(
-  Array(starsCount).fill({
-    star: COLOR_EMPTY_STAR,
-    text: COLOR_EMPTY_STAR_TEXT,
+const starsCount = 10;
+const starsDisplay = ref(
+  new Array(starsCount).fill({
+    fill: "0%",
+    colors: { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
   }),
 );
 
+// WHY WATCH DOESNT WORK HERE???
 // watch(
 //   () => props.rating,
 //   () => {
@@ -39,53 +38,52 @@ let colors = ref(
 // );
 
 function setRating() {
-  let rating = props.rating;
-  // let rating = 6.5;
+  const stars = new Array(starsCount);
 
+  for (let i = 0; i < stars.length; i++) {
+    stars.push({
+      fill: "0%",
+      colors: { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
+    });
+  }
+
+  let rating = props.rating;
   let ratingInt = Math.floor(rating);
 
-  // after that "rating" is only a remainder
   while (rating >= 1) {
     rating--;
   }
 
   for (let i = 0; i < ratingInt; i++) {
-    stars.value[i] = "100%";
-    colors.value[i] = {
-      star: COLOR_FILLED_STAR,
-      text: COLOR_FILLED_STAR_TEXT,
-    };
+    // console.log([...stars]);
+    stars[i].fill = "100%";
+    stars[i].colors.star = COLOR_FILLED_STAR;
+    stars[i].colors.text = COLOR_FILLED_STAR_TEXT;
   }
 
   if (rating > 0 && ratingInt < starsCount) {
-    stars.value[ratingInt] = `${Math.round(rating * 100)}%`;
-    colors.value[ratingInt] = {
-      star: COLOR_FILLED_STAR,
-      text: COLOR_FILLED_STAR_TEXT,
-    };
+    stars[ratingInt].fill = `${Math.round(rating * 100)}%`;
+    stars[ratingInt].colors.star = COLOR_FILLED_STAR;
+    stars[ratingInt].colors.text = COLOR_FILLED_STAR_TEXT;
   }
-}
 
-let tempColors = [];
-let tempPerc = [];
+  return stars;
+}
 
 function handleMouseEnter(i) {
-  tempColors = colors.value;
-  colors.value = colors.value.map((el, idx) =>
-    idx <= i
-      ? { star: COLOR_SELECTED_STAR, text: COLOR_SELECTED_STAR_TEXT }
-      : { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
-  );
-  tempPerc = stars.value;
-  stars.value = stars.value.map((el, idx) => (idx <= i ? "100%" : "0%"));
+  // colors.value = colors.value.map((el, idx) =>
+  //   idx <= i
+  //     ? { star: COLOR_SELECTED_STAR, text: COLOR_SELECTED_STAR_TEXT }
+  //     : { star: COLOR_EMPTY_STAR, text: COLOR_EMPTY_STAR_TEXT },
+  // );
+  // stars.value = stars.value.map((el, idx) => (idx <= i ? "100%" : "0%"));
 }
 
-function handleMouseLeave(i) {
-  colors.value = tempColors;
-  stars.value = tempPerc;
-}
+function handleMouseLeave(i) {}
 
-setRating();
+function handleStarClickWrapper(i) {}
+
+console.log(setRating());
 </script>
 
 <template>
@@ -97,7 +95,7 @@ setRating();
       :key="i"
       @mouseenter="handleMouseEnter(i)"
       @mouseleave="handleMouseLeave(i)"
-      @click="handleStarClick(i)"
+      @click="handleStarClickWrapper(i)"
     >
       <div class="ratingBar_slot_iconContainer">
         <StarIcon
@@ -115,11 +113,6 @@ setRating();
 </template>
 
 <style lang="scss" scoped>
-.btn__debug {
-  position: sticky;
-  left: 0;
-  top: 0;
-}
 .ratingBar {
   display: flex;
   justify-content: center;

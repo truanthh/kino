@@ -15,14 +15,27 @@ const props = defineProps({
 // making this instead of referencing props directly
 // for debouncing. and to immediately reflect changes to rating
 // after user set their grade
-const rating = ref(props.film.rating_users);
-const count = ref(props.film.rating_users_count);
+const rating = ref(Number(props.film.rating_users));
+const count = ref(Number(props.film.rating_users_count));
+
+const oldRating = rating.value;
+const oldCount = count.value;
+let hasVoted = false;
 
 function handleStarClick(i) {
   const newRating = i + 1;
-  rating.value =
-    Math.round(rating.value * count.value + newRating) / ++count.value;
+
+  showRecalcRating(newRating);
   // emit("updateRating", { rating: i + 1, id: props.film.id });
+}
+
+function showRecalcRating(newRating) {
+  rating.value = Math.round(oldRating * oldCount + newRating) / (oldCount + 1);
+
+  if (!hasVoted) {
+    count.value += 1;
+    hasVoted = true;
+  }
 }
 </script>
 

@@ -9,7 +9,6 @@ import ProfileDropdown from "@/components/UI/ProfileDropdown.vue";
 const isShownUserProfileDropdown = ref(false);
 
 const authStore = useAuthStore();
-const userInfo = authStore.userInfo;
 
 // so storeToRefs is just the convenient way of doing that, ok
 // const email = computed(() => authStore.userInfo.email);
@@ -45,8 +44,8 @@ const hideDropdown = () => {
   <ProfileDropdown
     :enabled="isShownUserProfileDropdown"
     :logout
-    :email="userInfo.userProfileData.email"
-    :photoUrl="userInfo.userProfileData.photoUrl"
+    :email="authStore.userInfo.userProfileData.email"
+    :photoUrl="authStore.userProfileAvatarUrl"
     @mouseover="showDropdown"
     @mouseleave="hideDropdown"
   />

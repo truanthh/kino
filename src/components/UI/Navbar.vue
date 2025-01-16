@@ -1,28 +1,23 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { Icon as IconifyIcon } from "@iconify/vue";
 import SearchInput from "./SearchInput.vue";
 import ProfileDropdown from "@/components/UI/ProfileDropdown.vue";
 
+const isShownUserProfileDropdown = ref(false);
+
 const authStore = useAuthStore();
-
-const isShowedAvatarDropdown = ref(false);
-
-const { userInfo } = storeToRefs(authStore);
+const userInfo = authStore.userInfo;
 
 // so storeToRefs is just the convenient way of doing that, ok
 // const email = computed(() => authStore.userInfo.email);
-// const token = computed(() => authStore.userInfo.token);
+// const token = computed(() => authstore.userinfo.token);
 
 defineOptions({
   name: "Navbar",
 });
-
-const debug = () => {
-  console.log(userInfo);
-};
 
 const props = defineProps({
   logout: {
@@ -32,56 +27,55 @@ const props = defineProps({
 });
 
 // const clickAvatar = () => {
-//   isShowedAvatarDropdown.value = !isShowedAvatarDropdown.value;
+//   isShownUserProfileDropdown.value = !isShownUserProfileDropdown.value;
 // };
 
 const showDropdown = () => {
-  isShowedAvatarDropdown.value = true;
+  isShownUserProfileDropdown.value = true;
 };
 
 const hideDropdown = () => {
-  isShowedAvatarDropdown.value = false;
+  isShownUserProfileDropdown.value = false;
 };
+
+// console.log(userInfo.token);
 </script>
 
 <template>
   <ProfileDropdown
-    :enabled="isShowedAvatarDropdown"
+    :enabled="isShownUserProfileDropdown"
     :logout
     :email="userInfo.userProfileData.email"
     :photoUrl="userInfo.userProfileData.photoUrl"
     @mouseover="showDropdown"
     @mouseleave="hideDropdown"
   />
-  <div class="navbar">
+  <div class="navbar__container">
+    <div class="debug">{{ authStore.isAuth }}</div>
+
     <!-- 1 -->
-    <router-link to="/home" class="navbar__content">
+    <router-link to="/home" class="navbar__el">
       <b>Главная</b>
     </router-link>
 
     <!-- 2 -->
-    <router-link to="/films" class="navbar__content"> Top250 </router-link>
+    <router-link to="/films" class="navbar__el"> Top250 </router-link>
 
     <!-- 3 -->
-    <!-- <router-link to="/videoplayer" class="navbar__content"> -->
-    <!--   VideoPlayer -->
-    <!-- </router-link> -->
+    <SearchInput class="navbar__el" />
 
     <!-- 4 -->
-    <SearchInput />
-
-    <!-- 5 -->
-    <router-link to="/signin" v-if="!userInfo.token" class="navbar__content">
+    <router-link to="/signin" v-if="!authStore.isAuth" class="navbar__el">
       <b>Войти</b>
     </router-link>
 
-    <!-- 6 -->
-    <router-link to="/signup" v-if="!userInfo.token" class="navbar__content"
+    <!-- 5 -->
+    <router-link to="/signup" v-if="!authStore.isAuth" class="navbar__el"
       >Регистрация</router-link
     >
 
-    <!-- 7 -->
-    <div class="navbar__content" v-if="userInfo.token">
+    <!-- 6 -->
+    <div class="navbar__el" v-if="authStore.isAuth">
       <IconifyIcon
         icon="ic:sharp-bookmark"
         class="iconbookmark"
@@ -89,33 +83,40 @@ const hideDropdown = () => {
       />
     </div>
 
-    <!-- 8 -->
+    <!-- 7 -->
     <div
-      class="navbar__content"
-      v-if="userInfo.token"
+      class="navbar__el"
+      v-if="authStore.isAuth"
       @mouseover="showDropdown"
       @mouseleave="hideDropdown"
     >
-      <img :src="userInfo.userProfileData.photoUrl" class="avatar" />
+      <img :src="authStore.userProfileAvatarUrl" class="avatar" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.navbar {
-  padding: 0 80px;
-  z-index: 2000;
-  display: grid;
-  grid-template-columns: auto auto 1fr auto auto;
-  position: fixed;
+.debug {
+  position: absolute;
   top: 0;
-  left: 0;
-  height: 72px;
-  width: 100%;
-  // box-sizing: border-box;
-  background-color: #141414;
-  gap: 80px;
-  &__content {
+  left: 1000px;
+  color: white;
+}
+.navbar {
+  &__container {
+    padding: 0 80px;
+    z-index: 2000;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 72px;
+    width: 100%;
+    background-color: #141414;
+    gap: 80px;
+  }
+  &__el {
     display: flex;
     justify-content: center;
     align-items: center;

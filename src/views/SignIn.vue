@@ -20,8 +20,6 @@ async function signIn() {
   const payload = { email: email.value, password: password.value };
 
   await authStore.auth(payload, "signIn");
-  // router.go(0);
-  // window.location.reload();
   router.push("/films");
 }
 </script>

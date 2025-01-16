@@ -10,11 +10,17 @@ export const useAuthStore = defineStore("auth", () => {
     userId: "",
     refreshToken: "",
     expiresIn: "",
-    userProfileData: {},
+    userProfileData: { photoUrl: ref("") },
   });
 
+  const userProfileAvatarUrl = ref("");
+
   const isAuth = computed(() => {
-    return userInfo.value.token !== "";
+    return (
+      userInfo.value.token !== "" &&
+      userInfo.value.token !== undefined &&
+      userInfo.value.token !== null
+    );
   });
 
   const responseData = ref();
@@ -44,9 +50,9 @@ export const useAuthStore = defineStore("auth", () => {
         }),
       );
       responseData.value = response.data;
-      await axiosApiInstance.post(`http://192.168.1.119:3000/login`, {
-        idToken: userInfo.value.token,
-      });
+      // await axiosApiInstance.post(`http://192.168.1.119:3000/login`, {
+      //   idToken: userInfo.value.token,
+      // });
       await getUserProfileData();
     } catch (err) {
       if (err) {
@@ -85,11 +91,11 @@ export const useAuthStore = defineStore("auth", () => {
 
   const getUserProfileData = async () => {
     try {
-      console.log("fetching userProfileData...");
       let response = await axiosApiInstance.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
         { idToken: userInfo.value.token },
       );
+      userProfileAvatarUrl.value = response.data.users[0].photoUrl;
       userInfo.value.userProfileData = response.data.users[0];
     } catch (error) {
       console.log(error);
@@ -130,5 +136,6 @@ export const useAuthStore = defineStore("auth", () => {
     logout,
     getUserProfileData,
     updateUserProfile,
+    userProfileAvatarUrl,
   };
 });

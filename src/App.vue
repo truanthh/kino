@@ -26,7 +26,7 @@ if (!authStore.userInfo.email) {
 </script>
 
 <template>
-  <navbar v-bind:logout="logout" />
+  <navbar :logout :isAuth="authStore.isAuth" />
 
   <main>
     <router-view />

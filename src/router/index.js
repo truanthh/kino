@@ -7,6 +7,9 @@ import Film from "../views/Film.vue";
 import Films from "../views/Films.vue";
 import Name from "../views/Name.vue";
 
+// idk if i need this here(store)
+import { useAuthStore } from "@/stores/auth";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,9 +60,14 @@ const router = createRouter({
   },
 });
 
-// router.beforeEach((to, from, next) => {
-//   console.log(`Navigating from ${from.name} to ${to.name}`);
-//   next();
-// });
+router.beforeEach((to, from) => {
+  const authStore = useAuthStore();
+
+  if (to.name === "films" && !authStore.isAuth) {
+    return { name: "signin" };
+  }
+
+  // return true;
+});
 
 export default router;

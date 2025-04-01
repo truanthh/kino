@@ -7,15 +7,9 @@ import "./api";
 import components from "./components/UI";
 import { getAuth } from "firebase/auth";
 
+const firebaseConfig = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG);
 
-
-const fb = initializeApp(firebaseConfig);
-
-// console.log(fb);
-
-// const auth = getAuth(fb);
-
-// console.log(auth);
+initializeApp(firebaseConfig);
 
 const app = createApp(App);
 

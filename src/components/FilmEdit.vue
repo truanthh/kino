@@ -156,13 +156,13 @@ function handleClick() {
     />
     <form @submit.prevent="submitForm" class="filmEdit__form">
       <div class="filmEdit__leftColumn">
-        <Input
-          name="id"
-          type="text"
-          :placeholder="`${film.id}`"
-          disabled
-          labelAlwaysVisible
-        />
+        <!-- <Input -->
+        <!--   name="id" -->
+        <!--   type="text" -->
+        <!--   :placeholder="`${film.id}`" -->
+        <!--   disabled -->
+        <!--   labelAlwaysVisible -->
+        <!-- /> -->
         <Input
           name="title"
           type="text"

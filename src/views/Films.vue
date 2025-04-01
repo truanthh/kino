@@ -15,7 +15,7 @@ const authStore = useAuthStore();
 const films = ref([]);
 const isOpenFilmEdit = ref(false);
 
-const headers = ["ID", "prod_year", "title", "country", "", "poster_url"];
+const headers = ["ID", "Год", "Название", "Страна", "", "Постер"];
 const columnsTemplate = "50px 80px 340px 200px 50px 100px";
 
 // async function getAllMovies() {

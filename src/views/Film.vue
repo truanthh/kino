@@ -351,13 +351,13 @@ let filmReviews = ref([
       right: 50px;
     }
   }
-  &__grid-main {
+  // &__grid-main {
     // @extend .content-width-global;
     // display: grid;
     // height: 100%;
     // grid-template-columns: auto auto auto;
     // background-color: #f0f0f0;
-  }
+  // }
   &__flexMain{
     @extend .content-width-global;
     display: flex;

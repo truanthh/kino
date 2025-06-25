@@ -136,6 +136,7 @@ function handleButtonLeftClick() {
     transition: 0.2s;
     cursor: pointer;
     -webkit-user-select: none;
+    user-select: none;
     &:hover {
       transform: translateX(5px);
     }
@@ -161,6 +162,7 @@ function handleButtonLeftClick() {
     cursor: pointer;
     transform: scaleX(-1);
     -webkit-user-select: none;
+    user-select: none;
     &:hover {
       transform: scaleX(-1) translateX(5px);
     }

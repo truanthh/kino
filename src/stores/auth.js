@@ -28,7 +28,13 @@ export const useAuthStore = defineStore("auth", () => {
 
   const auth = async (payload, type) => {
     try {
-      let signString = type === "signIn" ? "signInWithPassword" : "signUp";
+      // let signString = type === "signIn" ? "signInWithPassword" : "signUp";
+      let signString = "";
+      if (type === "signIn") {
+        signString = "signInWithPassword";
+      } else if (type === "signUp") {
+        signString = "signUp";
+      }
       let response = await axiosApiInstance.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:${signString}?key=${API_KEY}`,
         {
@@ -50,10 +56,7 @@ export const useAuthStore = defineStore("auth", () => {
         }),
       );
       responseData.value = response.data;
-      // await axiosApiInstance.post(`http://192.168.1.119:3000/login`, {
-      //   idToken: userInfo.value.token,
-      // });
-      await getUserProfileData();
+      // await getUserProfileData();
     } catch (err) {
       if (err) {
         switch (err.response.data.error.message) {
@@ -89,8 +92,10 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
+  // need to auth first to get profile data
   const getUserProfileData = async () => {
     try {
+      // console.log(userInfo.value.token);
       let response = await axiosApiInstance.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
         { idToken: userInfo.value.token },

@@ -18,7 +18,7 @@ const props = defineProps({
   },
   isAddingFilm: {
     type: Boolean,
-    required: true,
+    default: false,
   },
 });
 

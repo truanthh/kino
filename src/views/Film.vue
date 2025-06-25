@@ -52,6 +52,7 @@ async function getFilmById(id) {
       `http://${DB_SERVER_ADDRESS}/film/${id}`,
     );
     film.value = response.data;
+    // film.value.rating = { rating_users: film.value.rating_users, rating_users_count: film.value.rating_users_count };
     //just for testing
     for (let i = 0; i < 10; i++) {
       similarFilms.value.push(film.value);
@@ -188,6 +189,8 @@ let filmReviews = ref([
       </div>
       <div class="filmMisc">
         <FilmRatingStats
+          :rating="Number(film.rating_users)"
+          :count="Number(film.rating_users_count)"
           :imdbRatingEnabled="false"
           rateFilmButtonEnabled
           reviewsCountEnabled
@@ -390,6 +393,7 @@ let filmReviews = ref([
   }
   &__filmFacts {
     margin-top: 60px;
+    width: 800px;
     &__header {
       color: black;
       margin-bottom: 14px;

@@ -60,7 +60,7 @@ function setVolume() {
     <media-player
       class="player"
       title="title"
-      :src="videoUrl"
+      :src="{ src: videoUrl, type: `video/mp4` }"
       :autoplay="true"
       crossOrigin
       playsInline

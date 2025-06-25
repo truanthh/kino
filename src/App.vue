@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed, toRef } from "vue";
+import { ref, computed, toRef, onMounted } from "vue";
 import { useAuthStore } from "./stores/auth";
 import router from "./router";
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const authStore = useAuthStore();
 
@@ -20,13 +21,17 @@ const logout = () => {
   localStorage.removeItem("userTokens");
 };
 
-if (!authStore.userInfo.email) {
-  authStore.getUserProfileData();
-}
+onMounted(async () => {
+  try {
+    await authStore.getUserProfileData();
+  } catch (error) {
+    console.log(error);
+  }
+});
 </script>
 
 <template>
-  <navbar :logout :isAuth="authStore.isAuth" />
+  <navbar :logout />
 
   <main>
     <router-view />

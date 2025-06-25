@@ -10,12 +10,14 @@ axiosApiInstance.interceptors.request.use((config) => {
   if (
     !url.includes("signInWithPassword") &&
     !url.includes("signUp") &&
-    !url.includes(":3000")
+    !url.includes(":3000") &&
+    !url.includes(":lookup")
   ) {
     const authStore = useAuthStore();
     let params = new URLSearchParams();
     params.append("auth", authStore.userInfo.token);
     config.params = params;
+    // console.log(`intr ${params}`);
   }
   return config;
 });
@@ -25,11 +27,19 @@ axiosApiInstance.interceptors.response.use(
     return response;
   },
   async function (error) {
+    const { response } = error;
+
     const authStore = useAuthStore();
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      response.status === 401 ||
+      (response.status === 400 &&
+        response.data?.error?.message.includes("INVALID_ID_TOKEN") &&
+        !originalRequest._retry)
+    ) {
       originalRequest._retry = true;
       try {
+        console.log("user token expired, getting new tokens");
         const newTokens = await axios.post(
           `https://securetoken.googleapis.com/v1/token?key=${API_KEY}`,
           {

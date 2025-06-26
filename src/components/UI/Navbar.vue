@@ -44,8 +44,8 @@ const hideDropdown = () => {
   <ProfileDropdown
     :enabled="isShownUserProfileDropdown"
     :logout
-    :email="authStore.userInfo.userProfileData.email"
-    :photoUrl="authStore.userProfileAvatarUrl"
+    :email="authStore.userInfo.userProfileData?.email"
+    :photoUrl="authStore.userInfo.userProfileData?.photoUrl"
     @mouseover="showDropdown"
     @mouseleave="hideDropdown"
   />
@@ -89,7 +89,7 @@ const hideDropdown = () => {
       @mouseover="showDropdown"
       @mouseleave="hideDropdown"
     >
-      <img :src="authStore.userProfileAvatarUrl" class="avatar" />
+      <img :src="authStore.userInfo.userProfileData?.photoUrl" class="avatar" />
     </div>
   </div>
 </template>

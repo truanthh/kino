@@ -54,7 +54,7 @@ const handleSubmit = async () =>{
     </div>
     <div class="item">
       <h2 class="heading-2"> profile avatar:</h2>
-      <img :src="userInfo.userProfileData.photoUrl" class="avatar"></img>
+      <img :src="userInfo.userProfileData?.photoUrl" class="avatar"></img>
     </div>
     <form>
       <h2 class="heading-2">Enter new profile picture url:</h2>

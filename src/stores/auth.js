@@ -10,10 +10,9 @@ export const useAuthStore = defineStore("auth", () => {
     userId: "",
     refreshToken: "",
     expiresIn: "",
-    userProfileData: { photoUrl: ref("") },
+    // email: "",
+    userProfileData: { photoUrl: "" },
   });
-
-  const userProfileAvatarUrl = ref("");
 
   const isAuth = computed(() => {
     return (
@@ -56,7 +55,7 @@ export const useAuthStore = defineStore("auth", () => {
         }),
       );
       responseData.value = response.data;
-      // await getUserProfileData();
+      await getUserProfileData();
     } catch (err) {
       if (err) {
         switch (err.response.data.error.message) {
@@ -100,7 +99,6 @@ export const useAuthStore = defineStore("auth", () => {
         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`,
         { idToken: userInfo.value.token },
       );
-      userProfileAvatarUrl.value = response.data.users[0].photoUrl;
       userInfo.value.userProfileData = response.data.users[0];
     } catch (error) {
       console.log(error);
@@ -141,6 +139,5 @@ export const useAuthStore = defineStore("auth", () => {
     logout,
     getUserProfileData,
     updateUserProfile,
-    userProfileAvatarUrl,
   };
 });

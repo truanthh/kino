@@ -28,13 +28,13 @@ export const useAuthStore = defineStore("auth", () => {
 
   const auth = async (payload, type) => {
     try {
-      // let signString = type === "signIn" ? "signInWithPassword" : "signUp";
-      let signString = "";
-      if (type === "signIn") {
-        signString = "signInWithPassword";
-      } else if (type === "signUp") {
-        signString = "signUp";
-      }
+      let signString = type === "signIn" ? "signInWithPassword" : "signUp";
+      // let signString = "";
+      // if (type === "signIn") {
+      //   signString = "signInWithPassword";
+      // } else if (type === "signUp") {
+      //   signString = "signUp";
+      // }
       let response = await axiosApiInstance.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:${signString}?key=${API_KEY}`,
         {
